@@ -1,2 +1,2 @@
-# k-Knotes-iOS-
-Knotes simple notes for iOS 
+# K-Knotes
+Knotes based on Cheddar
