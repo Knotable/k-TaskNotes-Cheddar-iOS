@@ -11,7 +11,7 @@
 extern NSString *const kCDIFontDidChangeNotificationName;
 
 @interface CDISettingsViewController : CDIGroupedTableViewController
-
+@property (nonatomic,strong) MeteorClient *meteor;
 - (void)close:(id)sender;
 - (void)upgrade:(id)sender;
 - (void)signOut:(id)sender;

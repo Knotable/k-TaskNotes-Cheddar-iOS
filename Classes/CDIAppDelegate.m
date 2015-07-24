@@ -70,7 +70,7 @@
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}
-	
+    	[self loadServerConfig];
 	[self.window makeKeyAndVisible];
 	
 	// Defer some stuff to make launching faster
@@ -87,6 +87,36 @@
 		// Add the transaction observer
 		[[SKPaymentQueue defaultQueue] addTransactionObserver:[CDITransactionObserver defaultObserver]];
 	});
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(meteorError:)
+                                                 name:MeteorClientTransportErrorDomain
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(meteorAdded:)
+                                                 name:@"added"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(meteorRemoved:)
+                                                 name:@"removed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(popUpMessage:)
+                                                 name:KnotebleShowPopUpMessage
+                                               object:nil];
+
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(needChangeMogoDbServer:)
+//                                                 name:kNeedChangeMongoDbServer
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(needChangeApplicationHost:)
+//                                                 name:kNeedChangeApplicationHost
+//                                               object:nil];
 
 	return YES;
 }
@@ -124,8 +154,8 @@
     
     [navigationBar setTintColor:[UIColor colorWithRed:0 green:122/255.0f blue:1.0 alpha:1.0]];
     [navigationBar setBarTintColor:[UIColor colorWithRed:0 green:122/255.0f blue:1.0 alpha:1.0]];
-    [navigationBar setTranslucent:NO];
-    
+//    [navigationBar setTranslucent:NO];
+
 	[navigationBar setTitleVerticalPositionAdjustment:-1.0f forBarMetrics:UIBarMetricsDefault];
 	[navigationBar setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:
 										   [UIFont fontWithName:@"HelveticaNeue-Bold" size:20.0f], UITextAttributeFont,
@@ -176,6 +206,107 @@
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar-background-mini"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsLandscapePhone];
 
     
+}
+
+- (void)loadServerConfig{
+    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"servers_dev" ofType:@"plist"];
+    NSArray *serverDicts = [NSArray arrayWithContentsOfFile:plistPath];
+    if ([serverDicts isKindOfClass:[NSArray class]]) {
+        ServerConfigModel *model = [[ServerConfigModel alloc]initWithDictionary:[serverDicts firstObject]];
+        [self initServer:model];
+    }
+}
+
+- (void)initServer :(ServerConfigModel* )model{
+    if (!self.meteorClient) {
+        self.meteorClient = [[MeteorClient alloc]initWithDDPVersion:@"pre2"];
+        self.ddp = [[ObjectiveDDP alloc]initWithURLString:[model meteorWebsocketURL] delegate:self.meteorClient];
+        self.meteorClient.ddp = self.ddp;
+        [self.ddp connectWebSocket];
+        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
+        [self.meteorClient addSubscription:METEORCOLLECTION_MESSAGES];
+        [self.meteorClient addSubscription:METEORCOLLECTION_MUTEKNOTES];
+        [self.meteorClient addSubscription:METEORCOLLECTION_NOTIFICATIONS];
+        [self.meteorClient addSubscription:METEORCOLLECTION_PEOPLE];
+        [self.meteorClient addSubscription:METEORCOLLECTION_TOPICS];
+        [self.meteorClient addSubscription:METEORCOLLECTION_USERPRIVATEDATA];
+        [self.meteorClient addSubscription:METEORCOLLECTION_USERS];
+        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_TOPIC];
+        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_REST];
+        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_PINNED];
+        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED];
+        [self.meteorClient addSubscription:METEORCOLLECTION_KEY];
+        [self.meteorClient addSubscription:METEORCOLLECTION_HOTKNOTES];
+        
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
+//        [self.meteorClient addObserver:self
+//                      forKeyPath:@"connected"
+//                         options:NSKeyValueObservingOptionNew
+//                         context:nil];
+//        [self.meteorClient addObserver:self
+//                      forKeyPath:@"sessionToken"
+//                         options:NSKeyValueObservingOptionNew
+//                         context:nil];
+    }else if (![self.meteorClient.ddp.urlString isEqualToString:[model meteorWebsocketURL]]){
+        [self closePreMeteor];
+        self.meteorClient = [[MeteorClient alloc]initWithDDPVersion:@"pre2"];
+        self.ddp = [[ObjectiveDDP alloc]initWithURLString:[model meteorWebsocketURL] delegate:self.meteorClient];
+        self.meteorClient.ddp = self.ddp;
+        [self.ddp connectWebSocket];
+        [self.meteorClient addObserver:self
+                            forKeyPath:@"connected"
+                               options:NSKeyValueObservingOptionNew
+                               context:nil];
+        [self.meteorClient addObserver:self
+                            forKeyPath:@"sessionToken"
+                               options:NSKeyValueObservingOptionNew
+                               context:nil];
+    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportConnection) name:MeteorClientDidConnectNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportDisconnection) name:MeteorClientDidDisconnectNotification object:nil];
+}
+
+-(void)closePreMeteor{
+    self.meteorClientOld = self.meteorClient;
+    [self.meteorClient removeObserver:self forKeyPath:@"connected"];
+    [self.meteorClient removeObserver:self forKeyPath:@"sessionToken"];
+    [self.meteorClient disconnect];
+    self.meteorClient = nil;
+}
+
+- (void)reportConnection {
+    NSLog(@"================> connected to server!");
+}
+
+- (void)reportDisconnection {
+    NSLog(@"================> disconnected from server!");
+}
+
+-(void)meteorError: (NSNotification *)note
+{
+    NSLog(@"meteorError: %@ %@", note.userInfo, note.object);
+}
+
+-(void)meteorAdded:(NSNotification *)note
+{
+    NSLog(@"meteorAdded: %@", note);
+}
+
+-(void)meteorRemoved:(NSNotification *)note
+{
+    NSLog(@"meteorRemoved: %@", note);
+}
+
+- (NSString* )idRandom
+{
+    static char const possibleChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    unichar characters[10];
+    for( int index=0; index < 10; ++index )
+    {
+        characters[ index ] = possibleChars[arc4random_uniform(sizeof(possibleChars)-1)];
+    }
+
+    return [ NSString stringWithCharacters:characters length:10 ] ;
 }
 
 @end

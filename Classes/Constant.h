@@ -1,0 +1,44 @@
+//
+//  Constant.h
+//  Cheddar for iOS
+//
+//  Created by Mac on 7/20/15.
+//  Copyright (c) 2015 Nothing Magical. All rights reserved.
+//
+
+#ifndef Cheddar_for_iOS_Constant_h
+#define Cheddar_for_iOS_Constant_h
+#define METEOR_DDP_URL_FORMAT @"ws://%@/websocket"
+#define     UseStaticGoogleClient       NO
+
+#define METEORCOLLECTION_USERS           @"users"                // Existing
+#define METEORCOLLECTION_PEOPLE          @"contacts"             // Existing
+#define METEORCOLLECTION_KEY             @"key_notes"            // Not Existing
+#define METEORCOLLECTION_KNOTES          @"knotes"               // Existing
+#define METEORCOLLECTION_MESSAGES        @"messages"             // Existing
+#define METEORCOLLECTION_ACCOUNTS        @"user_accounts"        // Existing
+#define METEORCOLLECTION_TOPICS          @"topics"               // Existing
+#define METEORCOLLECTION_FILES           @"files"                // Existing
+#define METEORCOLLECTION_NOTIFICATIONS   @"notifications"        // Existing
+#define METEORCOLLECTION_ACTIVITES       @"activities"           // Existing
+#define METEORCOLLECTION_HOTKNOTES       @"hotKnotes"
+#define METEORCOLLECTION_USERPRIVATEDATA @"userPrivateData"
+#define METEORCOLLECTION_MUTEKNOTES      @"muteKnotes"
+#define METEORCOLLECTION_ARCHIVEDTOPICS  @"archivedTopics"       // Existing
+
+#define METEORCOLLECTION_KNOTE_TOPIC            @"topic"
+#define METEORCOLLECTION_KNOTE_PINNED           @"pinnedKnotesForTopic"
+#define METEORCOLLECTION_KNOTE_ARCHIVED         @"archivedKnotesForTopic"
+#define METEORCOLLECTION_KNOTE_REST             @"allRestKnotesByTopicId"
+
+#define kTNUserIDKey @"kCDKUserIDKey"
+#define kCDKKeychainServiceName = @"Tasknote"
+
+
+#define KnotebleShowPopUpMessage            @"KnotebleShowPopUpMessage"
+#define kNeedChangeMongoDbServer            @"kNeedChangeMongoDbServer"
+#define kNeedGoBackToLoginView              @"kNeedGoBackToLoginView"
+
+#define kNeedChangeApplicationHost          @"kNeedChangeApplicationHost"
+
+#endif

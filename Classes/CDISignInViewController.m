@@ -98,7 +98,9 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+
+    	_meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
+
 	UIView *background = [[UIView alloc] initWithFrame:CGRectZero];
 	background.backgroundColor = [UIColor cheddarArchesColor];
 	self.tableView.backgroundView = background;
@@ -144,21 +146,33 @@
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Signing in..." loading:YES];
 	[hud show];
 
-	[[CDKHTTPClient sharedClient] signInWithLogin:self.usernameTextField.text password:self.passwordTextField.text success:^(AFJSONRequestOperation *operation, id responseObject) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[hud completeAndDismissWithTitle:@"Signed In!"];
-			[self.navigationController dismissModalViewControllerAnimated:YES];
-		});
-	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-		NSString *message = [[operation responseJSON] objectForKey:@"error_description"];
+    [[TNAPIClient sharedClient] logonWithUsernameOrEmail:self.usernameTextField.text password:self.passwordTextField.text withBlock:^(NSDictionary *response, NSError *error) {
+        if (error) {
+            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+        }
+        if (response) {
+            [hud completeAndDismissWithTitle:@"Signed In!"];
+            NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[hud failAndDismissWithTitle:[[operation response] statusCode] == 401 ? @"Invalid" : @"Failed"];
+            NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
+            [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
+            [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
+            NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
+            [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
 
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[alert show];
-		});
-	}];
+            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
+            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self dismissViewControllerAnimated:YES completion:nil];
+
+            NSString* username = [CDIAppDelegate sharedAppDelegate].userModel.user_username;
+            NSString* password = self.passwordTextField.text;
+            [SSKeychain setPassword:password forService:@"Tasknote" account:username];
+            NSLog(@"%@",_meteor.collections);
+        }
+    }];
+
+
 }
 
 
@@ -166,25 +180,41 @@
 	if (!self.navigationItem.rightBarButtonItem.enabled) {
 		return;
 	}
-	
+
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Signing up..." loading:YES];
 	[hud show];
 
-	[[CDKHTTPClient sharedClient] signUpWithUsername:self.usernameTextField.text email:self.emailTextField.text password:self.passwordTextField.text success:^(AFJSONRequestOperation *operation, id responseObject) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[hud completeAndDismissWithTitle:@"Signed Up!"];
-			[self.navigationController dismissModalViewControllerAnimated:YES];
-		});
-	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-		NSString *message = [[operation responseJSON] objectForKey:@"error_description"];
+    NSDictionary *registrationInfo = @{
+                                       @"username":self.usernameTextField.text,
+                                       @"fullname":self.usernameTextField.text,
+                                       @"email":self.emailTextField.text,
+                                       @"password":self.passwordTextField.text,
+                                       @"is_register":@(YES)
+                                       };
 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[hud failAndDismissWithTitle:@"Failed"];
 
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[alert show];
-		});
-	}];
+    [[TNAPIClient sharedClient] sigupWithUsernameAndEmail:@"createAccount" withDict:registrationInfo withBlock:^(NSDictionary *response, NSError *error) {
+        if (error) {
+            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+        }
+        if (response) {
+            [hud completeAndDismissWithTitle:@"Signed Up!"];
+            NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
+
+            NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
+            [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
+            [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
+            NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
+            [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
+
+            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
+            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+
+             
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
 }
 
 
@@ -223,7 +253,9 @@
 			[self.passwordTextField becomeFirstResponder];
 		}
 
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStyleBordered target:self action:@selector(signIn:)];
+        UIBarButtonItem *signInButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStyleBordered target:self action:@selector(signIn:)];
+        [signInButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+		self.navigationItem.rightBarButtonItem = signInButton;
 	}
 
 	// Switch to sign up
@@ -239,7 +271,9 @@
 		self.usernameTextField.placeholder = @"Choose a username";
 		self.passwordTextField.placeholder = @"Choose a password";
 
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStyleBordered target:self action:@selector(signUp:)];
+        UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStyleBordered target:self action:@selector(signUp:)];
+        [signUpButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+        self.navigationItem.rightBarButtonItem = signUpButton;
 	}
 
 	[self _validateButton];
@@ -272,7 +306,6 @@
 	if (_signUpMode && valid) {
 		valid = self.emailTextField.text.length >= 5;
 	}
-
 	self.navigationItem.rightBarButtonItem.enabled = valid;
 }
 

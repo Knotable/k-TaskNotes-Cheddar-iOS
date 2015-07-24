@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>SocketRocket.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>SocketRocketOSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>SocketRocketOSXLibrary.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
+		<key>TestChat.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>B2EB6A7215DB5C800035AD92</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F62417E214D52F3C003CE997</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F668C87F153E91210044DBAC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F6B2082C1450F597009315AF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F6BDA801145900D200FE3253</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
