@@ -11,7 +11,7 @@
 extern NSString *const kCDISelectedListKey;
 
 @interface CDIListsViewController : CDIManagedTableViewController
-
+@property (nonatomic,strong) MeteorClient *meteor;
 - (void)showSettings:(id)sender;
 - (void)createList:(id)sender;
 

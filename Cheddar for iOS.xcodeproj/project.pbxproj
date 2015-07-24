@@ -19,6 +19,15 @@
 		1B837D7B1A9EF199003B81A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B837D7A1A9EF199003B81A5 /* Images.xcassets */; };
 		1BB318A31A9F00200095F49D /* Icon-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BB318A21A9F00200095F49D /* Icon-180.png */; };
 		1FB0958E1B58AF5C0024A731 /* Icon-129.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FB095891B58AF5C0024A731 /* Icon-129.png */; };
+		1FCCDF5E1B61EFBF00872CEE /* BSONIdGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF541B61EFBF00872CEE /* BSONIdGenerator.m */; };
+		1FCCDF5F1B61EFBF00872CEE /* DependencyProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF561B61EFBF00872CEE /* DependencyProvider.m */; };
+		1FCCDF601B61EFBF00872CEE /* MeteorClient+Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF571B61EFBF00872CEE /* MeteorClient+Parsing.m */; };
+		1FCCDF611B61EFBF00872CEE /* MeteorClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF5A1B61EFBF00872CEE /* MeteorClient.m */; };
+		1FCCDF621B61EFBF00872CEE /* ObjectiveDDP.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF5D1B61EFBF00872CEE /* ObjectiveDDP.m */; };
+		1FCCDF6B1B61F04200872CEE /* TNAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF651B61F04200872CEE /* TNAPIClient.m */; };
+		1FCCDF6C1B61F04200872CEE /* ServerConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF681B61F04200872CEE /* ServerConfigModel.m */; };
+		1FCCDF6D1B61F04200872CEE /* TNUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCCDF6A1B61F04200872CEE /* TNUserModel.m */; };
+		1FCCDF751B61F25C00872CEE /* servers_dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FCCDF741B61F25C00872CEE /* servers_dev.plist */; };
 		21396B6617728AF70040FCA2 /* SSPullToRefreshDefaultContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6117728AE50040FCA2 /* SSPullToRefreshDefaultContentView.m */; };
 		21396B6717728AF70040FCA2 /* SSPullToRefreshSimpleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6317728AE50040FCA2 /* SSPullToRefreshSimpleContentView.m */; };
 		21396B6817728AF70040FCA2 /* SSPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6517728AE50040FCA2 /* SSPullToRefreshView.m */; };
@@ -302,6 +311,25 @@
 		1B837D7A1A9EF199003B81A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Cheddar for iOS/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		1BB318A21A9F00200095F49D /* Icon-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-180.png"; sourceTree = "<group>"; };
 		1FB095891B58AF5C0024A731 /* Icon-129.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-129.png"; sourceTree = "<group>"; };
+		1FCCDF531B61EFBF00872CEE /* BSONIdGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSONIdGenerator.h; sourceTree = "<group>"; };
+		1FCCDF541B61EFBF00872CEE /* BSONIdGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSONIdGenerator.m; sourceTree = "<group>"; };
+		1FCCDF551B61EFBF00872CEE /* DependencyProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DependencyProvider.h; sourceTree = "<group>"; };
+		1FCCDF561B61EFBF00872CEE /* DependencyProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DependencyProvider.m; sourceTree = "<group>"; };
+		1FCCDF571B61EFBF00872CEE /* MeteorClient+Parsing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MeteorClient+Parsing.m"; sourceTree = "<group>"; };
+		1FCCDF581B61EFBF00872CEE /* MeteorClient+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MeteorClient+Private.h"; sourceTree = "<group>"; };
+		1FCCDF591B61EFBF00872CEE /* MeteorClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeteorClient.h; sourceTree = "<group>"; };
+		1FCCDF5A1B61EFBF00872CEE /* MeteorClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeteorClient.m; sourceTree = "<group>"; };
+		1FCCDF5B1B61EFBF00872CEE /* ObjectiveDDP-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjectiveDDP-Prefix.pch"; sourceTree = "<group>"; };
+		1FCCDF5C1B61EFBF00872CEE /* ObjectiveDDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveDDP.h; sourceTree = "<group>"; };
+		1FCCDF5D1B61EFBF00872CEE /* ObjectiveDDP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveDDP.m; sourceTree = "<group>"; };
+		1FCCDF641B61F04200872CEE /* TNAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNAPIClient.h; sourceTree = "<group>"; };
+		1FCCDF651B61F04200872CEE /* TNAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNAPIClient.m; sourceTree = "<group>"; };
+		1FCCDF671B61F04200872CEE /* ServerConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerConfigModel.h; sourceTree = "<group>"; };
+		1FCCDF681B61F04200872CEE /* ServerConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerConfigModel.m; sourceTree = "<group>"; };
+		1FCCDF691B61F04200872CEE /* TNUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNUserModel.h; sourceTree = "<group>"; };
+		1FCCDF6A1B61F04200872CEE /* TNUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNUserModel.m; sourceTree = "<group>"; };
+		1FCCDF731B61F14200872CEE /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
+		1FCCDF741B61F25C00872CEE /* servers_dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = servers_dev.plist; sourceTree = "<group>"; };
 		21396B5F17728AE50040FCA2 /* SSPullToRefresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSPullToRefresh.h; sourceTree = "<group>"; };
 		21396B6017728AE50040FCA2 /* SSPullToRefreshDefaultContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSPullToRefreshDefaultContentView.h; sourceTree = "<group>"; };
 		21396B6117728AE50040FCA2 /* SSPullToRefreshDefaultContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSPullToRefreshDefaultContentView.m; sourceTree = "<group>"; };
@@ -603,6 +631,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1FCCDF521B61EFBF00872CEE /* ObjectiveDDP */ = {
+			isa = PBXGroup;
+			children = (
+				1FCCDF531B61EFBF00872CEE /* BSONIdGenerator.h */,
+				1FCCDF541B61EFBF00872CEE /* BSONIdGenerator.m */,
+				1FCCDF551B61EFBF00872CEE /* DependencyProvider.h */,
+				1FCCDF561B61EFBF00872CEE /* DependencyProvider.m */,
+				1FCCDF571B61EFBF00872CEE /* MeteorClient+Parsing.m */,
+				1FCCDF581B61EFBF00872CEE /* MeteorClient+Private.h */,
+				1FCCDF591B61EFBF00872CEE /* MeteorClient.h */,
+				1FCCDF5A1B61EFBF00872CEE /* MeteorClient.m */,
+				1FCCDF5B1B61EFBF00872CEE /* ObjectiveDDP-Prefix.pch */,
+				1FCCDF5C1B61EFBF00872CEE /* ObjectiveDDP.h */,
+				1FCCDF5D1B61EFBF00872CEE /* ObjectiveDDP.m */,
+			);
+			path = ObjectiveDDP;
+			sourceTree = "<group>";
+		};
+		1FCCDF631B61F04200872CEE /* TaskNoteAPIClient */ = {
+			isa = PBXGroup;
+			children = (
+				1FCCDF641B61F04200872CEE /* TNAPIClient.h */,
+				1FCCDF651B61F04200872CEE /* TNAPIClient.m */,
+			);
+			path = TaskNoteAPIClient;
+			sourceTree = "<group>";
+		};
+		1FCCDF661B61F04200872CEE /* TNModel */ = {
+			isa = PBXGroup;
+			children = (
+				1FCCDF671B61F04200872CEE /* ServerConfigModel.h */,
+				1FCCDF681B61F04200872CEE /* ServerConfigModel.m */,
+				1FCCDF691B61F04200872CEE /* TNUserModel.h */,
+				1FCCDF6A1B61F04200872CEE /* TNUserModel.m */,
+			);
+			path = TNModel;
+			sourceTree = "<group>";
+		};
+		1FCCDF721B61F12200872CEE /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				1FCCDF731B61F14200872CEE /* Constant.h */,
+			);
+			name = Global;
+			sourceTree = "<group>";
+		};
 		21396B5E17728AE50040FCA2 /* SSPullToRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,6 +694,9 @@
 		B208BB9115BF63A80080705D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1FCCDF721B61F12200872CEE /* Global */,
+				1FCCDF631B61F04200872CEE /* TaskNoteAPIClient */,
+				1FCCDF661B61F04200872CEE /* TNModel */,
 				B2D1241F15C1FC3C00ED1218 /* Application */,
 				B2D1242115C1FC7000ED1218 /* View Controllers */,
 				B2D1242015C1FC5D00ED1218 /* Views */,
@@ -647,6 +724,7 @@
 				B2B25FDD161651F900ACFD3E /* About.html */,
 				B28FD2D315BF742D00365CD6 /* Fonts */,
 				B208BBD415BF63A80080705D /* Cheddar-Info.plist */,
+				1FCCDF741B61F25C00872CEE /* servers_dev.plist */,
 				B208BBD615BF63A80080705D /* Images */,
 			);
 			path = Resources;
@@ -800,6 +878,7 @@
 		B208BC9D15BF63E00080705D /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				1FCCDF521B61EFBF00872CEE /* ObjectiveDDP */,
 				B208C1FD15BF65490080705D /* CheddarKit */,
 				B208BE5E15BF63E00080705D /* Localytics */,
 				B208BEBF15BF63E00080705D /* SSPullToRefresh */,
@@ -1172,6 +1251,11 @@
 				CLASSPREFIX = CDI;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Nothing Magical";
+				TargetAttributes = {
+					B23FA754151FE0710069A0D1 = {
+						DevelopmentTeam = Q248U89T7S;
+					};
+				};
 			};
 			buildConfigurationList = B23FA74F151FE0710069A0D1 /* Build configuration list for PBXProject "Cheddar for iOS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1395,6 +1479,7 @@
 				DAA8ED5C161C7ABB0024C172 /* DevIcon-29.png in Resources */,
 				DAA8ED5D161C7ABB0024C172 /* DevIcon-50.png in Resources */,
 				DAA8ED5E161C7ABB0024C172 /* DevIcon-57.png in Resources */,
+				1FCCDF751B61F25C00872CEE /* servers_dev.plist in Resources */,
 				DAA8ED5F161C7ABB0024C172 /* DevIcon-58.png in Resources */,
 				1B2312E01A9ECCBF0048A86B /* Default-Landscape_IO7.png in Resources */,
 				DAA8ED60161C7ABB0024C172 /* DevIcon-72.png in Resources */,
@@ -1430,6 +1515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */,
+				1FCCDF6C1B61F04200872CEE /* ServerConfigModel.m in Sources */,
 				B208BC2A15BF63A80080705D /* CDIAddTaskAnimationView.m in Sources */,
 				B208BC2B15BF63A80080705D /* CDIAddTaskView.m in Sources */,
 				B208BC2C15BF63A80080705D /* CDIAppDelegate.m in Sources */,
@@ -1437,6 +1523,7 @@
 				B208BC2E15BF63A80080705D /* CDICreateListViewController.m in Sources */,
 				B208BC2F15BF63A80080705D /* CDIListsViewController.m in Sources */,
 				B208BC3015BF63A80080705D /* CDIListTableViewCell.m in Sources */,
+				1FCCDF611B61EFBF00872CEE /* MeteorClient.m in Sources */,
 				B208BC3115BF63A80080705D /* CDITasksViewController.m in Sources */,
 				B208BC3215BF63A80080705D /* CDILoadingView.m in Sources */,
 				B208BC3315BF63A80080705D /* CDIManagedTableViewController.m in Sources */,
@@ -1451,7 +1538,9 @@
 				B208BC3F15BF63A80080705D /* CDITableViewCellDeleteConfirmationControl.m in Sources */,
 				B208BC4015BF63A80080705D /* CDITagView.m in Sources */,
 				B208BC4115BF63A80080705D /* CDITaskTableViewCell.m in Sources */,
+				1FCCDF621B61EFBF00872CEE /* ObjectiveDDP.m in Sources */,
 				B208BC4215BF63A80080705D /* CDITransactionObserver.m in Sources */,
+				1FCCDF6D1B61F04200872CEE /* TNUserModel.m in Sources */,
 				B208BC4315BF63A80080705D /* CDIUpgradeViewController.m in Sources */,
 				B208BC4415BF63A80080705D /* SKPaymentTransaction+CheddariOSAdditions.m in Sources */,
 				B208BC4515BF63A80080705D /* UIButton+CheddariOSAdditions.m in Sources */,
@@ -1463,6 +1552,7 @@
 				B208C11015BF63E20080705D /* LocalyticsSession.m in Sources */,
 				21396B6817728AF70040FCA2 /* SSPullToRefreshView.m in Sources */,
 				B208C11115BF63E20080705D /* LocalyticsUploader.m in Sources */,
+				1FCCDF601B61EFBF00872CEE /* MeteorClient+Parsing.m in Sources */,
 				B208C11215BF63E20080705D /* LocalyticsUtilities.m in Sources */,
 				B208C1A515BF63E20080705D /* TTTAttributedLabel.m in Sources */,
 				B28FD2E215BF755600365CD6 /* Cheddar.xcdatamodeld in Sources */,
@@ -1472,16 +1562,19 @@
 				B2AD032115C493C200D9B909 /* CDIWebViewController.m in Sources */,
 				B29011CE15C505DA008FC626 /* CDIGroupedTableViewCell.m in Sources */,
 				B26AE9B415C5CF2B0008AB1F /* CDISettingsTapPickerViewController.m in Sources */,
+				1FCCDF5F1B61EFBF00872CEE /* DependencyProvider.m in Sources */,
 				B26AE9B715C5D0040008AB1F /* CDISettingsTextSizePickerViewController.m in Sources */,
 				21396B6617728AF70040FCA2 /* SSPullToRefreshDefaultContentView.m in Sources */,
 				B26AE9BA15C5D0100008AB1F /* CDISettingsFontPickerViewController.m in Sources */,
 				B26AE9BD15C5D25E0008AB1F /* CDIGroupedTableViewController.m in Sources */,
 				B26AE9C015C5D52D0008AB1F /* CDIPickerViewController.m in Sources */,
 				B2AD656B15E907870073BBC5 /* CDIPlaceholderView.m in Sources */,
+				1FCCDF6B1B61F04200872CEE /* TNAPIClient.m in Sources */,
 				B2AD656F15E907C50073BBC5 /* CDIListsPlaceholderView.m in Sources */,
 				B2711F0F15F58398000D6C09 /* CDIHUDView.m in Sources */,
 				B2711F1215F58DFC000D6C09 /* CDICheckboxButton.m in Sources */,
 				B2B25FE1161658AD00ACFD3E /* CDIKeyboardBar.m in Sources */,
+				1FCCDF5E1B61EFBF00872CEE /* BSONIdGenerator.m in Sources */,
 				B2B25FE416165B6D00ACFD3E /* CDIKeyboardButton.m in Sources */,
 				B2746E621618EAC8007A750B /* CDIMoveTaskView.m in Sources */,
 				21E0A67A16AAE0BA002479F9 /* CDIViewArchiveButton.m in Sources */,
@@ -1548,8 +1641,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Bon Tran (QSU4X9A94N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bon Tran (QSU4X9A94N)";
 				COMBINE_HIDPI_IMAGES = NO;
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1565,14 +1658,14 @@
 					"\"$(SRCROOT)/Vendor/TextExpander.framework/Versions/A/Headers\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=*]" = "";
+				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1654,8 +1747,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Bon Tran (QSU4X9A94N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bon Tran (QSU4X9A94N)";
 				COMBINE_HIDPI_IMAGES = NO;
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1671,7 +1764,7 @@
 					"\"$(SRCROOT)/Vendor/TextExpander.framework/Versions/A/Headers\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRANK_LIBRARY_SEARCH_PATHS)",
@@ -1685,7 +1778,7 @@
 				);
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "b77ef7df-07e1-4bda-96f6-57964c750e69";
-				"PROVISIONING_PROFILE[sdk=*]" = "";
+				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1698,8 +1791,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Bon Tran (QSU4X9A94N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bon Tran (QSU4X9A94N)";
 				COMBINE_HIDPI_IMAGES = NO;
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1715,14 +1808,14 @@
 					"\"$(SRCROOT)/Vendor/TextExpander.framework/Versions/A/Headers\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "d76e68d9-5f9d-42ed-90fb-b85f0695448e";
-				"PROVISIONING_PROFILE[sdk=*]" = "";
+				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

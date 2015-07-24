@@ -19,4 +19,14 @@
 	#import <CheddarKit/CheddarKit.h>
 	#import <SSToolkit/SSToolkit.h>
 	#import "CDIDefines.h"
+    #import "CDIDefines.h"
+    #import "CDIAppDelegate.h"
+    #import "ObjectiveDDP.h"
+    #import "MeteorClient.h"
+    #import "Constant.h"
+    #import "ServerConfigModel.h"
+    #import "TNAPIClient.h"
+    #import "TNUserModel.h"
+    #import "SSKeychain.h"
+#define CHEDDAR_USE_PASSWORD_FLOW 1
 #endif

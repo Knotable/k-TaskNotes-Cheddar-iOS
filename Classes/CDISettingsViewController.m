@@ -72,6 +72,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
+    self.meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
 	[super viewDidLoad];
 	self.title = @"Settings";
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(close:)];
@@ -144,10 +145,12 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	}
 	
 	// Sign out
-	[CDKUser setCurrentUser:nil];
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	[userDefaults removeObjectForKey:kCDISelectedListKey];
-	[userDefaults synchronize];
+    [TNUserModel setCurrentUser:nil];
+    [self.meteor logout];
+//	[CDKUser setCurrentUser:nil];
+//	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//	[userDefaults removeObjectForKey:kCDISelectedListKey];
+//	[userDefaults synchronize];
 	CDIAppDelegate *appDelegate = [CDIAppDelegate sharedAppDelegate];
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

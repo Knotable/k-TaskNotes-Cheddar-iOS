@@ -61,6 +61,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+
+    _meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
+    
 	UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
     title.accessibilityLabel = @"Tasknote";
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
@@ -325,43 +328,48 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (void)_createList:(id)sender {
-	CDIAddListTableViewCell *cell = (CDIAddListTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	UITextField *textField = cell.textField;
-	if (textField.text.length == 0) {
-		[self _cancelAddingList:nil];
-		return;
-	}
+    NSDictionary *parameters = @{@"_id": [[CDIAppDelegate sharedAppDelegate] idRandom]};
 
-	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
-	[hud show];
-	
-	CDKList *list = [[CDKList alloc] init];
-	list.title = textField.text;
-	list.position = [NSNumber numberWithInteger:INT32_MAX];
-	list.user = [CDKUser currentUser];
-	
-	[list createWithSuccess:^{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[hud completeAndDismissWithTitle:@"Created!"];
-			[self _cancelAddingList:nil];
-			textField.text = nil;
-			NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:list];
-			[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-			[self _selectListAtIndexPath:indexPath newList:YES];
-		});
-	} failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSDictionary *responseObject = remoteOperation.responseJSON;		
-			if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"error"] isEqualToString:@"plus_required"]) {
-				[hud dismiss];
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Plus Required" message:@"You need Cheddar Plus to create more than 2 lists. Please upgrade to continue." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Upgrade", nil];
-				[alert show];
-			} else {
-				[hud failAndDismissWithTitle:@"Failed"];
-				[textField becomeFirstResponder];
-			}
-		});
-	}];
+    [[TNAPIClient sharedClient] sendInsertKnotes:@"insert" withPram:parameters withBlock:^(NSDictionary *model, NSError *error) {
+        NSLog(@"%@",self.meteor.collections[METEORCOLLECTION_KNOTES]);
+    }];
+    //	CDIAddListTableViewCell *cell = (CDIAddListTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//	UITextField *textField = cell.textField;
+//	if (textField.text.length == 0) {
+//		[self _cancelAddingList:nil];
+//		return;
+//	}
+//
+//	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
+//	[hud show];
+//	
+//	CDKList *list = [[CDKList alloc] init];
+//	list.title = textField.text;
+//	list.position = [NSNumber numberWithInteger:INT32_MAX];
+//	list.user = [CDKUser currentUser];
+//	
+//	[list createWithSuccess:^{
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			[hud completeAndDismissWithTitle:@"Created!"];
+//			[self _cancelAddingList:nil];
+//			textField.text = nil;
+//			NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:list];
+//			[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+//			[self _selectListAtIndexPath:indexPath newList:YES];
+//		});
+//	} failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			NSDictionary *responseObject = remoteOperation.responseJSON;		
+//			if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"error"] isEqualToString:@"plus_required"]) {
+//				[hud dismiss];
+//				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Plus Required" message:@"You need Cheddar Plus to create more than 2 lists. Please upgrade to continue." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Upgrade", nil];
+//				[alert show];
+//			} else {
+//				[hud failAndDismissWithTitle:@"Failed"];
+//				[textField becomeFirstResponder];
+//			}
+//		});
+//	}];
 }
 
 
@@ -414,7 +422,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (void)_checkUser {
-	if (![CDKUser currentUser]) {
+	if (![TNUserModel currentUser]) {
 #ifdef CHEDDAR_USE_PASSWORD_FLOW
 		UIViewController *viewController = [[CDISignInViewController alloc] init];
 #else
@@ -424,9 +432,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[self.splitViewController presentModalViewController:navigationController animated:YES];
+			[self.splitViewController presentViewController:navigationController animated:YES completion:nil];
 		} else {
-			[self.navigationController presentModalViewController:navigationController animated:NO];
+			[self.navigationController presentViewController:navigationController animated:NO completion:nil];
 		}
 		return;
 	}
