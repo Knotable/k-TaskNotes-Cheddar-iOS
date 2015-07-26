@@ -36,87 +36,87 @@ static BOOL __developmentMode = NO;
 @synthesize userID = _userID;
 
 - (void)setUserID:(NSString *)userID {
-	[self.userChannel unsubscribe];
-	self.userChannel = nil;
-	
-	_userID = userID;
-	
-	if (!_userID) {
-		return;
-	}
-	
-	// Subscribe to user channel
-	NSString *channelName = [NSString stringWithFormat:@"private-user-%@", _userID];
-	self.userChannel = [self.client subscribeToChannelWithName:channelName authenticationBlock:^(BLYChannel *channel) {
-		[[CDKHTTPClient sharedClient] postPath:@"/pusher/auth" parameters:channel.authenticationParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			[channel subscribeWithAuthentication:responseObject];
-		} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			NSLog(@"Failed to authorize Pusher channel: %@", error);
-		}];
-	}];
-	
-	// Bind to list create
-	[self.userChannel bindToEvent:@"list-create" block:^(id message) {
-		CDKList *list = [CDKList objectWithDictionary:message];
-		[list.managedObjectContext save:nil];
-	}];
-	
-	// Bind to list update
-	[self.userChannel bindToEvent:@"list-update" block:^(id message) {
-		CDKList *list = [CDKList objectWithDictionary:message];
-		[list save];
-
-		[[NSNotificationCenter defaultCenter] postNotificationName:kCDKListDidUpdateNotificationName object:list.remoteID];
-	}];
-	
-	// Bind to list reorder
-	[self.userChannel bindToEvent:@"list-reorder" block:^(id message) {
-		for (NSDictionary *dictionary in [message objectForKey:@"lists"]) {
-			CDKList *list = [CDKList existingObjectWithRemoteID:[dictionary objectForKey:@"id"]];
-			list.position = [dictionary objectForKey:@"position"];
-		}
-		[[CDKList mainContext] save:nil];
-	}];
-
-	// Bind to task create
-	[self.userChannel bindToEvent:@"task-create" block:^(id message) {
-		CDKList *list = [CDKList existingObjectWithRemoteID:[message objectForKey:@"list_id"]];
-		if (!list) {
-			return;
-		}
-
-		CDKTask *task = [CDKTask objectWithDictionary:message];
-		task.list = list;
-		[task save];
-	}];
-	
-	// Bind to task update
-	[self.userChannel bindToEvent:@"task-update" block:^(id message) {
-		CDKList *list = [CDKList existingObjectWithRemoteID:[message objectForKey:@"list_id"]];
-		if (!list) {
-			return;
-		}
-
-		CDKTask *task = [CDKTask objectWithDictionary:message];
-		task.list = list;
-		[task save];
-	}];
-	
-	// Bind to task reorder
-	[self.userChannel bindToEvent:@"task-reorder" block:^(id message) {
-		for (NSDictionary *dictionary in [message objectForKey:@"tasks"]) {
-			CDKTask *task = [CDKTask existingObjectWithRemoteID:[dictionary objectForKey:@"id"]];
-			task.position = [dictionary objectForKey:@"position"];
-		}
-		[[CDKTask mainContext] save:nil];
-	}];
-
-	// Bind to user update
-	[self.userChannel bindToEvent:@"user-update" block:^(id message) {
-		CDKUser *user = [CDKUser objectWithDictionary:message];
-		[user save];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kCDKUserUpdatedNotificationName object:user userInfo:nil];
-	}];
+//	[self.userChannel unsubscribe];
+//	self.userChannel = nil;
+//	
+//	_userID = userID;
+//	
+//	if (!_userID) {
+//		return;
+//	}
+//	
+//	// Subscribe to user channel
+//	NSString *channelName = [NSString stringWithFormat:@"private-user-%@", _userID];
+//	self.userChannel = [self.client subscribeToChannelWithName:channelName authenticationBlock:^(BLYChannel *channel) {
+//		[[CDKHTTPClient sharedClient] postPath:@"/pusher/auth" parameters:channel.authenticationParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//			[channel subscribeWithAuthentication:responseObject];
+//		} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//			NSLog(@"Failed to authorize Pusher channel: %@", error);
+//		}];
+//	}];
+//	
+//	// Bind to list create
+//	[self.userChannel bindToEvent:@"list-create" block:^(id message) {
+//		CDKList *list = [CDKList objectWithDictionary:message];
+//		[list.managedObjectContext save:nil];
+//	}];
+//	
+//	// Bind to list update
+//	[self.userChannel bindToEvent:@"list-update" block:^(id message) {
+//		CDKList *list = [CDKList objectWithDictionary:message];
+//		[list save];
+//
+//		[[NSNotificationCenter defaultCenter] postNotificationName:kCDKListDidUpdateNotificationName object:list.remoteID];
+//	}];
+//	
+//	// Bind to list reorder
+//	[self.userChannel bindToEvent:@"list-reorder" block:^(id message) {
+//		for (NSDictionary *dictionary in [message objectForKey:@"lists"]) {
+//			CDKList *list = [CDKList existingObjectWithRemoteID:[dictionary objectForKey:@"id"]];
+//			list.position = [dictionary objectForKey:@"position"];
+//		}
+//		[[CDKList mainContext] save:nil];
+//	}];
+//
+//	// Bind to task create
+//	[self.userChannel bindToEvent:@"task-create" block:^(id message) {
+//		CDKList *list = [CDKList existingObjectWithRemoteID:[message objectForKey:@"list_id"]];
+//		if (!list) {
+//			return;
+//		}
+//
+//		CDKTask *task = [CDKTask objectWithDictionary:message];
+//		task.list = list;
+//		[task save];
+//	}];
+//	
+//	// Bind to task update
+//	[self.userChannel bindToEvent:@"task-update" block:^(id message) {
+//		CDKList *list = [CDKList existingObjectWithRemoteID:[message objectForKey:@"list_id"]];
+//		if (!list) {
+//			return;
+//		}
+//
+//		CDKTask *task = [CDKTask objectWithDictionary:message];
+//		task.list = list;
+//		[task save];
+//	}];
+//	
+//	// Bind to task reorder
+//	[self.userChannel bindToEvent:@"task-reorder" block:^(id message) {
+//		for (NSDictionary *dictionary in [message objectForKey:@"tasks"]) {
+//			CDKTask *task = [CDKTask existingObjectWithRemoteID:[dictionary objectForKey:@"id"]];
+//			task.position = [dictionary objectForKey:@"position"];
+//		}
+//		[[CDKTask mainContext] save:nil];
+//	}];
+//
+//	// Bind to user update
+//	[self.userChannel bindToEvent:@"user-update" block:^(id message) {
+//		CDKUser *user = [CDKUser objectWithDictionary:message];
+//		[user save];
+//		[[NSNotificationCenter defaultCenter] postNotificationName:kCDKUserUpdatedNotificationName object:user userInfo:nil];
+//	}];
 }
 
 

@@ -236,7 +236,7 @@
 		});
 	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[SSRateLimit resetLimitForName:[NSString stringWithFormat:@"refresh-list-%@", self.list.remoteID]];
+			//[SSRateLimit resetLimitForName:[NSString stringWithFormat:@"refresh-list-%@", self.list.remoteID]];
 			self.loading = NO;
 		});
 	}];
@@ -425,6 +425,7 @@
 	task.archivedAt = [NSDate date];
 	[task save];
 	[task update];
+    
 }
 
 
@@ -479,7 +480,8 @@
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		dispatch_semaphore_wait(_createTaskSemaphore, DISPATCH_TIME_FOREVER);
 		dispatch_async(dispatch_get_main_queue(), ^{
-			CDIAddTaskAnimationView *animation = [[CDIAddTaskAnimationView alloc] initWithFrame:self.view.bounds];
+			
+            CDIAddTaskAnimationView *animation = [[CDIAddTaskAnimationView alloc] initWithFrame:self.view.bounds];
 			animation.title = title;
 			[self.view addSubview:animation];
 			
