@@ -9,7 +9,7 @@
 #import "TNUserModel.h"
 
 @implementation TNUserModel
-@synthesize user_id,user_email,user_username;
+@synthesize user_id,user_email,user_username,user_sessiontoken;
 - (id)initWithDict:(NSDictionary *)model{
     self = [super init];
  
@@ -19,7 +19,7 @@
             self.user_id = @"";
             self.user_email = @"";
             self.user_username = @"";
-
+            self.user_sessiontoken = @"";
             if ([model objectForKeyedSubscript:@"id"]) {
                 self.user_id = [model objectForKeyedSubscript:@"id"];
             }
@@ -30,6 +30,10 @@
 
             if ([model objectForKeyedSubscript:@"username"]) {
                 self.user_username = [model objectForKeyedSubscript:@"username"];
+            }
+
+            if ([model objectForKeyedSubscript:@"token"]) {
+                self.user_sessiontoken = [model objectForKeyedSubscript:@"token"];
             }
         }
         @catch (NSException *exception) {

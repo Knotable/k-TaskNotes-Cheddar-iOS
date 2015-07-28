@@ -60,9 +60,16 @@
 }
 
 // Logon with token
-- (void)logonWithToken:(NSString *)token withBlock:(void (^)(NSDictionary *, NSError *))block{
+- (void)logonWithSessionToken:(NSString *)sessiontoken withBlock:(void (^)(NSDictionary *, NSError *))block{
     @try {
-//        self.meteor logonwi
+        [self.meteor logonWithSessionToken:sessiontoken responseCallback:^(NSDictionary *response, NSError *error) {
+            if (error) {
+                block (nil, error);
+            }
+            if (response) {
+                block(response, nil);
+            }
+        }];
     }
     @catch (NSException *exception) {
         NSLog(@"%@",[exception description]);

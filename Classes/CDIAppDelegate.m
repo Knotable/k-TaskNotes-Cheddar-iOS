@@ -272,6 +272,12 @@
 
 - (void)reportConnection {
     NSLog(@"================> connected to server!");
+    TNUserModel *model = [TNUserModel currentUser];
+    if (model) {
+        [[TNAPIClient sharedClient] logonWithSessionToken:model.user_sessiontoken withBlock:^(NSDictionary *response, NSError *error) {
+
+        }];
+    }
 }
 
 - (void)reportDisconnection {

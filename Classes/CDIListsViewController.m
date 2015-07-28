@@ -457,7 +457,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (void)_checkUser {
-
 	if (![TNUserModel currentUser]) {
 #ifdef CHEDDAR_USE_PASSWORD_FLOW
 		UIViewController *viewController = [[CDISignInViewController alloc] init];

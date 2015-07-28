@@ -153,12 +153,14 @@
         if (response) {
             [hud completeAndDismissWithTitle:@"Signed In!"];
             NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
+            NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
 
             NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
             [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
             [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
             NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
             [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
+            [useInfo setObject:sessiontoken forKey:@"token"];
 
             [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
             [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
@@ -200,12 +202,14 @@
         if (response) {
             [hud completeAndDismissWithTitle:@"Signed Up!"];
             NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
+            NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
 
             NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
             [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
             [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
             NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
             [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
+            [useInfo setObject:sessiontoken forKey:@"token"];
 
             [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
             [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
