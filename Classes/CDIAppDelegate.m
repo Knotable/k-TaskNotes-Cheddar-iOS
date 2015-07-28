@@ -151,10 +151,6 @@
 	// Navigation bar
 	UINavigationBar *navigationBar = [UINavigationBar appearance];
 	[navigationBar setBackgroundImage:[UIImage imageNamed:@"nav-background"] forBarMetrics:UIBarMetricsDefault];
-    
-    [navigationBar setTintColor:[UIColor colorWithRed:0 green:122/255.0f blue:1.0 alpha:1.0]];
-    [navigationBar setBarTintColor:[UIColor colorWithRed:0 green:122/255.0f blue:1.0 alpha:1.0]];
-//    [navigationBar setTranslucent:NO];
 
 	[navigationBar setTitleVerticalPositionAdjustment:-1.0f forBarMetrics:UIBarMetricsDefault];
 	[navigationBar setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:

@@ -37,48 +37,62 @@ static CDKUser *__currentUser = nil;
 + (CDKUser *)currentUser {
 	if (!__currentUser) {
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		NSNumber *userID = [userDefaults objectForKey:kCDKUserIDKey];
-		if (!userID) {
+        NSNumber *userID = [NSNumber numberWithInt:12345678];//[userDefaults objectForKey:kCDKUserIDKey];
+		
+        if (!userID) {
 			return nil;
 		}
 
 		NSError *error = nil;
-		NSString *accessToken = [SSKeychain passwordForService:kCDKKeychainServiceName account:userID.description error:&error];
-		if (!accessToken) {
-			NSLog(@"[CheddarKit] Failed to get access token: %@", error);
-			return nil;
-		}
+//		NSString *accessToken = [SSKeychain passwordForService:kCDKKeychainServiceName account:userID.description error:&error];
+//		if (!accessToken) {
+//			NSLog(@"[CheddarKit] Failed to get access token: %@", error);
+//			return nil;
+//		}
 
 		__currentUser = [self existingObjectWithRemoteID:userID];
-		__currentUser.accessToken = accessToken;
+        if(!__currentUser){
+            __currentUser = [[CDKUser alloc]init];
+            __currentUser.remoteID = userID;
+            
+            [[CDKUser mainContext] performBlock:^{
+                [__currentUser save];
+            }];
+        }
+        
+        /*{\"url\" : \"https://api.cheddarapp.com/v1/users/12345678\",\"has_plus\" : true,\"first_name\" : \"abdul\",\"id\" : 12345678,\"socket\" : {\"channel\" : \"private-user-12345678\",\"auth_url\" : \"https://api.cheddarapp.com/pusher/auth\",\"app_id\" : \"15197\",\"api_key\" : \"675f10a650f18b4eb0a8\"},\"last_name\" : \"sami\",\"created_at\" : \"2015-07-14T16:39:09Z\",\"updated_at\" : \"2015-07-14T16:39:09Z\",\"username\" : \"sami_bahtti\"}
+          */
+            
+            
+//		__currentUser.accessToken = accessToken;
 	}
 	return __currentUser;
 }
 
 
 + (void)setCurrentUser:(CDKUser *)user {
-	if (__currentUser) {
-		[SSKeychain deletePasswordForService:kCDKKeychainServiceName account:__currentUser.remoteID.description];
-	}
-
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-
-	if (!user.remoteID || !user.accessToken) {
-		__currentUser = nil;
-		[userDefaults removeObjectForKey:kCDKUserIDKey];
-	} else {
-		NSError *error = nil;
-		[SSKeychain setPassword:user.accessToken forService:kCDKKeychainServiceName account:user.remoteID.description error:&error];
-		if (error) {
-			NSLog(@"[CheddarKit] Failed to save access token: %@", error);
-		}
-		
-		__currentUser = user;
-		[userDefaults setObject:user.remoteID forKey:kCDKUserIDKey];
-	}
-	
-	[userDefaults synchronize];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kCDKCurrentUserChangedNotificationName object:user];
+//	if (__currentUser) {
+//		[SSKeychain deletePasswordForService:kCDKKeychainServiceName account:__currentUser.remoteID.description];
+//	}
+//
+//	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//
+//	if (!user.remoteID || !user.accessToken) {
+//		__currentUser = nil;
+//		[userDefaults removeObjectForKey:kCDKUserIDKey];
+//	} else {
+//		NSError *error = nil;
+//		[SSKeychain setPassword:user.accessToken forService:kCDKKeychainServiceName account:user.remoteID.description error:&error];
+//		if (error) {
+//			NSLog(@"[CheddarKit] Failed to save access token: %@", error);
+//		}
+//		
+//		__currentUser = user;
+//		[userDefaults setObject:user.remoteID forKey:kCDKUserIDKey];
+//	}
+//	
+//	[userDefaults synchronize];
+//	[[NSNotificationCenter defaultCenter] postNotificationName:kCDKCurrentUserChangedNotificationName object:user];
 }
 
 

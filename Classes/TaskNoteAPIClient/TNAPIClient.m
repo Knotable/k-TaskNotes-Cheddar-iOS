@@ -59,6 +59,16 @@
     }
 }
 
+// Logon with token
+- (void)logonWithToken:(NSString *)token withBlock:(void (^)(NSDictionary *, NSError *))block{
+    @try {
+//        self.meteor logonwi
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",[exception description]);
+        NSLog(@"%@",[exception callStackSymbols]);
+    }
+}
 //Sign up
 - (void)sigupWithUsernameAndEmail:(NSString *)modelName withDict:(NSDictionary*)paramDict withBlock:(void (^)(NSDictionary *, NSError *))block{
     @try {

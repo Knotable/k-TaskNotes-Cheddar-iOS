@@ -67,6 +67,7 @@
 	[super unpackDictionary:dictionary];
 	self.archivedAt = [[self class] parseDate:[dictionary objectForKey:@"archived_at"]];
 	self.completedAt = [[self class] parseDate:[dictionary objectForKey:@"completed_at"]];
+    
 	self.position = [dictionary objectForKey:@"position"];
 	self.text = [dictionary objectForKey:@"text"];
 	self.displayText = [dictionary objectForKey:@"display_text"];

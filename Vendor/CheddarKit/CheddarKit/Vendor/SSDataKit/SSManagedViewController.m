@@ -238,6 +238,7 @@
 	
 	void (^completion)(BOOL finished) = ^(BOOL finished) {
 		[self.noContentView removeFromSuperview];
+        
 	};
 	
 	if (animated) {

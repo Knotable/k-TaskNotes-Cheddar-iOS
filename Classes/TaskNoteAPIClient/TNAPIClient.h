@@ -17,6 +17,9 @@
 //Logon with username or email
 - (void)logonWithUsernameOrEmail:(NSString*)usernameOrEmail password:(NSString*)password withBlock:(void(^)(NSDictionary *response, NSError *error))block;
 
+//Logon with token
+- (void)logonWithToken:(NSString*)token withBlock:(void(^)(NSDictionary *response, NSError* error))block;
+
 //Sign up
 - (void)sigupWithUsernameAndEmail:(NSString*)modelName withDict :(NSDictionary*)paramDict withBlock:(void(^)(NSDictionary *response, NSError *error))block;
 
@@ -24,5 +27,6 @@
 - (void) sendInsertKnotes:(NSString *)modelName
                  withPram:(NSDictionary *)paramDict
                 withBlock:(void(^)(NSDictionary *model, NSError *error))block;
+
 
 @end
