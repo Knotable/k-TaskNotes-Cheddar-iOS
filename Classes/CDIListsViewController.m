@@ -323,9 +323,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     self.navigationItem.leftBarButtonItem = cancelButton;
 
     UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered target:self action:@selector(_createList:)];
-    
+
     [createButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
-    
+
     self.navigationItem.rightBarButtonItem = createButton;
     
 	[UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
