@@ -88,25 +88,25 @@
 		[[SKPaymentQueue defaultQueue] addTransactionObserver:[CDITransactionObserver defaultObserver]];
 	});
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(meteorError:)
-                                                 name:MeteorClientTransportErrorDomain
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(meteorAdded:)
-                                                 name:@"added"
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(meteorRemoved:)
-                                                 name:@"removed"
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(popUpMessage:)
-                                                 name:KnotebleShowPopUpMessage
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(meteorError:)
+//                                                 name:MeteorClientTransportErrorDomain
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(meteorAdded:)
+//                                                 name:@"added"
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(meteorRemoved:)
+//                                                 name:@"removed"
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(popUpMessage:)
+//                                                 name:KnotebleShowPopUpMessage
+//                                               object:nil];
 
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(needChangeMogoDbServer:)
@@ -201,7 +201,7 @@
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-background-mini"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsLandscapePhone];
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar-background-mini"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsLandscapePhone];
 
-    
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)loadServerConfig{

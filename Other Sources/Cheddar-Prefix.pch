@@ -29,5 +29,6 @@
     #import "TNAPIClient.h"
     #import "TNUserModel.h"
     #import "SSKeychain.h"
+    #import "TNTopicModel.h"
 #define CHEDDAR_USE_PASSWORD_FLOW 1
 #endif

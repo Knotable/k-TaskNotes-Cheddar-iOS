@@ -36,6 +36,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 @property (nonatomic, assign) BOOL checkForOneList;
 @property (nonatomic, strong) SMTEDelegateController *textExpander;
 @property (nonatomic, strong) CDIViewArchiveButton *archiveButton;
+@property (nonatomic, strong) NSMutableArray *dataList;
 - (void)_listUpdated:(NSNotification *)notification;
 - (void)_currentUserDidChange:(NSNotification *)notification;
 - (void)_createList:(id)sender;
@@ -133,6 +134,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 - (void)didReceiveUpdate:(NSNotification *)notification {
 
 }
+
+
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
@@ -288,7 +291,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 - (void)showSettings:(id)sender {
 	CDISettingsViewController *viewController = [[CDISettingsViewController alloc] init];
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self toggleEditMode:self];
 	[self.navigationController presentModalViewController:navigationController animated:YES];
 }
@@ -515,9 +518,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		cell = [[CDIListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     	[cell setEditingAction:@selector(_beginEditingWithGesture:) forTarget:self];
 	}
-	
+//    TNTopicModel *model = [[TNTopicModel alloc]initTopicWithDict:[self.dataList]];
 	cell.list = [self objectForViewIndexPath:indexPath];
-	
+
 	return cell;
 }
 
