@@ -276,7 +276,9 @@
     TNUserModel *model = [TNUserModel currentUser];
     if (model) {
         [[TNAPIClient sharedClient] logonWithSessionToken:model.user_sessiontoken withBlock:^(NSDictionary *response, NSError *error) {
-
+            if (!error) {
+                 NSLog(@"Login is ok");
+            }
         }];
     }
 }

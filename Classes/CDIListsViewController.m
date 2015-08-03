@@ -37,6 +37,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 @property (nonatomic, strong) SMTEDelegateController *textExpander;
 @property (nonatomic, strong) CDIViewArchiveButton *archiveButton;
 @property (nonatomic, strong) NSMutableArray *dataList;
+@property (nonatomic, assign) NSString* modelId;
 - (void)_listUpdated:(NSNotification *)notification;
 - (void)_currentUserDidChange:(NSNotification *)notification;
 - (void)_createList:(id)sender;
@@ -132,8 +133,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 }
 - (void)didReceiveUpdate:(NSNotification *)notification {
-    NSDictionary *model = self.meteor.collections[METEORCOLLECTION_TOPICS];
+    NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+    NSDictionary *topic = [models objectForKey:_modelId];
 
+    if (topic) {
+        
+    }
 }
 
 
@@ -393,7 +398,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	[hud show];
 
     [[TNAPIClient sharedClient] insertTopicWithParam:@"create_topic" withPram:params withBlock:^(NSDictionary *model, NSError *error) {
-
+        if (!error) {
+            _modelId = [model objectForKeyedSubscript:@"result"];
+        }
     }];
 
 	CDKList *list = [[CDKList alloc] init];
