@@ -30,7 +30,10 @@
     #import "TNUserModel.h"
     #import "SSKeychain.h"
     #import "TNTopicModel.h"
-    #import "CoreData+MagicalRecord.h"
+    
 #define kDBName @"kDBName"
 #define CHEDDAR_USE_PASSWORD_FLOW 1
+#define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
+#define MR_SHORTHAND
+#import "CoreData+MagicalRecord.h"
 #endif

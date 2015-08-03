@@ -43,10 +43,6 @@ NSDate * dateFromString(NSString *value, NSString *format)
     return parsedDate;
 }
 
-NSNumber * numberFromString(NSString *value) {
-    return [NSNumber numberWithDouble:[value doubleValue]];
-}
-
 NSInteger* newColorComponentsFromString(NSString *serializedColor);
 NSInteger* newColorComponentsFromString(NSString *serializedColor)
 {
@@ -55,11 +51,6 @@ NSInteger* newColorComponentsFromString(NSString *serializedColor)
     [colorScanner scanUpToString:@"(" intoString:&colorType];
     
     NSInteger *componentValues = malloc(4 * sizeof(NSInteger));
-    if (componentValues == NULL)
-    {
-        return NULL;
-    }
-  
     if ([colorType hasPrefix:@"rgba"])
     {
         NSCharacterSet *rgbaCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"(,)"];
@@ -82,11 +73,6 @@ NSInteger* newColorComponentsFromString(NSString *serializedColor)
 UIColor * UIColorFromString(NSString *serializedColor)
 {
     NSInteger *componentValues = newColorComponentsFromString(serializedColor);
-    if (componentValues == NULL)
-    {
-        return nil;
-    }
-    
     UIColor *color = [UIColor colorWithRed:(componentValues[0] / 255.0f)
                                      green:(componentValues[1] / 255.0f)
                                       blue:(componentValues[2] / 255.0f)
@@ -102,11 +88,6 @@ id (*colorFromString)(NSString *) = UIColorFromString;
 NSColor * NSColorFromString(NSString *serializedColor)
 {
     NSInteger *componentValues = newColorComponentsFromString(serializedColor);
-    if (componentValues == NULL)
-    {
-        return nil;
-    }
-  
     NSColor *color = [NSColor colorWithDeviceRed:(componentValues[0] / 255.0f)
                                            green:(componentValues[1] / 255.0f)
                                             blue:(componentValues[2] / 255.0f)

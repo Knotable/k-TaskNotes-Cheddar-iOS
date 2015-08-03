@@ -71,7 +71,9 @@
 		self.window.rootViewController = navigationController;
 	}
     [self loadServerConfig];
-    [MagicalRecord setupCoreDataStackWithStoreNamed:kDBName];
+
+    [MagicalRecord setupCoreDataStack];
+
 	[self.window makeKeyAndVisible];
 	
 	// Defer some stuff to make launching faster

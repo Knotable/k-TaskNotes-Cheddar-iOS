@@ -21,7 +21,7 @@
 
 #import <SSToolkit/UIScrollView+SSToolkitAdditions.h>
 #import "SMTEDelegateController.h"
-
+#import "MagicalRecord.h"
 #ifdef CHEDDAR_USE_PASSWORD_FLOW
 	#import "CDISignInViewController.h"
 #else
@@ -31,13 +31,18 @@
 NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 @interface CDIListsViewController ()
+{
+    NSString *modelId;
+}
 @property (nonatomic, strong) CDKList *selectedList;
 @property (nonatomic, assign) BOOL adding;
 @property (nonatomic, assign) BOOL checkForOneList;
 @property (nonatomic, strong) SMTEDelegateController *textExpander;
 @property (nonatomic, strong) CDIViewArchiveButton *archiveButton;
 @property (nonatomic, strong) NSMutableArray *dataList;
-@property (nonatomic, assign) NSString* modelId;
+
+@property (nonatomic, strong) TNTopicModel *topicModel;
+@property (nonatomic, strong) NSMutableArray *models;
 - (void)_listUpdated:(NSNotification *)notification;
 - (void)_currentUserDidChange:(NSNotification *)notification;
 - (void)_createList:(id)sender;
@@ -113,11 +118,15 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (void)viewWillAppear:(BOOL)animated {
+    self.topicModel = nil;
 	[super viewWillAppear:animated];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		[self _checkUser];
 	}
     [self registerNotification];
+
+    self.models = [NSMutableArray arrayWithArray:[TNTopicModel findAll]];
+    NSLog(@"%@",self.models);
 }
 
 - (void)registerNotification{
@@ -134,10 +143,22 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 }
 - (void)didReceiveUpdate:(NSNotification *)notification {
     NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-    NSDictionary *topic = [models objectForKey:_modelId];
+    NSDictionary *topic = [models objectForKey:modelId];
 
     if (topic) {
-        
+        if (!self.topicModel) {
+            self.topicModel = [TNTopicModel createEntity];
+        }
+        [self.topicModel setTopic_id:[topic objectForKeyedSubscript:@"_id"]];
+        [self.topicModel setTopic_accountId:[topic objectForKeyedSubscript:@"account_id"]];
+        [self.topicModel setTopic_cname:[topic objectForKeyedSubscript:@"cname"]];
+        [self.topicModel setTopic_flagged:[NSNumber numberWithInt:[[topic objectForKeyedSubscript:@"flagged"] intValue]]];
+        [self.topicModel setTopic_status:[topic objectForKeyedSubscript:@"status"]];
+        [self.topicModel setTopic_subject:[topic objectForKeyedSubscript:@"subject"]];
+        [self.topicModel setTopic_type:[topic objectForKeyedSubscript:@"type"]];
+        [self.topicModel setTopic_uniqueNumber:[NSNumber numberWithInt:[[topic objectForKeyedSubscript:@"uniqueNumber"] intValue]]];
+
+        [[NSManagedObjectContext defaultContext] saveNestedContexts];
     }
 }
 
@@ -399,7 +420,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     [[TNAPIClient sharedClient] insertTopicWithParam:@"create_topic" withPram:params withBlock:^(NSDictionary *model, NSError *error) {
         if (!error) {
-            _modelId = [model objectForKeyedSubscript:@"result"];
+            modelId = [model objectForKeyedSubscript:@"result"];
         }
     }];
 

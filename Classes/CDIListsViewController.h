@@ -9,7 +9,7 @@
 #import "CDIManagedTableViewController.h"
 
 extern NSString *const kCDISelectedListKey;
-
+@class TNTopicModel;
 @interface CDIListsViewController : CDIManagedTableViewController
 @property (nonatomic,strong) MeteorClient *meteor;
 - (void)showSettings:(id)sender;
