@@ -70,7 +70,8 @@
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}
-    	[self loadServerConfig];
+    [self loadServerConfig];
+    [MagicalRecord setupCoreDataStackWithStoreNamed:kDBName];
 	[self.window makeKeyAndVisible];
 	
 	// Defer some stuff to make launching faster

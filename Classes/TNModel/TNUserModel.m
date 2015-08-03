@@ -20,8 +20,8 @@
             self.user_email = @"";
             self.user_username = @"";
             self.user_sessiontoken = @"";
-            if ([model objectForKeyedSubscript:@"id"]) {
-                self.user_id = [model objectForKeyedSubscript:@"id"];
+            if ([model objectForKeyedSubscript:@"userId"]) {
+                self.user_id = [model objectForKeyedSubscript:@"userId"];
             }
 
             if ([model objectForKeyedSubscript:@"email"]) {
@@ -47,12 +47,7 @@
 + (TNUserModel*)currentUser{
         NSDictionary* userInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kTNUserIDKey] ;
         TNUserModel *userModel =[[TNUserModel alloc]initWithDict:userInfo];
-        NSString *savedPass = [SSKeychain passwordForService:@"Tasknote" account:userModel.user_username];
-        if (userInfo != nil && savedPass) {
-            [[TNAPIClient sharedClient] logonWithUsernameOrEmail:userModel.user_username password:savedPass withBlock:^(NSDictionary *response, NSError *error) {
-
-            }];
-
+        if (userInfo != nil ) {
             return userModel;
         }
     return nil;

@@ -28,5 +28,7 @@
                  withPram:(NSDictionary *)paramDict
                 withBlock:(void(^)(NSDictionary *model, NSError *error))block;
 
-
+- (void) insertTopicWithParam:(NSString *)modelName
+                 withPram:(NSArray *)param
+                withBlock:(void(^)(NSDictionary *model, NSError *error))block;
 @end

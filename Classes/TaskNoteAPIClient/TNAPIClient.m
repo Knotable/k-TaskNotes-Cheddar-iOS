@@ -114,4 +114,23 @@
         NSLog(@"%@",[exception callStackSymbols]);
     }
 }
+
+- (void) insertTopicWithParam:(NSString *)modelName
+                     withPram:(NSArray *)param
+                    withBlock:(void(^)(NSDictionary *model, NSError *error))block{
+    @try {
+        [self.meteor callMethodName:modelName parameters:param responseCallback:^(NSDictionary *response, NSError *error) {
+            if (error) {
+                block(nil, error);
+            }
+            if (response) {
+                block(response, nil);
+            }
+        }];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",[exception description]);
+        NSLog(@"%@",[exception callStackSymbols]);
+    }
+}
 @end

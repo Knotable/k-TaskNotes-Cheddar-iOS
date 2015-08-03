@@ -132,6 +132,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 }
 - (void)didReceiveUpdate:(NSNotification *)notification {
+    NSDictionary *model = self.meteor.collections[METEORCOLLECTION_TOPICS];
 
 }
 
@@ -363,11 +364,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (void)_createList:(id)sender {
-  //  NSDictionary *parameters = @{@"_id": [[CDIAppDelegate sharedAppDelegate] idRandom]};
 
-//    [[TNAPIClient sharedClient] sendInsertKnotes:@"insert" withPram:parameters withBlock:^(NSDictionary *model, NSError *error) {
-//        NSLog(@"%@",self.meteor.collections[METEORCOLLECTION_KNOTES]);
-//    }];
     	CDIAddListTableViewCell *cell = (CDIAddListTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 	UITextField *textField = cell.textField;
 	if (textField.text.length == 0) {
@@ -375,9 +372,30 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		return;
 	}
 
+    NSArray *participator_account_ids = @[[TNUserModel currentUser].user_email];
+    NSDictionary *requiredTopicParams = @{
+                                          @"userId":[TNUserModel currentUser].user_id,
+                                          @"participator_account_ids":participator_account_ids,
+                                          @"subject":textField.text,
+                                          @"permissions":@[@"read", @"write", @"upload"],
+                                          };
+
+    NSDictionary *optionalTopicParams = @{
+                                          @"file_ids":@[],
+                                          @"order":@{[TNUserModel currentUser].user_id : @(999)},
+                                          @"to":@"",
+                                          };
+    NSDictionary *additionalOptions = @{/*@"topicId":[topic.topic_id noPrefix:kKnoteIdPrefix]*/};
+
+    NSArray *params = @[requiredTopicParams, optionalTopicParams, additionalOptions];
+
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
 	[hud show];
-	
+
+    [[TNAPIClient sharedClient] insertTopicWithParam:@"create_topic" withPram:params withBlock:^(NSDictionary *model, NSError *error) {
+
+    }];
+
 	CDKList *list = [[CDKList alloc] init];
 	list.title = textField.text;
 	list.position = [NSNumber numberWithInteger:INT32_MAX];

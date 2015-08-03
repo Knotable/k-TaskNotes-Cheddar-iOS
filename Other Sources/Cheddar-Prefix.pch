@@ -30,5 +30,7 @@
     #import "TNUserModel.h"
     #import "SSKeychain.h"
     #import "TNTopicModel.h"
+    #import "CoreData+MagicalRecord.h"
+#define kDBName @"kDBName"
 #define CHEDDAR_USE_PASSWORD_FLOW 1
 #endif
