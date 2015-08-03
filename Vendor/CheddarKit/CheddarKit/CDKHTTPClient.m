@@ -83,24 +83,12 @@ static BOOL __developmentMode = NO;
 #pragma mark - AFHTTPClient
 
 -(NSString *)stringForiso8601DateTime:(NSDate *)iso8601DateTime {
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-//    [dateFormatter setLocale:enUSPOSIXLocale];
-//    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-//    
-//    NSString *iso8601String = [dateFormatter stringFromDate:iso8601DateTime];
-    return [NSString stringWithFormat:@"%@",iso8601DateTime ];
-//
-//    
-//    
-//    NSDateFormatter *rfc3339DateFormatter = [[NSDateFormatter alloc] init];
-//    
-//    [rfc3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
-//    [rfc3339DateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-//    
-//    // Convert the RFC 3339 date time string to an NSDate.
-//    NSString *result = [rfc3339DateFormatter stringFromDate:rfc3339DateTime];
-//    return result;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    [dateFormatter setLocale:enUSPOSIXLocale];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+    
+    return [dateFormatter stringFromDate:iso8601DateTime] ;//[NSString
 }
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)parameters {
