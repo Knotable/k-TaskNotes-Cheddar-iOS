@@ -364,15 +364,16 @@ static BOOL __developmentMode = NO;
         
         NSString * jsonToAdd =[NSString stringWithFormat: @"{ \"id\" : %lli,\"archived_completed_tasks_count\" : 0,\"active_uncompleted_tasks_count\" : 0,\"title\" : \"%@\",\"invitation_count\" : 0,\"active_tasks_count\" : 0,\"url\" : \"https://api.cheddarapp.com/v1/lists/%lli\",\"updated_at\" : \"%@\",\"slug\" : \"48EN\",\"archived_tasks_count\" : 0,\"created_at\" : \"%@\",\"active_completed_tasks_count\" : 0,\"archived_uncompleted_tasks_count\" : 0,\"archived_at\" : null,\"member_count\" : 1,\"user\" : {\"url\" : \"https://api.cheddarapp.com/v1/users/12345678\",\"has_plus\" : true,\"first_name\" : \"abdul\",\"id\" : 12345678,\"socket\" : {\"channel\" : \"private-user-12345678\",\"auth_url\" : \"https://api.cheddarapp.com/pusher/auth\",\"app_id\" : \"15197\",\"api_key\" : \"675f10a650f18b4eb0a8\"},\"last_name\" : \"sami\",\"created_at\" : \"2015-07-14T16:39:09Z\",\"updated_at\" : \"2015-07-14T16:39:09Z\",\"username\" : \"sami_bahtti\"},\"position\" : %@,\"users\" : [{\"url\" : \"https://api.cheddarapp.com/v1/users/12345678\",\"has_plus\" : true,\"first_name\" : \"abdul\",\"id\" : 12345678,\"socket\" : {\"channel\" : \"private-user-12345678\",\"auth_url\" : \"https://api.cheddarapp.com/pusher/auth\",\"app_id\" : \"15197\",\"api_key\" : \"675f10a650f18b4eb0a8\"},\"last_name\" : \"sami\",\"created_at\" : \"2015-07-14T16:39:09Z\",\"updated_at\" : \"2015-07-14T16:39:09Z\",\"username\" : \"sami_bahtti\"}],\"invitations\" : []}",remote_id,list.title,remote_id,dateStr,dateStr,list.position];
     
-        NSLog(@"JSON Found = %@",jsonToAdd);
+//        NSLog(@"JSON Found = %@",jsonToAdd);
         NSError *jsonError;
         NSData *objectData = [jsonToAdd dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:objectData
                                                                    options:NSJSONReadingMutableContainers
                                                                      error:&jsonError];
-    
+
+
         [context performBlockAndWait:^{
-			[list unpackDictionary:responseObject];
+//			[list unpackDictionary:responseObject];
 			[list save];
             if (success) {
                 success(nil, responseObject);

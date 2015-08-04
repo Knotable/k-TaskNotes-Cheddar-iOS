@@ -20,5 +20,6 @@
 @property (nonatomic, retain) NSString * topic_subject;
 @property (nonatomic, retain) NSString * topic_type;
 @property (nonatomic, retain) NSNumber * topic_uniqueNumber;
+@property (nonatomic, retain) NSDate * topic_date;
 
 @end

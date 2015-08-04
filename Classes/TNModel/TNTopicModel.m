@@ -19,5 +19,6 @@
 @dynamic topic_subject;
 @dynamic topic_type;
 @dynamic topic_uniqueNumber;
+@dynamic topic_date;
 
 @end

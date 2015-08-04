@@ -124,19 +124,21 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		[self _checkUser];
 	}
     [self registerNotification];
-
-    self.models = [NSMutableArray arrayWithArray:[TNTopicModel findAll]];
-    NSLog(@"%@",self.models);
 }
 
 - (void)registerNotification{
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveUpdate:)
+                                             selector:@selector(didReceiveAdd:)
                                                  name:@"added"
                                                object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveUpdate:)
+                                                 name:@"update"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveRemove:)
                                                  name:@"removed"
                                                object:nil];
 
@@ -146,22 +148,32 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     NSDictionary *topic = [models objectForKey:modelId];
 
     if (topic) {
-        if (!self.topicModel) {
-            self.topicModel = [TNTopicModel createEntity];
-        }
-        [self.topicModel setTopic_id:[topic objectForKeyedSubscript:@"_id"]];
-        [self.topicModel setTopic_accountId:[topic objectForKeyedSubscript:@"account_id"]];
-        [self.topicModel setTopic_cname:[topic objectForKeyedSubscript:@"cname"]];
-        [self.topicModel setTopic_flagged:[NSNumber numberWithInt:[[topic objectForKeyedSubscript:@"flagged"] intValue]]];
-        [self.topicModel setTopic_status:[topic objectForKeyedSubscript:@"status"]];
-        [self.topicModel setTopic_subject:[topic objectForKeyedSubscript:@"subject"]];
-        [self.topicModel setTopic_type:[topic objectForKeyedSubscript:@"type"]];
-        [self.topicModel setTopic_uniqueNumber:[NSNumber numberWithInt:[[topic objectForKeyedSubscript:@"uniqueNumber"] intValue]]];
-
-        [[NSManagedObjectContext defaultContext] saveNestedContexts];
+        modelId = nil;
+        [self __createList:topic];
     }
+    NSLog(@"------- Update");
 }
 
+- (void)didReceiveRemove:(NSNotification *)notification {
+    NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+    NSDictionary *topic = [models objectForKey:modelId];
+
+    if (topic) {
+        modelId = nil;
+        [self __createList:topic];
+    }
+    NSLog(@"-------- Removed");
+}
+
+- (void)didReceiveAdd:(NSNotification *)notification {
+    NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+    NSDictionary *topic = [models objectForKey:modelId];
+
+    if (topic) {
+        modelId = nil;
+        [self __createList:topic];
+    }
+}
 
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -388,7 +400,32 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	[self.tableView reloadData];
 }
 
+- (void)__createList:(NSDictionary* )model {
+    int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+    CDKList *list = [[CDKList alloc] init];
+    list.title = [model objectForKey:@"subject"];
+    list.position = [model objectForKey:@"uniqueNumber"];
+    list.slug = @"";
+    list.archivedAt = nil;
+    list.updatedAt = nil;
+    list.user = [CDKUser currentUser];
+    list.createdAt  = [NSDate date];
+    list.remoteID = [NSNumber numberWithInt:remote_id];
 
+    [list createWithSuccess:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self _cancelAddingList:nil];
+            int t =0;
+            t=[self.fetchedResultsController fetchedObjects].count;
+            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:list];
+            [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+            [self.view bringSubviewToFront:self.tableView];
+            [self _selectListAtIndexPath:indexPath newList:YES];
+        });
+    } failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
+
+    }];
+}
 - (void)_createList:(id)sender {
 
     	CDIAddListTableViewCell *cell = (CDIAddListTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -420,40 +457,42 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     [[TNAPIClient sharedClient] insertTopicWithParam:@"create_topic" withPram:params withBlock:^(NSDictionary *model, NSError *error) {
         if (!error) {
+            [hud completeAndDismissWithTitle:@"Create!"];
+            textField.text = nil;
             modelId = [model objectForKeyedSubscript:@"result"];
         }
     }];
-
-	CDKList *list = [[CDKList alloc] init];
-	list.title = textField.text;
-	list.position = [NSNumber numberWithInteger:INT32_MAX];
-	list.user = [CDKUser currentUser];
-	
-	[list createWithSuccess:^{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[hud completeAndDismissWithTitle:@"Created!"];
-			[self _cancelAddingList:nil];
-			textField.text = nil;
-            int t =0;
-            t=[self.fetchedResultsController fetchedObjects].count;
-            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:list];
-			[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-            [self.view bringSubviewToFront:self.tableView];
-            [self _selectListAtIndexPath:indexPath newList:YES];
-		});
-	} failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSDictionary *responseObject = remoteOperation.responseJSON;		
-			if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"error"] isEqualToString:@"plus_required"]) {
-				[hud dismiss];
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Plus Required" message:@"You need Cheddar Plus to create more than 2 lists. Please upgrade to continue." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Upgrade", nil];
-				[alert show];
-			} else {
-				[hud failAndDismissWithTitle:@"Failed"];
-				[textField becomeFirstResponder];
-			}
-		});
-	}];
+//
+//	CDKList *list = [[CDKList alloc] init];
+//	list.title = textField.text;
+//	list.position = [NSNumber numberWithInteger:INT32_MAX];
+//	list.user = [CDKUser currentUser];
+//	
+//	[list createWithSuccess:^{
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			[hud completeAndDismissWithTitle:@"Created!"];
+//			[self _cancelAddingList:nil];
+//			textField.text = nil;
+//            int t =0;
+//            t=[self.fetchedResultsController fetchedObjects].count;
+//            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:list];
+//			[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+//            [self.view bringSubviewToFront:self.tableView];
+//            [self _selectListAtIndexPath:indexPath newList:YES];
+//		});
+//	} failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			NSDictionary *responseObject = remoteOperation.responseJSON;		
+//			if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"error"] isEqualToString:@"plus_required"]) {
+//				[hud dismiss];
+//				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Plus Required" message:@"You need Cheddar Plus to create more than 2 lists. Please upgrade to continue." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Upgrade", nil];
+//				[alert show];
+//			} else {
+//				[hud failAndDismissWithTitle:@"Failed"];
+//				[textField becomeFirstResponder];
+//			}
+//		});
+//	}];
 }
 
 
@@ -564,9 +603,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		cell = [[CDIListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     	[cell setEditingAction:@selector(_beginEditingWithGesture:) forTarget:self];
 	}
-//    TNTopicModel *model = [[TNTopicModel alloc]initTopicWithDict:[self.dataList]];
 	cell.list = [self objectForViewIndexPath:indexPath];
-
 	return cell;
 }
 
