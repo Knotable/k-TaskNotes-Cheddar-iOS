@@ -34,6 +34,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 {
     NSString *modelId;
     NSInteger numberTopic;
+    BOOL isUpdateFirst;
 }
 @property (nonatomic, strong) CDKList *selectedList;
 @property (nonatomic, assign) BOOL adding;
@@ -69,7 +70,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+    isUpdateFirst = NO;
     _meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
     
 	UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
@@ -171,7 +172,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(topicsUpdated:)
+                                             selector:@selector(topicsChanged:)
                                                  name:@"topics_changed"
                                                object:nil];
 
@@ -234,29 +235,39 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 - (void)topicsUpdated:(NSNotification *)note{
 
+    //Update from web
+    if (isUpdateFirst) {
+        NSDictionary *model = [self.meteor.collections[METEORCOLLECTION_TOPICS] lastObject];
+        if (![self compareWithPosition:model]) {
+            int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+            CDKList *list = [[CDKList alloc] init];
+            list.title = [model objectForKey:@"subject"];
+            list.position = [model objectForKey:@"uniqueNumber"];
+            list.slug = @"";
+            list.archivedAt = nil;
+            list.updatedAt = nil;
+            list.user = [CDKUser currentUser];
+            list.createdAt  = [NSDate date];
+            list.remoteID = [NSNumber numberWithInt:remote_id];
+            __weak NSManagedObjectContext *context = [CDKList mainContext];
+            [context performBlockAndWait:^{
+                [list save];
+            }];
+        }
+    }
+
     //Fetch firt time
     NSInteger num = [self.meteor.collections[METEORCOLLECTION_TOPICS] count];
 
     NSLog(@"Updated %d %d",numberTopic,num );
 
     if (num == numberTopic) {
+        isUpdateFirst = YES;
         numberTopic = 0;
         NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-
-        NSMutableArray *objectLocal = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
-
         for (NSString *objectId in models) {
             NSDictionary *model = [models objectForKey:objectId];
-            NSNumber *position = [model objectForKey:@"uniqueNumber"];
-
-            bool isExist = NO;
-            for (CDKList *listObject in objectLocal) {
-                if ([listObject.position isEqualToNumber:position]) {
-                    isExist = YES;
-                }
-            }
-
-            if (!isExist) {
+            if (![self compareWithPosition:model]) {
                 int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                 CDKList *list = [[CDKList alloc] init];
                 list.title = [model objectForKey:@"subject"];
@@ -284,13 +295,26 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         [self __createList:topic];
     }
 
-    //Update from web
-    NSDictionary *modelWeb = [self.meteor.collections[METEORCOLLECTION_TOPICS] lastObject];
 
+}
+
+- (BOOL)compareWithPosition:(NSDictionary*)model{
+     NSMutableArray *topics = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
+    for (CDKList *topic in topics) {
+        if([topic.position isEqualToNumber:[model objectForKey:@"uniqueNumber"]]){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)topicsRemoved:(NSNotification *)note{
     NSLog(@"Topic Remove %@",note);
+
+}
+
+- (void)topicsChanged:(NSNotification *)note{
+    NSLog(@"Topic Changed %@",note);
 }
 
 - (void)gotTopicCount:(NSNotification *)note{
@@ -489,7 +513,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     NSLog(@"visibility of tableView = %hhd",self.tableView.hidden);
     NSLog(@"Frame of tableView : (%f,%f) , (%f,%f)",self.tableView.frame.origin.x,self.tableView.frame.origin.y,self.tableView.frame.size.width,self.tableView.frame.size.height);
-    
+
     if([self.tableView isHidden]){
         self.tableView.hidden = false;
     }
