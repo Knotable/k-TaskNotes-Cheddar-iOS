@@ -21,7 +21,7 @@
 
 #import <SSToolkit/UIScrollView+SSToolkitAdditions.h>
 #import "SMTEDelegateController.h"
-#import "MagicalRecord.h"
+//#import "MagicalRecord.h"
 #ifdef CHEDDAR_USE_PASSWORD_FLOW
 	#import "CDISignInViewController.h"
 #else
@@ -33,6 +33,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 @interface CDIListsViewController ()
 {
     NSString *modelId;
+    NSInteger numberTopic;
 }
 @property (nonatomic, strong) CDKList *selectedList;
 @property (nonatomic, assign) BOOL adding;
@@ -114,6 +115,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	_archiveButton = [[CDIViewArchiveButton alloc] initWithFrame:CGRectMake(20.0f, 12.0f, 280.0f, 32.0)];
 	_archiveButton.alpha = 0.0f;
 	[footer addSubview:_archiveButton];
+    [self.meteor addSubscription:METEORCOLLECTION_TOPICS];
 }
 
 
@@ -123,7 +125,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		[self _checkUser];
 	}
-    [self registerNotification];
+//    [self registerNotification];
+    [self turnOnBackground];
 }
 
 - (void)registerNotification{
@@ -134,8 +137,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsUpdated:)
+                                                 name:@"topics_added"
+                                               object:nil];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveUpdate:)
-                                                 name:@"update"
+                                                 name:@"updated"
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveRemove:)
@@ -143,38 +152,171 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                                object:nil];
 
 }
-- (void)didReceiveUpdate:(NSNotification *)notification {
+
+- (void)turnOnBackground{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(gotTopicCount:)
+                                                 name:@"TopicsCount_added"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(gotArchivedTopicCount:)
+                                                 name:@"ArchivedTopicsCount_added"
+                                               object:nil];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsUpdated:)
+                                                 name:@"topics_added"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsUpdated:)
+                                                 name:@"topics_changed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsRemoved:)
+                                                 name:@"topics_removed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsUpdated:)
+                                                 name:@"archivedKnotesForTopic_added"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsUpdated:)
+                                                 name:@"archivedKnotesForTopic_changed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsRemoved:)
+                                                 name:@"archivedKnotesForTopic_removed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsUpdated:)
+                                                 name:@"pinnedKnotesForTopic_added"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsUpdated:)
+                                                 name:@"pinnedKnotesForTopic_changed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(topicsRemoved:)
+                                                 name:@"pinnedKnotesForTopic_removed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contactsCountAdded:)
+                                                 name:@"OtherContactsCount_added"
+                                               object:nil];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contactsAdded:)
+                                                 name:@"contacts_added"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contactsChanged:)
+                                                 name:@"contacts_changed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contactsRemoved:)
+                                                 name:@"contacts_removed"
+                                               object:nil];
+}
+
+- (void)topicsUpdated:(NSNotification *)note{
+
+    //Fetch firt time
+    NSInteger num = [self.meteor.collections[METEORCOLLECTION_TOPICS] count];
+
+    NSLog(@"Updated %d %d",numberTopic,num );
+
+    if (num == numberTopic) {
+        numberTopic = 0;
+        NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+
+        NSMutableArray *objectLocal = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
+
+        for (NSString *objectId in models) {
+            NSDictionary *model = [models objectForKey:objectId];
+            NSNumber *position = [model objectForKey:@"uniqueNumber"];
+
+            bool isExist = NO;
+            for (CDKList *listObject in objectLocal) {
+                if ([listObject.position isEqualToNumber:position]) {
+                    isExist = YES;
+                }
+            }
+
+            if (!isExist) {
+                int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+                CDKList *list = [[CDKList alloc] init];
+                list.title = [model objectForKey:@"subject"];
+                list.position = [model objectForKey:@"uniqueNumber"];
+                list.slug = @"";
+                list.archivedAt = nil;
+                list.updatedAt = nil;
+                list.user = [CDKUser currentUser];
+                list.createdAt  = [NSDate date];
+                list.remoteID = [NSNumber numberWithInt:remote_id];
+                __weak NSManagedObjectContext *context = [CDKList mainContext];
+                [context performBlockAndWait:^{
+                    [list save];
+                }];
+            }
+        }
+
+    }
+
+    //Update from phone
     NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
     NSDictionary *topic = [models objectForKey:modelId];
-
     if (topic) {
         modelId = nil;
         [self __createList:topic];
     }
-    NSLog(@"------- Update");
+
+    //Update from web
+    NSDictionary *modelWeb = [self.meteor.collections[METEORCOLLECTION_TOPICS] lastObject];
+
 }
 
-- (void)didReceiveRemove:(NSNotification *)notification {
-    NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-    NSDictionary *topic = [models objectForKey:modelId];
-
-    if (topic) {
-        modelId = nil;
-        [self __createList:topic];
-    }
-    NSLog(@"-------- Removed");
+- (void)topicsRemoved:(NSNotification *)note{
+    NSLog(@"Topic Remove %@",note);
 }
 
-- (void)didReceiveAdd:(NSNotification *)notification {
-    NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-    NSDictionary *topic = [models objectForKey:modelId];
-
-    if (topic) {
-        modelId = nil;
-        [self __createList:topic];
-    }
+- (void)gotTopicCount:(NSNotification *)note{
+    NSLog(@"Topic Count %@",[[note userInfo] objectForKey:@"count"]);
+    numberTopic = [[[note userInfo] objectForKey:@"count"] integerValue];
 }
 
+- (void)gotArchivedTopicCount:(NSNotification *)note{
+ NSLog(@"333333 %@",note);
+}
+
+- (void)contactsCountAdded:(NSNotification *)note{
+ NSLog(@"444444 %@",note);
+}
+
+- (void)contactsAdded:(NSNotification *)note{
+ NSLog(@"5555555 %@",note);
+}
+
+- (void)contactsChanged:(NSNotification *)note{
+ NSLog(@"6666666 %@",note);
+}
+
+- (void)contactsRemoved:(NSNotification *)note{
+ NSLog(@"7777777 %@",note);
+}
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
@@ -296,8 +438,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	if (self.loading || ![CDKUser currentUser]) {
 		return;
 	}
-	
 	self.loading = YES;
+
 	[[CDKHTTPClient sharedClient] getListsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.loading = NO;
@@ -321,7 +463,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             }
         });
 	}];
-    
+
 	// Also update their user incase push for updates failed
 	//[[CDKHTTPClient sharedClient] updateCurrentUserWithSuccess:nil failure:nil];
 }

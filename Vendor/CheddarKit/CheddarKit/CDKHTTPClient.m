@@ -306,7 +306,7 @@ static BOOL __developmentMode = NO;
      );
      },
      */
-    /*
+/*
     [self getPath:@"lists" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		__weak NSManagedObjectContext *context = [CDKList mainContext];
 		[context performBlockAndWait:^{
@@ -324,8 +324,8 @@ static BOOL __developmentMode = NO;
 		if (failure) {
 			failure((AFJSONRequestOperation *)operation, error);
 		}
-	}];*/
-    
+	}];
+    */
     NSError* error = [[NSError alloc]initWithDomain:@"Not Using API" code:404 userInfo:nil];
     if (failure) {
         failure(nil, error);
