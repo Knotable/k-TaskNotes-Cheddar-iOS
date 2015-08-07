@@ -234,13 +234,19 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 }
 
 - (void)topicsUpdated:(NSNotification *)note{
+    NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+    NSDictionary *topic = [models objectForKey:modelId];
 
     //Update from web
-    if (isUpdateFirst) {
+    if (topic){
+        modelId = nil;
+        [self __createList:topic];
+    }else if (isUpdateFirst) {
         NSDictionary *model = [self.meteor.collections[METEORCOLLECTION_TOPICS] lastObject];
         if (![self compareWithPosition:model]) {
             int64_t remote_id = [[NSDate date] timeIntervalSince1970];
             CDKList *list = [[CDKList alloc] init];
+            list.id = [model objectForKeyedSubscript:@"_id"];
             list.title = [model objectForKey:@"subject"];
             list.position = [model objectForKey:@"uniqueNumber"];
             list.slug = @"";
@@ -262,6 +268,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     NSLog(@"Updated %d %d",numberTopic,num );
 
     if (num == numberTopic) {
+
         isUpdateFirst = YES;
         numberTopic = 0;
         NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
@@ -270,6 +277,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             if (![self compareWithPosition:model]) {
                 int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                 CDKList *list = [[CDKList alloc] init];
+                list.id = [model objectForKeyedSubscript:@"_id"];
                 list.title = [model objectForKey:@"subject"];
                 list.position = [model objectForKey:@"uniqueNumber"];
                 list.slug = @"";
@@ -286,16 +294,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         }
 
     }
-
-    //Update from phone
-    NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-    NSDictionary *topic = [models objectForKey:modelId];
-    if (topic) {
-        modelId = nil;
-        [self __createList:topic];
-    }
-
-
 }
 
 - (BOOL)compareWithPosition:(NSDictionary*)model{
@@ -356,7 +354,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	
+
 	if (editing) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleEditMode:)];
         [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
@@ -404,7 +402,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         if (![self isEditing]) {
             [self setEditing:YES animated:YES];
         }
-        
+
         [self editRow:gestureRecognizer];
     }
 }

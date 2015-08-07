@@ -19,7 +19,7 @@
 @dynamic slug;
 @dynamic tasks;
 @dynamic user;
-
+@dynamic id;
 #pragma mark - SSManagedObject
 
 + (NSString *)entityName {

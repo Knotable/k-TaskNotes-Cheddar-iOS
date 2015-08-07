@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *slug;
 @property (nonatomic, strong) NSSet *tasks;
 @property (nonatomic, strong) NSManagedObject *user;
+@property (nonatomic, strong) NSString *id;
 
 - (NSInteger)highestPosition;
 - (NSArray *)sortedTasks;
