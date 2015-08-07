@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSSet *tasks;
 @property (nonatomic, strong) NSManagedObject *user;
 @property (nonatomic, strong) NSString *id;
+@property (nonatomic, assign) BOOL isArchived;
 
 - (NSInteger)highestPosition;
 - (NSArray *)sortedTasks;

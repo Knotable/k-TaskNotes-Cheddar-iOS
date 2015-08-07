@@ -236,14 +236,15 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 - (void)topicsUpdated:(NSNotification *)note{
     NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
     NSDictionary *topic = [models objectForKey:modelId];
-
     //Update from web
     if (topic){
+        isUpdateFirst = NO;
         modelId = nil;
         [self __createList:topic];
     }else if (isUpdateFirst) {
         NSDictionary *model = [self.meteor.collections[METEORCOLLECTION_TOPICS] lastObject];
-        if (![self compareWithPosition:model]) {
+
+        if (![self compareWithId:model]) {
             int64_t remote_id = [[NSDate date] timeIntervalSince1970];
             CDKList *list = [[CDKList alloc] init];
             list.id = [model objectForKeyedSubscript:@"_id"];
@@ -252,6 +253,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             list.slug = @"";
             list.archivedAt = nil;
             list.updatedAt = nil;
+            list.isArchived = NO;
             list.user = [CDKUser currentUser];
             list.createdAt  = [NSDate date];
             list.remoteID = [NSNumber numberWithInt:remote_id];
@@ -268,13 +270,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     NSLog(@"Updated %d %d",numberTopic,num );
 
     if (num == numberTopic) {
-
         isUpdateFirst = YES;
         numberTopic = 0;
         NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
         for (NSString *objectId in models) {
             NSDictionary *model = [models objectForKey:objectId];
-            if (![self compareWithPosition:model]) {
+            if (![self compareWithId:model]) {
                 int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                 CDKList *list = [[CDKList alloc] init];
                 list.id = [model objectForKeyedSubscript:@"_id"];
@@ -283,6 +284,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 list.slug = @"";
                 list.archivedAt = nil;
                 list.updatedAt = nil;
+                list.isArchived = NO;
                 list.user = [CDKUser currentUser];
                 list.createdAt  = [NSDate date];
                 list.remoteID = [NSNumber numberWithInt:remote_id];
@@ -296,19 +298,36 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     }
 }
 
-- (BOOL)compareWithPosition:(NSDictionary*)model{
+- (BOOL)compareWithId:(NSDictionary*)model{
      NSMutableArray *topics = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
     for (CDKList *topic in topics) {
-        if([topic.position isEqualToNumber:[model objectForKey:@"uniqueNumber"]]){
+        if([topic.id isEqualToString:[model objectForKey:@"_id"]]){
             return YES;
         }
     }
     return NO;
 }
 
+- (CDKList*)findObject:(NSString*)topicId{
+    NSMutableArray *topics = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
+    for (CDKList *topic in topics) {
+        if ([topic.id isEqualToString:topicId]) {
+            return topic;
+        }
+    }
+    return nil;
+}
+
 - (void)topicsRemoved:(NSNotification *)note{
     NSLog(@"Topic Remove %@",note);
-
+    NSDictionary *value = [note userInfo];
+    CDKList *list = [self findObject:[value objectForKeyedSubscript:@"_id"]];
+    if (list) {
+        list.archivedAt = [NSDate date];
+        list.isArchived = YES;
+        [list save];
+        [list update];
+    }
 }
 
 - (void)topicsChanged:(NSNotification *)note{
@@ -578,6 +597,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     [list createWithSuccess:^{
         dispatch_async(dispatch_get_main_queue(), ^{
+            isUpdateFirst = YES;
             [self _cancelAddingList:nil];
             int t =0;
             t=[self.fetchedResultsController fetchedObjects].count;
@@ -828,7 +848,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 			listViewController.managedObject = nil;
 		}
 	}
-	
+    list.isArchived = YES;
 	list.archivedAt = [NSDate date];
 	[list save];
 	[list update];

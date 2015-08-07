@@ -4,6 +4,7 @@
         <attribute name="archivedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isArchived" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="remoteID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
@@ -46,7 +47,7 @@
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="user" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
-        <element name="List" positionX="160" positionY="192" width="128" height="195"/>
+        <element name="List" positionX="160" positionY="192" width="128" height="210"/>
         <element name="Tag" positionX="160" positionY="192" width="128" height="120"/>
         <element name="Task" positionX="160" positionY="192" width="128" height="225"/>
         <element name="User" positionX="160" positionY="192" width="128" height="195"/>

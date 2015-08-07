@@ -20,6 +20,7 @@
 @dynamic tasks;
 @dynamic user;
 @dynamic id;
+@dynamic isArchived;
 #pragma mark - SSManagedObject
 
 + (NSString *)entityName {
