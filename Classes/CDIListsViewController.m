@@ -295,6 +295,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             }
         }
 
+        // Update topic when offline.
+        [self updateOffline];
+
     }
 }
 
@@ -316,6 +319,27 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         }
     }
     return nil;
+}
+
+- (void)updateOffline{
+    NSMutableArray *topicLocation = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
+    NSDictionary *topicServer = self.meteor.collections[METEORCOLLECTION_TOPICS];
+    for (CDKList *topic in topicLocation) {
+        int index = 0;
+        for (NSDictionary *topicId in topicServer) {
+            NSDictionary *model = [topicServer objectForKeyedSubscript:topicId];
+            if ([[model objectForKeyedSubscript:@"_id"] isEqualToString:topic.id]) {
+                continue;
+            }
+            if (index == topicServer.count - 1) {
+                topic.archivedAt = [NSDate date];
+                topic.isArchived = YES;
+                [topic save];
+                [topic update];
+            }
+            index ++;
+        }
+    }
 }
 
 - (void)topicsRemoved:(NSNotification *)note{
@@ -364,7 +388,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self _checkUser];
 	}
-	
+
 	[SSRateLimit executeBlock:^{
 		[self refresh:nil];
 	} name:@"refresh-lists" limit:30.0];
@@ -403,7 +427,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		return YES;
 	}
-	
+
 	return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
 }
 
@@ -534,7 +558,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     if([self.tableView isHidden]){
         self.tableView.hidden = false;
     }
-    
+
 	[self hideNoContentView:YES];
 	UIView *coverView = self.coverView;
 	coverView.frame = self.view.bounds;
@@ -549,7 +573,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     [createButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
 
     self.navigationItem.rightBarButtonItem = createButton;
-    
+
 	[UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
 		[self.tableView scrollToTopAnimated:NO]; // Not animated since the outer animation block will animate it
 		coverView.alpha = 1.0f;
@@ -666,7 +690,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //		});
 //	} failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
 //		dispatch_async(dispatch_get_main_queue(), ^{
-//			NSDictionary *responseObject = remoteOperation.responseJSON;		
+//			NSDictionary *responseObject = remoteOperation.responseJSON;
 //			if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"error"] isEqualToString:@"plus_required"]) {
 //				[hud dismiss];
 //				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Plus Required" message:@"You need Cheddar Plus to create more than 2 lists. Please upgrade to continue." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Upgrade", nil];
@@ -811,7 +835,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	if (sourceIndexPath.row == destinationIndexPath.row) {
 		return;
 	}
-	
+
 	self.ignoreChange = YES;
 	NSMutableArray *lists = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	CDKList *list = [self objectForViewIndexPath:sourceIndexPath];
@@ -890,7 +914,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	list.title = textField.text;
 	[list save];
 	[list update];
-	
+
 	[self endCellTextEditing];
 	return NO;
 }
@@ -907,7 +931,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[super controllerDidChangeContent:controller];
-	
+
 	if (_checkForOneList) {
 		if ([self.navigationController topViewController] == self) {
 			NSNumber *selectedList = [[NSUserDefaults standardUserDefaults] objectForKey:kCDISelectedListKey];
