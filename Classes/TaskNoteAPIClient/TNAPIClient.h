@@ -21,8 +21,8 @@
 - (void)sigupWithUsernameAndEmail:(NSString*)modelName withDict :(NSDictionary*)paramDict withBlock:(void(^)(NSDictionary *response, NSError *error))block;
 
 //Create List
-- (void) sendInsertKnotes:(NSString *)modelName
-                 withPram:(NSDictionary *)paramDict
-                withBlock:(void(^)(NSDictionary *model, NSError *error))block;
+-(void) sendInsertKnotes:(NSString *)modelName
+        withUserId:(NSString*)userId
+        withBlock:(void(^)(NSDictionary *model, NSError *error))block;
 
 @end

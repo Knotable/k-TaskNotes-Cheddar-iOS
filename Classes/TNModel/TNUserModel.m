@@ -20,8 +20,8 @@
             self.user_email = @"";
             self.user_username = @"";
 
-            if ([model objectForKeyedSubscript:@"id"]) {
-                self.user_id = [model objectForKeyedSubscript:@"id"];
+            if ([model objectForKeyedSubscript:@"userId"]) {
+                self.user_id = [model objectForKeyedSubscript:@"userId"];
             }
 
             if ([model objectForKeyedSubscript:@"email"]) {

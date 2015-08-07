@@ -441,22 +441,22 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 - (void)_checkUser {
 
-//	if (![TNUserModel currentUser]) {
-//#ifdef CHEDDAR_USE_PASSWORD_FLOW
-//		UIViewController *viewController = [[CDISignInViewController alloc] init];
-//#else
-//		UIViewController *viewController = [[CDIWebSignInViewController alloc] init];
-//#endif
-//		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-//		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-//		
-//		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//			[self.splitViewController presentViewController:navigationController animated:YES completion:nil];
-//		} else {
-//			[self.navigationController presentViewController:navigationController animated:NO completion:nil];
-//		}
-//		return;
-//	}
+	if (![TNUserModel currentUser]) {
+#ifdef CHEDDAR_USE_PASSWORD_FLOW
+		UIViewController *viewController = [[CDISignInViewController alloc] init];
+#else
+		UIViewController *viewController = [[CDIWebSignInViewController alloc] init];
+#endif
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			[self.splitViewController presentViewController:navigationController animated:YES completion:nil];
+		} else {
+			[self.navigationController presentViewController:navigationController animated:NO completion:nil];
+		}
+		return;
+	}
 }
 
 
