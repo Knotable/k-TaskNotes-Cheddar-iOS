@@ -30,8 +30,8 @@
 
 + (NSArray *)defaultSortDescriptors {
 	return [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:YES],
-			[NSSortDescriptor sortDescriptorWithKey:@"remoteID" ascending:YES],
+			[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:NO],
+			[NSSortDescriptor sortDescriptorWithKey:@"remoteID" ascending:NO],
 			nil];
 }
 
