@@ -17,12 +17,18 @@
 //Logon with username or email
 - (void)logonWithUsernameOrEmail:(NSString*)usernameOrEmail password:(NSString*)password withBlock:(void(^)(NSDictionary *response, NSError *error))block;
 
+//Logon with token
+- (void)logonWithSessionToken:(NSString*)sessiontoken withBlock:(void(^)(NSDictionary *response, NSError* error))block;
+
 //Sign up
 - (void)sigupWithUsernameAndEmail:(NSString*)modelName withDict :(NSDictionary*)paramDict withBlock:(void(^)(NSDictionary *response, NSError *error))block;
 
 //Create List
--(void) sendInsertKnotes:(NSString *)modelName
-        withUserId:(NSString*)userId
-        withBlock:(void(^)(NSDictionary *model, NSError *error))block;
+- (void) sendInsertKnotes:(NSString *)modelName
+                 withPram:(NSDictionary *)paramDict
+                withBlock:(void(^)(NSDictionary *model, NSError *error))block;
 
+- (void) insertTopicWithParam:(NSString *)modelName
+                 withPram:(NSArray *)param
+                withBlock:(void(^)(NSDictionary *model, NSError *error))block;
 @end

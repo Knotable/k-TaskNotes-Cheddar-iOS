@@ -19,7 +19,8 @@
 @dynamic slug;
 @dynamic tasks;
 @dynamic user;
-
+@dynamic id;
+@dynamic isArchived;
 #pragma mark - SSManagedObject
 
 + (NSString *)entityName {
@@ -29,8 +30,8 @@
 
 + (NSArray *)defaultSortDescriptors {
 	return [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:YES],
-			[NSSortDescriptor sortDescriptorWithKey:@"remoteID" ascending:YES],
+			[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:NO],
+			[NSSortDescriptor sortDescriptorWithKey:@"remoteID" ascending:NO],
 			nil];
 }
 
@@ -47,7 +48,7 @@
 	if ([dictionary objectForKey:@"user"]) {
 		self.user = [CDKUser objectWithDictionary:[dictionary objectForKey:@"user"] context:self.managedObjectContext];
 	}
-	
+
 	for (NSDictionary *taskDictionary in [dictionary objectForKey:@"tasks"]) {
 		CDKTask *task = [CDKTask objectWithDictionary:taskDictionary context:self.managedObjectContext];
 		task.list = self;
@@ -154,7 +155,7 @@
 		task.archivedAt = [NSDate date];
 	}
 	[self.managedObjectContext save:nil];
-	
+
 	[[CDKHTTPClient sharedClient] archiveAllTasksInList:self success:nil failure:nil];
 }
 
@@ -164,7 +165,7 @@
 	if (tasks.count == 0) {
 		return;
 	}
-	
+
 	for (CDKTask *task in tasks) {
 		task.archivedAt = [NSDate date];
 	}

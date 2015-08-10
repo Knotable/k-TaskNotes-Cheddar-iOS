@@ -153,15 +153,15 @@
         if (response) {
             [hud completeAndDismissWithTitle:@"Signed In!"];
             NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
-            
+            NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
+
             NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
             [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
             [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
-            
             NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
             [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
-            
-            
+            [useInfo setObject:sessiontoken forKey:@"token"];
+
             [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
             [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -171,29 +171,8 @@
             NSString* password = self.passwordTextField.text;
             [SSKeychain setPassword:password forService:@"Tasknote" account:username];
             NSLog(@"%@",_meteor.collections);
-            BOOL todoExists = false;
-            for(int t=0 ; t< [_meteor.collections[METEORCOLLECTION_TOPICS] count];t++){
-                if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:@"To Do List"]){
-                    todoExists = true;
-                    break;
-                }
-            }
-            if(!todoExists){
-                CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
-                [hud show];
-
-                [[TNAPIClient sharedClient] sendInsertKnotes:@"To Do List" withUserId:[CDIAppDelegate sharedAppDelegate].userModel.user_id withBlock:^(NSDictionary *response, NSError *error){
-                    if (error) {
-                        [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
-                    }
-                    if (response) {
-                        [hud completeAndDismissWithTitle:@"Done !"];
-                    }
-            
-                }];
-            }
         }
-        }];
+    }];
 
 
 }
@@ -223,12 +202,14 @@
         if (response) {
             [hud completeAndDismissWithTitle:@"Signed Up!"];
             NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
+            NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
 
             NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
             [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
             [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
             NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
             [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
+            [useInfo setObject:sessiontoken forKey:@"token"];
 
             [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
             [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];

@@ -70,7 +70,10 @@
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}
-    	[self loadServerConfig];
+    [self loadServerConfig];
+
+//    [MagicalRecord setupCoreDataStack];
+
 	[self.window makeKeyAndVisible];
 	
 	// Defer some stuff to make launching faster
@@ -88,25 +91,25 @@
 		[[SKPaymentQueue defaultQueue] addTransactionObserver:[CDITransactionObserver defaultObserver]];
 	});
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(meteorError:)
-                                                 name:MeteorClientTransportErrorDomain
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(meteorAdded:)
-                                                 name:@"added"
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(meteorRemoved:)
-                                                 name:@"removed"
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(popUpMessage:)
-                                                 name:KnotebleShowPopUpMessage
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(meteorError:)
+//                                                 name:MeteorClientTransportErrorDomain
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(meteorAdded:)
+//                                                 name:@"added"
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(meteorRemoved:)
+//                                                 name:@"removed"
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(popUpMessage:)
+//                                                 name:KnotebleShowPopUpMessage
+//                                               object:nil];
 
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(needChangeMogoDbServer:)
@@ -201,7 +204,7 @@
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-background-mini"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsLandscapePhone];
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar-background-mini"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsLandscapePhone];
 
-    
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)loadServerConfig{
@@ -233,7 +236,7 @@
         [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED];
         [self.meteorClient addSubscription:METEORCOLLECTION_KEY];
         [self.meteorClient addSubscription:METEORCOLLECTION_HOTKNOTES];
-        
+
 //        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
 //        [self.meteorClient addObserver:self
 //                      forKeyPath:@"connected"
@@ -272,6 +275,14 @@
 
 - (void)reportConnection {
     NSLog(@"================> connected to server!");
+    TNUserModel *model = [TNUserModel currentUser];
+    if (model) {
+        [[TNAPIClient sharedClient] logonWithSessionToken:model.user_sessiontoken withBlock:^(NSDictionary *response, NSError *error) {
+            if (!error) {
+                 NSLog(@"Login is ok");
+            }
+        }];
+    }
 }
 
 - (void)reportDisconnection {
@@ -285,7 +296,7 @@
 
 -(void)meteorAdded:(NSNotification *)note
 {
-    NSLog(@"meteorAdded: %@", note);
+    NSLog(@"meteorAdded: %@", self.meteorClient.collections[METEORCOLLECTION_TOPICS]);
 }
 
 -(void)meteorRemoved:(NSNotification *)note

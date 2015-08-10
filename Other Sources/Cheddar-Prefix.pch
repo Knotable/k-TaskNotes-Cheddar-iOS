@@ -21,12 +21,19 @@
 	#import "CDIDefines.h"
     #import "CDIDefines.h"
     #import "CDIAppDelegate.h"
-    #import "ObjectiveDDP.h"
-    #import "MeteorClient.h"
+    #import <ObjectiveDDP.h>
+    #import <MeteorClient.h>
+    #import <M13OrderedDictionary.h>
     #import "Constant.h"
     #import "ServerConfigModel.h"
     #import "TNAPIClient.h"
     #import "TNUserModel.h"
     #import "SSKeychain.h"
+    #import "TNTopicModel.h"
+    
+#define kDBName @"kDBName"
 #define CHEDDAR_USE_PASSWORD_FLOW 1
+#define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
+//#define MR_SHORTHAND
+//#import "CoreData+MagicalRecord.h"
 #endif

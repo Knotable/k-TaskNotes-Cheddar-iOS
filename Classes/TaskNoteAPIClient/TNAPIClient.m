@@ -59,6 +59,23 @@
     }
 }
 
+// Logon with token
+- (void)logonWithSessionToken:(NSString *)sessiontoken withBlock:(void (^)(NSDictionary *, NSError *))block{
+    @try {
+        [self.meteor logonWithSessionToken:sessiontoken responseCallback:^(NSDictionary *response, NSError *error) {
+            if (error) {
+                block (nil, error);
+            }
+            if (response) {
+                block(response, nil);
+            }
+        }];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",[exception description]);
+        NSLog(@"%@",[exception callStackSymbols]);
+    }
+}
 //Sign up
 - (void)sigupWithUsernameAndEmail:(NSString *)modelName withDict:(NSDictionary*)paramDict withBlock:(void (^)(NSDictionary *, NSError *))block{
     @try {
@@ -79,43 +96,34 @@
 
 //Creat Note
 - (void) sendInsertKnotes:(NSString *)modelName
-                 withUserId:(NSString*)userId
+                 withPram:(NSDictionary *)paramDict
                 withBlock:(void(^)(NSDictionary *model, NSError *error))block{
     @try {
-        
-        NSString *subject = modelName;
-        NSArray *participator_account_ids = @[userId];
-        
-        NSDictionary *requiredTopicParams = @{
-                                              @"userId": userId,
-                                              @"participator_account_ids": participator_account_ids,
-                                              @"subject":subject,
-                                              @"permissions":@[@"read", @"write", @"upload"],
-                                              };
-        NSLog(@"required Topics = %@",requiredTopicParams);
-        
-        
-        NSDictionary *optionalTopicParams = @{
-                                              /*@"file_ids":tInfo.filesIds ? tInfo.filesIds : @[],
-                                              @"_id":[topic.topic_id noPrefix:kKnoteIdPrefix],
-                                              @"order":@{[DataManager sharedInstance].currentAccount.user.user_id : topic.order_to_set != nil? topic.order_to_set : @(999)},
-                                              @"to":participator_emails,*/
-                                              };
-        
-        NSDictionary *additionalOptions = @{/*@"topicId":[topic.topic_id noPrefix:kKnoteIdPrefix]*/};
-        
-        NSArray *params = @[requiredTopicParams, optionalTopicParams, additionalOptions];
-        
-        
-        NSString *methodName = @"create_topic";
-        [self.meteor callMethodName:methodName parameters:params responseCallback:^(NSDictionary *response, NSError *error) {
-            
+        NSString *methodName = [NSString stringWithFormat:@"/%@/%@",METEORCOLLECTION_KNOTES,modelName];
+        [self.meteor callMethodName:methodName parameters:@[paramDict] responseCallback:^(NSDictionary *response, NSError *error) {
             if (error) {
-                NSLog(@"%@",error);
                 block(nil, error);
             }
             if (response) {
-                NSLog(@"%@ inserted pad = ",response);
+                block(response, nil);
+            }
+        }];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",[exception description]);
+        NSLog(@"%@",[exception callStackSymbols]);
+    }
+}
+
+- (void) insertTopicWithParam:(NSString *)modelName
+                     withPram:(NSArray *)param
+                    withBlock:(void(^)(NSDictionary *model, NSError *error))block{
+    @try {
+        [self.meteor callMethodName:modelName parameters:param responseCallback:^(NSDictionary *response, NSError *error) {
+            if (error) {
+                block(nil, error);
+            }
+            if (response) {
                 block(response, nil);
             }
         }];

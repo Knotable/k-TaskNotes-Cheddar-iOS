@@ -12,7 +12,7 @@
 @property (nonatomic, strong) NSString* user_id;
 @property (nonatomic, strong) NSString* user_email;
 @property (nonatomic, strong) NSString* user_username;
-
+@property (nonatomic, strong) NSString* user_sessiontoken;
 -(id)initWithDict:(NSDictionary*)model;
 +(TNUserModel*)currentUser;
 + (void)setCurrentUser:(TNUserModel*)user;

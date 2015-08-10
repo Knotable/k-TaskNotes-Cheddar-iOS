@@ -9,7 +9,7 @@
 #import "TNUserModel.h"
 
 @implementation TNUserModel
-@synthesize user_id,user_email,user_username;
+@synthesize user_id,user_email,user_username,user_sessiontoken;
 - (id)initWithDict:(NSDictionary *)model{
     self = [super init];
  
@@ -19,7 +19,7 @@
             self.user_id = @"";
             self.user_email = @"";
             self.user_username = @"";
-
+            self.user_sessiontoken = @"";
             if ([model objectForKeyedSubscript:@"userId"]) {
                 self.user_id = [model objectForKeyedSubscript:@"userId"];
             }
@@ -30,6 +30,10 @@
 
             if ([model objectForKeyedSubscript:@"username"]) {
                 self.user_username = [model objectForKeyedSubscript:@"username"];
+            }
+
+            if ([model objectForKeyedSubscript:@"token"]) {
+                self.user_sessiontoken = [model objectForKeyedSubscript:@"token"];
             }
         }
         @catch (NSException *exception) {
@@ -43,12 +47,7 @@
 + (TNUserModel*)currentUser{
         NSDictionary* userInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kTNUserIDKey] ;
         TNUserModel *userModel =[[TNUserModel alloc]initWithDict:userInfo];
-        NSString *savedPass = [SSKeychain passwordForService:@"Tasknote" account:userModel.user_username];
-        if (userInfo != nil && savedPass) {
-            [[TNAPIClient sharedClient] logonWithUsernameOrEmail:userModel.user_username password:savedPass withBlock:^(NSDictionary *response, NSError *error) {
-
-            }];
-
+        if (userInfo != nil ) {
             return userModel;
         }
     return nil;

@@ -143,7 +143,6 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	if (buttonIndex != 1) {
 		return;
 	}
-	
 	// Sign out
     [TNUserModel setCurrentUser:nil];
     [self.meteor logout];
