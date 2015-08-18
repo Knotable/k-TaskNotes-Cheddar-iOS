@@ -171,6 +171,35 @@
             NSString* password = self.passwordTextField.text;
             [SSKeychain setPassword:password forService:@"Tasknote" account:username];
             NSLog(@"%@",_meteor.collections);
+            
+            
+            
+            BOOL todoExists = false;
+            for(int t=0 ; t< [_meteor.collections[METEORCOLLECTION_TOPICS] count];t++){
+                if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"]){
+                    todoExists = true;
+                    break;
+                }
+            }
+            
+            
+            if(!todoExists){
+                CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
+                [hud show];
+                
+                [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasks from IOS" withUserId:[CDIAppDelegate sharedAppDelegate].userModel.user_id withBlock:^(NSDictionary *response, NSError *error){
+                    if (error) {
+                        [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+                    }
+                    if (response) {
+                        [hud completeAndDismissWithTitle:@"Done !"];
+                    }
+                    
+                }];
+            }
+       
+    
+            
         }
     }];
 

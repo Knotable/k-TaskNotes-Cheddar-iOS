@@ -7,25 +7,21 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>45175CE5-98F0-48A4-BD64-47738A688B62</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Cheddar for iOS</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>3747FC183E3B1B9145ADF12BEC5CABCB49E71747</key>
-		<string>https://github.com/Knotable/k-Knotes-iOS-.git</string>
-		<key>8C7FA6F8E1B3A8C9720554037ED345B8F6B0FAA8</key>
-		<string>https://github.com/Knotable/k-cheddar.git</string>
+		<string>https://github.com/Knotable/k-TaskNotes-Cheddar-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Cheddar for iOS.xcodeproj</string>
+	<string>Cheddar for iOS.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>3747FC183E3B1B9145ADF12BEC5CABCB49E71747</key>
 		<string>../..</string>
-		<key>8C7FA6F8E1B3A8C9720554037ED345B8F6B0FAA8</key>
-		<string>../../../Cheddar</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/Knotable/k-Knotes-iOS-.git</string>
+	<string>https://github.com/Knotable/k-TaskNotes-Cheddar-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
@@ -36,17 +32,9 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>8C7FA6F8E1B3A8C9720554037ED345B8F6B0FAA8</string>
-			<key>IDESourceControlWCCName</key>
-			<string>Cheddar</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>3747FC183E3B1B9145ADF12BEC5CABCB49E71747</string>
 			<key>IDESourceControlWCCName</key>
-			<string>k-Knotes-iOS-</string>
+			<string>k-TaskNotes-Cheddar-iOS</string>
 		</dict>
 	</array>
 </dict>

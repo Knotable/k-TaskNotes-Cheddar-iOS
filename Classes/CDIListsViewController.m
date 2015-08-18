@@ -116,7 +116,19 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	_archiveButton = [[CDIViewArchiveButton alloc] initWithFrame:CGRectMake(20.0f, 12.0f, 280.0f, 32.0)];
 	_archiveButton.alpha = 0.0f;
 	[footer addSubview:_archiveButton];
+    
     [self.meteor addSubscription:METEORCOLLECTION_TOPICS];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 
@@ -231,6 +243,96 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                              selector:@selector(contactsRemoved:)
                                                  name:@"contacts_removed"
                                                object:nil];
+    
+    
+    
+    
+    /////////// KNOTES methods
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"topic_added"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"date_events_added"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"topic_changed"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"allRestKnotesByTopicId_added"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"allRestKnotesByTopicId_changed"
+                                               object:nil];
+    
+//    [NSNotificationCenter defaultCenter] addObserver:self
+//                                                     selector:@selector(knotesRemoved:)
+//                                                         name:@"allRestKnotesByTopicId_removed"
+//                                                       object:nil];
+//    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"knotes_added"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"knotes_changed"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"messages_added"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesAdded:)
+                                                 name:@"messages_changed"
+                                               object:nil];
+    
+    //        [[NSNotificationCenter defaultCenter] addObserver:self
+    //                                                 selector:@selector(knotesRemoved:)
+    //                                                     name:@"knotes_removed"
+    //                                                   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(knotesChanged:)
+                                                 name:@"knotes_changed"
+                                               object:nil];
+    
+    
+    
+    // Check ready state
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(Ready_topic)
+                                                 name:@"topic_ready"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(Ready_pinnedKnotes)
+                                                 name:@"pinnedKnotesForTopic_ready"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(Ready_archivedKnotes)
+                                                 name:@"archivedKnotesForTopic_ready"
+                                               object:nil];
+    
+    
+
+    
+    
 }
 
 - (void)topicsUpdated:(NSNotification *)note{
@@ -242,26 +344,27 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         modelId = nil;
         [self __createList:topic];
     }else if (isUpdateFirst) {
-        NSDictionary *model = [self.meteor.collections[METEORCOLLECTION_TOPICS] lastObject];
-
-        if (![self compareWithId:model]) {
-            int64_t remote_id = [[NSDate date] timeIntervalSince1970];
-            CDKList *list = [[CDKList alloc] init];
-            list.id = [model objectForKeyedSubscript:@"_id"];
-            list.title = [model objectForKey:@"subject"];
-            list.position = [model objectForKey:@"uniqueNumber"];
-            list.slug = @"";
-            list.archivedAt = nil;
-            list.updatedAt = nil;
-            list.isArchived = NO;
-            list.user = [CDKUser currentUser];
-            list.createdAt  = [NSDate date];
-            list.remoteID = [NSNumber numberWithInt:remote_id];
-            __weak NSManagedObjectContext *context = [CDKList mainContext];
-            [context performBlockAndWait:^{
-                [list save];
-            }];
-        }
+        
+//        NSDictionary *model = [self.meteor.collections[METEORCOLLECTION_TOPICS] lastObject];
+//
+//        if (![self compareWithId:model]) {
+//            int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+//            CDKList *list = [[CDKList alloc] init];
+//            list.id = [model objectForKeyedSubscript:@"_id"];
+//            list.title = [model objectForKey:@"subject"];
+//            list.position = [model objectForKey:@"uniqueNumber"];
+//            list.slug = @"";
+//            list.archivedAt = nil;
+//            list.updatedAt = nil;
+//            list.isArchived = NO;
+//            list.user = [CDKUser currentUser];
+//            list.createdAt  = [NSDate date];
+//            list.remoteID = [NSNumber numberWithInt:remote_id];
+//            __weak NSManagedObjectContext *context = [CDKList mainContext];
+//            [context performBlockAndWait:^{
+//                [list save];
+//            }];
+//        }
     }
 
     //Fetch firt time
@@ -274,25 +377,35 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         numberTopic = 0;
         NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
         for (NSString *objectId in models) {
+            
             NSDictionary *model = [models objectForKey:objectId];
-            if (![self compareWithId:model]) {
-                int64_t remote_id = [[NSDate date] timeIntervalSince1970];
-                CDKList *list = [[CDKList alloc] init];
-                list.id = [model objectForKeyedSubscript:@"_id"];
-                list.title = [model objectForKey:@"subject"];
-                list.position = [model objectForKey:@"uniqueNumber"];
-                list.slug = @"";
-                list.archivedAt = nil;
-                list.updatedAt = nil;
-                list.isArchived = NO;
-                list.user = [CDKUser currentUser];
-                list.createdAt  = [NSDate date];
-                list.remoteID = [NSNumber numberWithInt:remote_id];
-                __weak NSManagedObjectContext *context = [CDKList mainContext];
-                [context performBlockAndWait:^{
-                    [list save];
-                }];
-            }
+            
+            NSString* model_id = [model objectForKeyedSubscript:@"_id"];
+            [self.meteor addSubscription:METEORCOLLECTION_KNOTES withParameters:@[model_id]];
+            [self.meteor addSubscription:METEORCOLLECTION_KNOTE_TOPIC withParameters:@[model_id]];
+            [self.meteor addSubscription:METEORCOLLECTION_KNOTE_DATES withParameters:@[model_id]];
+            [self.meteor addSubscription:METEORCOLLECTION_KNOTE_PINNED withParameters:@[model_id]];
+            [self.meteor addSubscription:METEORCOLLECTION_KNOTE_REST withParameters:@[model_id]];
+            [self.meteor addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED withParameters:@[model_id]];
+            
+//            if (![self compareWithId:model]) {
+//                int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+//                CDKList *list = [[CDKList alloc] init];
+//                list.id = [model objectForKeyedSubscript:@"_id"];
+//                list.title = [model objectForKey:@"subject"];
+//                list.position = [model objectForKey:@"uniqueNumber"];
+//                list.slug = @"";
+//                list.archivedAt = nil;
+//                list.updatedAt = nil;
+//                list.isArchived = NO;
+//                list.user = [CDKUser currentUser];
+//                list.createdAt  = [NSDate date];
+//                list.remoteID = [NSNumber numberWithInt:remote_id];
+//                __weak NSManagedObjectContext *context = [CDKList mainContext];
+//                [context performBlockAndWait:^{
+//                    [list save];
+//                }];
+//            }
         }
 
         // Update topic when offline.
@@ -300,6 +413,164 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     }
 }
+
+/////////////////////////////////////////////////////////////////////
+////////////////// KNOTES CALL BACKS/////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+
+- (void)Ready_topic
+{
+    
+}
+
+- (void)Ready_pinnedKnotes
+{
+
+}
+
+- (void)Ready_archivedKnotes
+{
+
+}
+
+
+-(void)knotesAdded:(NSNotification *)note
+{
+    NSLog(@"Knote Added = %@",note.userInfo);
+    NSLog(@"done added");
+
+    
+    
+    NSDictionary * knoteAdded = note.userInfo;
+    
+    if(knoteAdded ){
+        NSString* knoteType = [knoteAdded objectForKey:@"type"];
+        if([knoteType isEqualToString:@"checklist"]){
+            NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+            for (NSString *objectId in models) {
+            
+                NSDictionary *model = [models objectForKey:objectId];
+                NSLog(@" ns Log =%@",self.meteor.collections);
+            
+                if ([[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]] && ![self compareWithId:model]) {
+                    int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+                    CDKList *list = [[CDKList alloc] init];
+                    list.id = [model objectForKeyedSubscript:@"_id"];
+                    list.title = [model objectForKey:@"subject"];
+                    list.position = [model objectForKey:@"uniqueNumber"];
+                    list.slug = @"";
+                    list.archivedAt = nil;
+                    list.updatedAt = nil;
+                    list.isArchived = NO;
+                    list.user = [CDKUser currentUser];
+                    list.createdAt  = [NSDate date];
+                    list.remoteID = [NSNumber numberWithInt:remote_id];
+                    __weak NSManagedObjectContext *context = [CDKList mainContext];
+                    [context performBlockAndWait:^{
+                        [list save];
+                    }];
+                }
+            }
+
+        }
+    }
+//    [[TNAPIClient sharedClient] sendRequestKnotes:padIds[0] withCompleteBlock:^(WM_NetworkStatus success,NSError* error,id userData){
+//        
+//        NSLog(@"Knote found : %@",userData);
+//        NSLog(@"done");
+//    }];
+
+    
+//    NSDictionary* serverData = Nil;
+//    if (_isReady_toGetRest)
+//    {
+//        if (note.userInfo)
+//        {
+//            //self.showFooter = NO;
+//            
+//            serverData = note.userInfo;
+//            
+//            if (![[serverData objectForKey:@"type"] isEqualToString:@"knote"] || [serverData objectForKey:@"pinned"]) {
+//                [self ProcessOnlyKnoteWithDict:serverData];
+//            }else{
+//                [self.RestData addObject:serverData];
+//                if (!_isAddedPullRefresh_toGetRest)
+//                {
+//                    _isAddedPullRefresh_toGetRest=YES;
+//                    _pullToRefreshManager = [[MNMBottomPullToRefreshManager alloc] initWithPullToRefreshViewHeight:0.0f tableView:_tableView withClient:self];
+//                    //// [_pullToRefreshManager tableViewReleased];
+//                    //// [_pullToRefreshManager tableViewReloadFinished];
+//                }
+//            }
+//            
+//        }
+//    }
+//    else
+//    {
+//        self.counter_knote_added = self.counter_knote_added + 1;
+//        if (note.userInfo)
+//        {
+//            serverData = note.userInfo;
+//            
+//            [self ProcessOnlyKnoteWithDict:serverData];
+//        }
+//        
+//        [self check_KnotesCount];
+//    }
+}
+
+-(void)knotesRemoved:(NSNotification *)note
+{
+    NSLog(@"KNOTES REMOVED");
+//    
+//    NSDictionary* serverData = Nil;
+//    
+//    if (note.userInfo)
+//    {
+//        serverData = note.userInfo;
+//    }
+}
+
+-(void)knotesChanged:(NSNotification *)note
+{
+    NSLog(@"KNOTES CHANGED");
+    
+//    NSDictionary* serverData = Nil;
+//    
+//    if (note.userInfo)
+//    {
+//        serverData = note.userInfo;
+//        
+//        [self ProcessOnlyKnoteWithDict:serverData];
+//    }
+//    if (self.tableView.frame.origin.x == 0) {
+//        if ([self.currentData count] > 0)
+//        {
+//            [self.tableView reloadData];
+//        }
+//    }else{
+//        if ([self.rightData count] > 0)
+//        {
+//            [self.firstDot setHidden:NO];
+//            [self.secondDot setHidden:NO];
+//            [self.tableViewRight reloadData];
+//        }
+//    }
+    
+}
+
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 
 - (BOOL)compareWithId:(NSDictionary*)model{
      NSMutableArray *topics = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
@@ -552,6 +823,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		return;
 	}*/
 
+    
     NSLog(@"visibility of tableView = %hhd",self.tableView.hidden);
     NSLog(@"Frame of tableView : (%f,%f) , (%f,%f)",self.tableView.frame.origin.x,self.tableView.frame.origin.y,self.tableView.frame.size.width,self.tableView.frame.size.height);
 

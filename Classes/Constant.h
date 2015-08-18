@@ -27,6 +27,7 @@
 #define METEORCOLLECTION_ARCHIVEDTOPICS  @"archivedTopics"       // Existing
 
 #define METEORCOLLECTION_KNOTE_TOPIC            @"topic"
+#define METEORCOLLECTION_KNOTE_DATES            @"date_events"
 #define METEORCOLLECTION_KNOTE_PINNED           @"pinnedKnotesForTopic"
 #define METEORCOLLECTION_KNOTE_ARCHIVED         @"archivedKnotesForTopic"
 #define METEORCOLLECTION_KNOTE_REST             @"allRestKnotesByTopicId"

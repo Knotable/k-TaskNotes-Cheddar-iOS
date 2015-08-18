@@ -9,6 +9,20 @@
 #import <Foundation/Foundation.h>
 
 @interface TNAPIClient : NSObject
+typedef enum
+{
+    NetworkErr = -2,
+    NetworkTimeOut  = -1,
+    NetworkSucc,
+    NetworkFailure,
+} WM_NetworkStatus;
+
+
+typedef void (^MongoCompletion)(WM_NetworkStatus success, NSError *error, id userData);
+
+
+
+
 @property (nonatomic, strong) MeteorClient *meteor;
 + (instancetype)sharedClient;
 //Logon with email
@@ -31,4 +45,14 @@
 - (void) insertTopicWithParam:(NSString *)modelName
                  withPram:(NSArray *)param
                 withBlock:(void(^)(NSDictionary *model, NSError *error))block;
+
+- (void) sendInsertPadWithName:(NSString *)modelName
+                    withUserId:(NSString*)userId
+                     withBlock:(void(^)(NSDictionary *model, NSError *error))block;
+
+//Get Knotes Explicitly for perticular Pad
+- (void) sendRequestKnotes:(NSString *)topic_id
+         withCompleteBlock:(MongoCompletion)block;
+
+
 @end
