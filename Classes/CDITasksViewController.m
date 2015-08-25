@@ -516,7 +516,7 @@
             taskList.topicId = self.list.id;
             taskList.taskType = @"checklist";
             taskList.sectionId = @"";
-            taskList.order = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:self.list.highestPosition + 1]];
+            taskList.order = [NSString stringWithFormat:@"%@", task.position];
             
             
 			CGPoint point = CGPointZero;
@@ -536,7 +536,7 @@
 				dispatch_semaphore_signal(_createTaskSemaphore);
 			}];
             
-            //if([self.fetchedResultsController fetchedObjects].count == 0){
+            if([self.fetchedResultsController fetchedObjects].count == 0){
             [[TNAPIClient sharedClient] sendInsertTaskList:taskList withUserId:[TNUserModel currentUser].user_id withUseData:nil withCompleteBlock:^(WM_NetworkStatus success, NSError* error, id userDate){
                 
                 NSLog(@"received data = %@",userDate);
@@ -549,22 +549,55 @@
                 }];
 
             }];
-//            }else{
-//                MeteorClient* meteor = [TNAPIClient sharedClient].meteor;
-//                NSDictionary * kNotes = meteor.collections[METEORCOLLECTION_KNOTES];
-//                NSDictionary* kNote=nil;
-//                for(NSString* kNoteId in kNotes){
-//                    kNote = [kNotes objectForKey:kNoteId];
-//                    if([[kNote objectForKey:@"topic_id"]isEqualToString:self.list.id]){
-//                        NSArray* options =@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked",title, @"name",[NSNumber numberWithInteger:self.list.highestPosition + 1], @"num",@[], @"voters",nil]];
-//                        
-//                        [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
-//                            NSLog(@"returned data : %@",userDate);
-//                        }];
-//                        break;
-//                    }
-//                }
-//            }
+            }else{
+                MeteorClient* meteor = [TNAPIClient sharedClient].meteor;
+                NSDictionary * kNotes = meteor.collections[METEORCOLLECTION_KNOTES];
+                NSDictionary* kNote=nil;
+                for(NSString* kNoteId in kNotes){
+                    kNote = [kNotes objectForKey:kNoteId];
+                    if([[kNote objectForKey:@"topic_id"]isEqualToString:self.list.id] && [[kNote objectForKey:@"archived"] boolValue] == false){
+                        NSMutableArray* oldOptions = [kNote objectForKey:@"options"];
+                        Boolean alreadyAdded = false;
+                        if(oldOptions){
+                            oldOptions = [oldOptions mutableCopy];
+                            for(int k=0; k < oldOptions.count ; k++){
+                                NSDictionary* option = oldOptions[k];
+                                if([option objectForKey:@"name"] == [NSNull null]){
+                                    alreadyAdded = true;
+                                    oldOptions[k] = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",task.position, @"num",@[], @"voters",nil];
+                                    break;
+                                }
+                            }
+                        }
+                        NSArray* options=nil;
+                        
+                        if(!alreadyAdded){
+                            if(oldOptions){
+                                options = [oldOptions arrayByAddingObjectsFromArray:@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",task.position, @"num",@[], @"voters",nil]]];
+                            }else{
+                                options =@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked" ,title, @"name",task.position, @"num",@[], @"voters",nil],@{}];
+                                
+                            }
+                        }
+                        else{
+                            options = oldOptions;
+                        }
+                        
+                        [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
+                            NSLog(@"returned data : %@",userDate);
+                            [task createWithSuccess:nil failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    addTaskView.textField.text = title;
+                                    CDIHUDView *hud = [[CDIHUDView alloc] init];
+                                    [hud failQuicklyWithTitle:@"Failed to create task"];
+                                });
+                            }];
+
+                        }];
+                        break;
+                    }
+                }
+            }
 		});
 	});
 }
