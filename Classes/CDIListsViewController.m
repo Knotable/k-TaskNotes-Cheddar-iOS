@@ -367,7 +367,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //        }
     }
 
-    //Fetch firt time
+    //Fetch first time
     NSInteger num = [self.meteor.collections[METEORCOLLECTION_TOPICS] count];
 
     NSLog(@"Updated %d %d",numberTopic,num );
@@ -381,31 +381,33 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             NSDictionary *model = [models objectForKey:objectId];
             
             NSString* model_id = [model objectForKeyedSubscript:@"_id"];
+            
+            if([[model objectForKey:@"subject"]isEqualToString:@"Tasks from IOS"] && ![self compareWithId:model] ){
+                int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+                CDKList *list = [[CDKList alloc] init];
+                list.id = [model objectForKeyedSubscript:@"_id"];
+                list.title = [model objectForKey:@"subject"];
+                list.position = [model objectForKey:@"uniqueNumber"];
+                list.slug = @"";
+                list.archivedAt = nil;
+                list.updatedAt = nil;
+                list.isArchived = NO;
+                list.user = [CDKUser currentUser];
+                list.createdAt  = [NSDate date];
+                list.remoteID = [NSNumber numberWithInt:remote_id];
+                __weak NSManagedObjectContext *context = [CDKList mainContext];
+                [context performBlockAndWait:^{
+                    [list save];
+                }];
+            }
+            
             [self.meteor addSubscription:METEORCOLLECTION_KNOTES withParameters:@[model_id]];
             [self.meteor addSubscription:METEORCOLLECTION_KNOTE_TOPIC withParameters:@[model_id]];
             [self.meteor addSubscription:METEORCOLLECTION_KNOTE_DATES withParameters:@[model_id]];
             [self.meteor addSubscription:METEORCOLLECTION_KNOTE_PINNED withParameters:@[model_id]];
             [self.meteor addSubscription:METEORCOLLECTION_KNOTE_REST withParameters:@[model_id]];
             [self.meteor addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED withParameters:@[model_id]];
-            
-//            if (![self compareWithId:model]) {
-//                int64_t remote_id = [[NSDate date] timeIntervalSince1970];
-//                CDKList *list = [[CDKList alloc] init];
-//                list.id = [model objectForKeyedSubscript:@"_id"];
-//                list.title = [model objectForKey:@"subject"];
-//                list.position = [model objectForKey:@"uniqueNumber"];
-//                list.slug = @"";
-//                list.archivedAt = nil;
-//                list.updatedAt = nil;
-//                list.isArchived = NO;
-//                list.user = [CDKUser currentUser];
-//                list.createdAt  = [NSDate date];
-//                list.remoteID = [NSNumber numberWithInt:remote_id];
-//                __weak NSManagedObjectContext *context = [CDKList mainContext];
-//                [context performBlockAndWait:^{
-//                    [list save];
-//                }];
-//            }
+ 
         }
 
         // Update topic when offline.
@@ -475,49 +477,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
         }
     }
-//    [[TNAPIClient sharedClient] sendRequestKnotes:padIds[0] withCompleteBlock:^(WM_NetworkStatus success,NSError* error,id userData){
-//        
-//        NSLog(@"Knote found : %@",userData);
-//        NSLog(@"done");
-//    }];
-
-    
-//    NSDictionary* serverData = Nil;
-//    if (_isReady_toGetRest)
-//    {
-//        if (note.userInfo)
-//        {
-//            //self.showFooter = NO;
-//            
-//            serverData = note.userInfo;
-//            
-//            if (![[serverData objectForKey:@"type"] isEqualToString:@"knote"] || [serverData objectForKey:@"pinned"]) {
-//                [self ProcessOnlyKnoteWithDict:serverData];
-//            }else{
-//                [self.RestData addObject:serverData];
-//                if (!_isAddedPullRefresh_toGetRest)
-//                {
-//                    _isAddedPullRefresh_toGetRest=YES;
-//                    _pullToRefreshManager = [[MNMBottomPullToRefreshManager alloc] initWithPullToRefreshViewHeight:0.0f tableView:_tableView withClient:self];
-//                    //// [_pullToRefreshManager tableViewReleased];
-//                    //// [_pullToRefreshManager tableViewReloadFinished];
-//                }
-//            }
-//            
-//        }
-//    }
-//    else
-//    {
-//        self.counter_knote_added = self.counter_knote_added + 1;
-//        if (note.userInfo)
-//        {
-//            serverData = note.userInfo;
-//            
-//            [self ProcessOnlyKnoteWithDict:serverData];
-//        }
-//        
-//        [self check_KnotesCount];
-//    }
 }
 
 -(void)knotesRemoved:(NSNotification *)note
@@ -535,29 +494,44 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 -(void)knotesChanged:(NSNotification *)note
 {
     NSLog(@"KNOTES CHANGED");
+    NSLog(@"Knote Edited = %@",note.userInfo);
+    NSLog(@"done Edit");
     
-//    NSDictionary* serverData = Nil;
-//    
-//    if (note.userInfo)
-//    {
-//        serverData = note.userInfo;
-//        
-//        [self ProcessOnlyKnoteWithDict:serverData];
-//    }
-//    if (self.tableView.frame.origin.x == 0) {
-//        if ([self.currentData count] > 0)
-//        {
-//            [self.tableView reloadData];
-//        }
-//    }else{
-//        if ([self.rightData count] > 0)
-//        {
-//            [self.firstDot setHidden:NO];
-//            [self.secondDot setHidden:NO];
-//            [self.tableViewRight reloadData];
-//        }
-//    }
     
+    
+    NSDictionary * knoteAdded = note.userInfo;
+    
+    if(knoteAdded ){
+        NSString* knoteType = [knoteAdded objectForKey:@"type"];
+        if([knoteType isEqualToString:@"checklist"]){
+            NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+            for (NSString *objectId in models) {
+                
+                NSDictionary *model = [models objectForKey:objectId];
+                NSLog(@" ns Log =%@",self.meteor.collections);
+                
+                if ([[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]] && ![self compareWithId:model]) {
+                    int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+                    CDKList *list = [[CDKList alloc] init];
+                    list.id = [model objectForKeyedSubscript:@"_id"];
+                    list.title = [model objectForKey:@"subject"];
+                    list.position = [model objectForKey:@"uniqueNumber"];
+                    list.slug = @"";
+                    list.archivedAt = nil;
+                    list.updatedAt = nil;
+                    list.isArchived = NO;
+                    list.user = [CDKUser currentUser];
+                    list.createdAt  = [NSDate date];
+                    list.remoteID = [NSNumber numberWithInt:remote_id];
+                    __weak NSManagedObjectContext *context = [CDKList mainContext];
+                    [context performBlockAndWait:^{
+                        [list save];
+                    }];
+                }
+            }
+            
+        }
+    }
 }
 
 

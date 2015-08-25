@@ -496,6 +496,29 @@
 			task.list = self.list;
 			task.position = [NSNumber numberWithInteger:self.list.highestPosition + 1];
 			
+            
+            TNTaskList *taskList = [[TNTaskList alloc]init];
+            
+            taskList.title = @"TaskNotes";
+            NSDateFormatter * formater = [[NSDateFormatter alloc]init];
+            [formater setDateFormat:kDateFormat1];
+            taskList.date = [formater stringFromDate:[NSDate date]];
+            taskList.subject = @"subject";
+            taskList.name = [TNUserModel currentUser].user_username;
+            taskList.options = @[[NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithBool:false], @"checked",
+                                  title, @"name",
+                                  [NSNumber numberWithInteger:self.list.highestPosition + 1], @"num",
+                                  @[], @"voters",
+                                  nil],@""];
+            taskList.from = [TNUserModel currentUser].user_email;
+            
+            taskList.topicId = self.list.id;
+            taskList.taskType = @"checklist";
+            taskList.sectionId = @"";
+            taskList.order = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:self.list.highestPosition + 1]];
+            
+            
 			CGPoint point = CGPointZero;
 			if (numberOfRows > 0) {
 				CGRect rect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:numberOfRows - 1 inSection:0]];
@@ -512,14 +535,36 @@
 				[animation removeFromSuperview];
 				dispatch_semaphore_signal(_createTaskSemaphore);
 			}];
-			
-			[task createWithSuccess:nil failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					addTaskView.textField.text = title;
-					CDIHUDView *hud = [[CDIHUDView alloc] init];
-					[hud failQuicklyWithTitle:@"Failed to create task"];
-				});
-			}];
+            
+            //if([self.fetchedResultsController fetchedObjects].count == 0){
+            [[TNAPIClient sharedClient] sendInsertTaskList:taskList withUserId:[TNUserModel currentUser].user_id withUseData:nil withCompleteBlock:^(WM_NetworkStatus success, NSError* error, id userDate){
+                
+                NSLog(@"received data = %@",userDate);
+                [task createWithSuccess:nil failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        addTaskView.textField.text = title;
+                        CDIHUDView *hud = [[CDIHUDView alloc] init];
+                        [hud failQuicklyWithTitle:@"Failed to create task"];
+                    });
+                }];
+
+            }];
+//            }else{
+//                MeteorClient* meteor = [TNAPIClient sharedClient].meteor;
+//                NSDictionary * kNotes = meteor.collections[METEORCOLLECTION_KNOTES];
+//                NSDictionary* kNote=nil;
+//                for(NSString* kNoteId in kNotes){
+//                    kNote = [kNotes objectForKey:kNoteId];
+//                    if([[kNote objectForKey:@"topic_id"]isEqualToString:self.list.id]){
+//                        NSArray* options =@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked",title, @"name",[NSNumber numberWithInteger:self.list.highestPosition + 1], @"num",@[], @"voters",nil]];
+//                        
+//                        [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
+//                            NSLog(@"returned data : %@",userDate);
+//                        }];
+//                        break;
+//                    }
+//                }
+//            }
 		});
 	});
 }

@@ -42,4 +42,9 @@
 
 #define kNeedChangeApplicationHost          @"kNeedChangeApplicationHost"
 
+
+#define kDateFormat @"MMM dd yyyy,hh:mm aa"
+#define kDateFormat1 @"MMM dd yyyy, hh:mm:ss aa"
+#define kDateFormat2 @"EEE MMM dd hh:mm:ss aa yyy"
+
 #endif
