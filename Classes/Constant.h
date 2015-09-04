@@ -32,7 +32,10 @@
 #define METEORCOLLECTION_KNOTE_ARCHIVED         @"archivedKnotesForTopic"
 #define METEORCOLLECTION_KNOTE_REST             @"allRestKnotesByTopicId"
 
-#define kTNUserIDKey @"kCDKUserIDKey"
+#define kTNUserIDKey @"CDKUserID"
+#define kTNUserEmail @"TNUser_Email"
+#define kTNUserName @"CDKUser_Name"
+#define kTNUserSessionToken @"CDKUser_Session_Token"
 #define kCDKKeychainServiceName = @"Tasknote"
 
 

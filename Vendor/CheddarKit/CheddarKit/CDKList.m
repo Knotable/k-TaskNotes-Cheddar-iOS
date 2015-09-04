@@ -19,7 +19,7 @@
 @dynamic slug;
 @dynamic tasks;
 @dynamic user;
-@dynamic id;
+
 @dynamic isArchived;
 #pragma mark - SSManagedObject
 
@@ -30,8 +30,7 @@
 
 + (NSArray *)defaultSortDescriptors {
 	return [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:NO],
-			[NSSortDescriptor sortDescriptorWithKey:@"remoteID" ascending:NO],
+			[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:YES],
 			nil];
 }
 

@@ -136,7 +136,10 @@
 	self.pullToRefreshView.bottomBorderColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
 
 	self.noContentView = [[CDITasksPlaceholderView alloc] initWithFrame:CGRectZero];
-
+    
+    
+    
+    
 }
 
 
@@ -230,16 +233,61 @@
 	
 	CDKList *list = self.list;
 	self.loading = YES;
-	[[CDKHTTPClient sharedClient] getTasksWithList:list success:^(AFJSONRequestOperation *operation, id responseObject) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.loading = NO;
-		});
-	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			//[SSRateLimit resetLimitForName:[NSString stringWithFormat:@"refresh-list-%@", self.list.remoteID]];
-			self.loading = NO;
-		});
-	}];
+    
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        MeteorClient* meteor=[TNAPIClient sharedClient].meteor;
+        [[TNAPIClient sharedClient] sendRequestKnotes:list.id withCompleteBlock:^(WM_NetworkStatus success,NSError *error,id userData){
+            NSLog(@"received Data = %@",userData);
+            
+            NSLog(@"list is = %@",self.list);
+            NSArray* kNotes = userData;
+            
+            for(int t=0; t<[kNotes count];t++){
+                
+                dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    if (![self doesModelAlreadyExist:kNotes[t]]) {
+//                        CDKTask* task = [[CDKTask alloc]init];
+//                        
+//                        [task createWithSuccess:nil failure:nil];
+//                        
+                        
+//                        int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+//                        CDKList *list = [[CDKList alloc] init];
+//                        list.id = [model objectForKeyedSubscript:@"_id"];
+//                        list.title = [model objectForKey:@"subject"];
+//                        list.position = [model objectForKey:@"uniqueNumber"];
+//                        list.slug = @"";
+//                        list.archivedAt = nil;
+//                        list.updatedAt = nil;
+//                        list.isArchived = NO;
+//                        list.user = [CDKUser currentUser];
+//                        list.createdAt  = [NSDate date];
+//                        list.remoteID = [NSNumber numberWithInt:remote_id];
+//                        __weak NSManagedObjectContext *context = [CDKList mainContext];
+//                        [context performBlockAndWait:^{
+//                            [list save];
+//                        }];
+                    }
+                });
+                
+            }
+            
+        }];
+    });
+    
+    self.loading = NO;
+    
+    
+//	[[CDKHTTPClient sharedClient] getTasksWithList:list success:^(AFJSONRequestOperation *operation, id responseObject) {
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			self.loading = NO;
+//		});
+//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			//[SSRateLimit resetLimitForName:[NSString stringWithFormat:@"refresh-list-%@", self.list.remoteID]];
+//			self.loading = NO;
+//		});
+//	}];
 }
 
 
@@ -490,11 +538,8 @@
 			NSInteger numberOfRows = [self.tableView numberOfRowsInSection:0];
 			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:0];
 			
-			CDKTask *task = [[CDKTask alloc] init];
-			task.text = title;
-			task.displayText = title;
-			task.list = self.list;
-			task.position = [NSNumber numberWithInteger:self.list.highestPosition + 1];
+			//CDKTask *task = [[CDKTask alloc] init];
+			NSNumber* position = [NSNumber numberWithInteger:self.list.highestPosition + 1];
 			
             
             TNTaskList *taskList = [[TNTaskList alloc]init];
@@ -516,7 +561,7 @@
             taskList.topicId = self.list.id;
             taskList.taskType = @"checklist";
             taskList.sectionId = @"";
-            taskList.order = [NSString stringWithFormat:@"%@", task.position];
+            taskList.order = [NSString stringWithFormat:@"%@", position];
             
             
 			CGPoint point = CGPointZero;
@@ -540,13 +585,6 @@
             [[TNAPIClient sharedClient] sendInsertTaskList:taskList withUserId:[TNUserModel currentUser].user_id withUseData:nil withCompleteBlock:^(WM_NetworkStatus success, NSError* error, id userDate){
                 
                 NSLog(@"received data = %@",userDate);
-                [task createWithSuccess:nil failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        addTaskView.textField.text = title;
-                        CDIHUDView *hud = [[CDIHUDView alloc] init];
-                        [hud failQuicklyWithTitle:@"Failed to create task"];
-                    });
-                }];
 
             }];
             }else{
@@ -564,7 +602,7 @@
                                 NSDictionary* option = oldOptions[k];
                                 if([option objectForKey:@"name"] == [NSNull null]){
                                     alreadyAdded = true;
-                                    oldOptions[k] = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",task.position, @"num",@[], @"voters",nil];
+                                    oldOptions[k] = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",position, @"num",@[], @"voters",nil];
                                     break;
                                 }
                             }
@@ -573,9 +611,9 @@
                         
                         if(!alreadyAdded){
                             if(oldOptions){
-                                options = [oldOptions arrayByAddingObjectsFromArray:@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",task.position, @"num",@[], @"voters",nil]]];
+                                options = [oldOptions arrayByAddingObjectsFromArray:@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",position, @"num",@[], @"voters",nil]]];
                             }else{
-                                options =@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked" ,title, @"name",task.position, @"num",@[], @"voters",nil],@{}];
+                                options =@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked" ,title, @"name",position, @"num",@[], @"voters",nil],@{}];
                                 
                             }
                         }
@@ -585,13 +623,6 @@
                         
                         [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
                             NSLog(@"returned data : %@",userDate);
-                            [task createWithSuccess:nil failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    addTaskView.textField.text = title;
-                                    CDIHUDView *hud = [[CDIHUDView alloc] init];
-                                    [hud failQuicklyWithTitle:@"Failed to create task"];
-                                });
-                            }];
 
                         }];
                         break;

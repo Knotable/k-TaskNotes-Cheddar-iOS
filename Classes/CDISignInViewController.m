@@ -161,10 +161,10 @@
             NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
             [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
             [useInfo setObject:sessiontoken forKey:@"token"];
-
-            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
-            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            TNUserModel * user = [[TNUserModel alloc]initWithDict:useInfo];
+            [TNUserModel setCurrentUser:user];
+            [CDIAppDelegate sharedAppDelegate].userModel = user;
+            
             [self dismissViewControllerAnimated:YES completion:nil];
 
             NSString* username = [CDIAppDelegate sharedAppDelegate].userModel.user_username;

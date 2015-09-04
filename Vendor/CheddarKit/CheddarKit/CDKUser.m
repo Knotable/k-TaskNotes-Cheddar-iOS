@@ -37,7 +37,7 @@ static CDKUser *__currentUser = nil;
 + (CDKUser *)currentUser {
 	if (!__currentUser) {
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSNumber *userID = [NSNumber numberWithInt:12345678];//[userDefaults objectForKey:kCDKUserIDKey];
+        NSString *userID = [userDefaults objectForKey:kCDKUserIDKey];
 		
         if (!userID) {
 			return nil;

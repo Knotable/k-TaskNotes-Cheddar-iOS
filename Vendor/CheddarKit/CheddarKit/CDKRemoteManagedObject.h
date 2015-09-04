@@ -11,6 +11,7 @@
 @class AFJSONRequestOperation;
 
 @interface CDKRemoteManagedObject : SSRemoteManagedObject
+@property (nonatomic, strong) NSString *id;
 
 - (void)create;
 - (void)createWithSuccess:(void(^)(void))success failure:(void(^)(AFJSONRequestOperation *remoteOperation, NSError *error))failure;
