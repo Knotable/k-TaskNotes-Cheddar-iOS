@@ -25,6 +25,7 @@
 @property (nonatomic, strong) CDKUser *user;
 @property (nonatomic, strong) CDKList *list;
 @property (nonatomic, strong) NSSet *tags;
+@property (nonatomic, strong) NSArray *checkList;
 @property (nonatomic, assign, getter = isCompleted) BOOL completed;
 
 - (void)toggleCompleted;

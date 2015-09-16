@@ -1678,8 +1678,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Muhammad Abdul Sami (FC4X4M76ST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COMBINE_HIDPI_IMAGES = NO;
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1712,7 +1712,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "05122d49-c64f-4a5d-af11-2731814363e1";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1887,8 +1887,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=*]" = "8f89b4f3-c278-438e-b6e6-7b1fcd95fbc5";
+				PROVISIONING_PROFILE = "05122d49-c64f-4a5d-af11-2731814363e1";
+				"PROVISIONING_PROFILE[sdk=*]" = "05122d49-c64f-4a5d-af11-2731814363e1";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;

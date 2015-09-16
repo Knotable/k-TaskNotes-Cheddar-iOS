@@ -7,6 +7,7 @@
 //
 
 #import "CDISignInViewController.h"
+#import "CDIListsViewController.h"
 #import "CDIHUDView.h"
 #import "UIColor+CheddariOSAdditions.h"
 #import "UIFont+CheddariOSAdditions.h"
@@ -151,8 +152,12 @@
             [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
+            NSLog(@"signin response: %@",response);
             [hud completeAndDismissWithTitle:@"Signed In!"];
+            
             NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
+            NSLog(@"userDict response: %@",userDict);
+            
             NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
 
             NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
@@ -165,7 +170,6 @@
             [TNUserModel setCurrentUser:user];
             [CDIAppDelegate sharedAppDelegate].userModel = user;
             
-            [self dismissViewControllerAnimated:YES completion:nil];
 
             NSString* username = [CDIAppDelegate sharedAppDelegate].userModel.user_username;
             NSString* password = self.passwordTextField.text;
@@ -174,30 +178,19 @@
             
             
             
-            BOOL todoExists = false;
-            for(int t=0 ; t< [_meteor.collections[METEORCOLLECTION_TOPICS] count];t++){
-                if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"]){
-                    todoExists = true;
-                    break;
-                }
-            }
             
-            
-            if(!todoExists){
-                CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
-                [hud show];
-                
-                [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasks from IOS" withUserId:[CDIAppDelegate sharedAppDelegate].userModel.user_id withBlock:^(NSDictionary *response, NSError *error){
-                    if (error) {
-                        [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
-                    }
-                    if (response) {
-                        [hud completeAndDismissWithTitle:@"Done !"];
-                    }
+                CDKUser* currentUser = [[CDKUser alloc]init];
+                [[currentUser managedObjectContext] performBlock:^{
+                    currentUser.username = user.user_username;
+                    currentUser.email = user.user_email;
+                    currentUser.accessToken = user.user_sessiontoken;
+                    currentUser.remoteID = user.user_id;
+                    [currentUser save];
+                    CDIListsViewController *viewController = [[CDIListsViewController alloc] init];
                     
+                    [self.navigationController pushViewController:viewController animated:YES];
                 }];
-            }
-       
+            
     
             
         }
@@ -229,23 +222,40 @@
             [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
+            
+            NSLog(@"signUp response :%@",response);
+            /*
+             {
+                id = 30;
+                msg = result;
+                result =     {
+                    email = "sami_bahtti@12345.com";
+                    fullname = "sami_bahtti@12345.com";
+                    userId = 74SwWcQaWRxB2eg7X;
+                    username = "sami_bahtti@12345_com";
+                };
+             }
+             */
             [hud completeAndDismissWithTitle:@"Signed Up!"];
-            NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
-            NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
+//            NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
+//            NSLog(@"userDict response: %@",userDict);
+//            NSString* sessiontoken = [[response objectForKey:@"result"] objectForKey:@"token"];
+//
+//            NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
+//            [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
+//            [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
+//            NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
+//            [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
+//            [useInfo setObject:sessiontoken forKey:@"token"];
+//
+//            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
+//            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
+//            [[NSUserDefaults standardUserDefaults] synchronize];
+//
+//             
+//            [self dismissViewControllerAnimated:YES completion:nil];
+            [self _toggleModeAnimated:YES];
 
-            NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
-            [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
-            [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
-            NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
-            [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
-            [useInfo setObject:sessiontoken forKey:@"token"];
-
-            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
-            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-
-             
-            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }];
 }

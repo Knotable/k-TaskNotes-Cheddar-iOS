@@ -42,6 +42,7 @@
 #define KnotebleShowPopUpMessage            @"KnotebleShowPopUpMessage"
 #define kNeedChangeMongoDbServer            @"kNeedChangeMongoDbServer"
 #define kNeedGoBackToLoginView              @"kNeedGoBackToLoginView"
+#define kTaskChangedNotification            @"TaskChangedNotification"
 
 #define kNeedChangeApplicationHost          @"kNeedChangeApplicationHost"
 

@@ -336,6 +336,7 @@
 	if (self.editing && !self.hasContent) {
 		[self setEditing:NO animated:YES];
 	}
+    
 }
 
 @end

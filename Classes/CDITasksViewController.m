@@ -36,6 +36,8 @@
 @implementation CDITasksViewController {
 	NSIndexPath *_textEditingIndexPath;
 	dispatch_semaphore_t _createTaskSemaphore;
+    NSArray* options;
+    dispatch_queue_t myCustomQueue;
 }
 
 @synthesize addTaskView = _addTaskView;
@@ -109,7 +111,7 @@
 		_createTaskSemaphore = dispatch_semaphore_create(0);
 		dispatch_semaphore_signal(_createTaskSemaphore);
 		
-		self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tasks" style:UIBarButtonItemStyleBordered target:nil action:nil];
+		//self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tasks" style:UIBarButtonItemStyleBordered target:nil action:nil];
 	}
 	return self;
 }
@@ -137,11 +139,19 @@
 
 	self.noContentView = [[CDITasksPlaceholderView alloc] initWithFrame:CGRectZero];
     
+    self.fetchedResultsController.fetchRequest.predicate = self.predicate;
+    [self.fetchedResultsController performFetch:nil];
     
-    
-    
+    myCustomQueue = dispatch_queue_create("com.kNotables.taskNotes", DISPATCH_QUEUE_SERIAL);
+    [self.tableView beginUpdates];
+    [self.tableView reloadData];
+    [self.tableView endUpdates];
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
@@ -154,13 +164,78 @@
 		[self.addTaskView.textField becomeFirstResponder];
 		_focusKeyboard = NO;
 	}
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskChangedNotification:)
+                                                 name:kTaskChangedNotification
+                                               object:nil];
 }
 
+-(void)taskChangedNotification:(NSNotification *) notification{
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //Your main thread code goes in here
+        self.fetchedResultsController.fetchRequest.predicate = self.predicate;
+        
+        [self.fetchedResultsController performFetch:nil];
+        
+        NSLog(@"Im on the main thread");
+        NSDictionary* userInfo = notification.userInfo;
+        options = [userInfo objectForKey:@"options"];
+        
+        //[self.tableView endUpdates];
+    
+        self.ignoreChange = YES;
+        
+        [self setLoading:NO animated:NO];
+        [self hideCoverView];
+
+        self.tableView.hidden=false;
+//        [SSRateLimit executeBlock:^{
+//            [self refresh:nil];
+//        } name:[NSString stringWithFormat:@"refresh-list-%@", self.list.remoteID] limit:30.0];
+        self.loading = NO;
+        [self updatePlaceholderViews:YES];
+        [self.addTaskView.textField resignFirstResponder];
+        //[self.tableView reloadData];
+        [self.tableView endUpdates];
+        [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+    
+        self.ignoreChange=NO;
+        
+        [self controllerDidChangeContent:self.fetchedResultsController];
+//        [self hideNoContentView:YES];
+//        [self hideLoadingView:YES];
+    });
+
+    
+    
+    
+    
+    
+//    NSDictionary* userInfo = notification.userInfo;
+//    NSArray* newOptions = [userInfo objectForKey:@"options"];
+//    
+//    self.fetchedResultsController=nil;
+//    [NSFetchedResultsController deleteCacheWithName:self.cacheName];
+//    NSError* err;
+//    [self.fetchedResultsController performFetch:&err];
+//    //[SSRateLimit executeBlock:^{
+//    
+//    options =newOptions;
+//    [self.tableView beginUpdates];
+//        [self.tableView reloadData];
+//    [self.tableView endUpdates];
+//        self.loading = NO;
+   // } name:[NSString stringWithFormat:@"refresh-list-%@", self.list.remoteID] limit:30.0];
+    
+}
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	
-	if (!self.navigationItem.rightBarButtonItem) {
+    //self.navigationItem.hidesBackButton=YES;
+    if (!self.navigationItem.rightBarButtonItem) {
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleEditMode:)];
         [editButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
         self.navigationItem.rightBarButtonItem = editButton;
@@ -201,7 +276,14 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 	CDITaskTableViewCell *taskCell = (CDITaskTableViewCell *)cell;
-	taskCell.task = [self objectForViewIndexPath:indexPath];
+	//taskCell.task = [self objectForViewIndexPath:indexPath];
+    if(indexPath.row >= [options count]) return;
+    NSDictionary* task =options[indexPath.row];
+    NSMutableDictionary* muTask = [task mutableCopy];
+    NSString* name=[task objectForKey:@"name"] == [NSNull null]?@"-":[task objectForKey:@"name"];
+    [muTask setValue:name forKey:@"name"];
+    taskCell.task =muTask;
+    
 	taskCell.attributedLabel.tag = indexPath.row;
 }
 
@@ -214,7 +296,7 @@
 		return;
 	}
 
-	CDKTask *task = [self objectForViewIndexPath:indexPath];
+    CDKTask *task = [self.fetchedResultsController fetchedObjects][0]; //[self objectForViewIndexPath:indexPath];
 	[self _editTask:task];
 }
 
@@ -231,50 +313,9 @@
 		return;
 	}
 	
-	CDKList *list = self.list;
-	self.loading = YES;
+//	self.loading = YES;
     
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        MeteorClient* meteor=[TNAPIClient sharedClient].meteor;
-        [[TNAPIClient sharedClient] sendRequestKnotes:list.id withCompleteBlock:^(WM_NetworkStatus success,NSError *error,id userData){
-            NSLog(@"received Data = %@",userData);
-            
-            NSLog(@"list is = %@",self.list);
-            NSArray* kNotes = userData;
-            
-            for(int t=0; t<[kNotes count];t++){
-                
-                dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    if (![self doesModelAlreadyExist:kNotes[t]]) {
-//                        CDKTask* task = [[CDKTask alloc]init];
-//                        
-//                        [task createWithSuccess:nil failure:nil];
-//                        
-                        
-//                        int64_t remote_id = [[NSDate date] timeIntervalSince1970];
-//                        CDKList *list = [[CDKList alloc] init];
-//                        list.id = [model objectForKeyedSubscript:@"_id"];
-//                        list.title = [model objectForKey:@"subject"];
-//                        list.position = [model objectForKey:@"uniqueNumber"];
-//                        list.slug = @"";
-//                        list.archivedAt = nil;
-//                        list.updatedAt = nil;
-//                        list.isArchived = NO;
-//                        list.user = [CDKUser currentUser];
-//                        list.createdAt  = [NSDate date];
-//                        list.remoteID = [NSNumber numberWithInt:remote_id];
-//                        __weak NSManagedObjectContext *context = [CDKList mainContext];
-//                        [context performBlockAndWait:^{
-//                            [list save];
-//                        }];
-                    }
-                });
-                
-            }
-            
-        }];
-    });
-    
+
     self.loading = NO;
     
     
@@ -394,15 +435,33 @@
 
 
 - (void)_editTask:(CDKTask *)task {
-	CDIEditTaskViewController *viewController = [[CDIEditTaskViewController alloc] init];
-	viewController.task = task;
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-	[self.navigationController presentModalViewController:navigationController animated:YES];
+//	CDIEditTaskViewController *viewController = [[CDIEditTaskViewController alloc] init];
+//	viewController.task = task;
+//	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+//	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//	[self.navigationController presentModalViewController:navigationController animated:YES];
 }
 
 
 #pragma mark - UITableViewDataSource
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    //return [self.fetchedResultsController fetchedObjects].count;
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSArray* tasks= [self.fetchedResultsController fetchedObjects];
+    CDKTask* task=nil;
+    if(tasks.count >0)
+    {
+        task= tasks[0];
+        
+        if(options == nil)options=[task.checkList mutableCopy];
+        
+    }
+    return [options count];
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *const cellIdentifier = @"cellIdentifier";
@@ -415,7 +474,6 @@
     	[cell setEditingAction:@selector(editRow:) forTarget:self];
 		[cell.checkboxButton addTarget:self action:@selector(_toggleCompletion:) forControlEvents:UIControlEventTouchUpInside];
 	}
-	
 	[self configureCell:cell atIndexPath:indexPath];
 	
 	return cell;
@@ -438,7 +496,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *action = [CDISettingsTapPickerViewController selectedKey];
-	
+    
+    //For now return without doing anything
+    return;
+    
+    
 	// Nothing
 	if ([action isEqualToString:kCDITapActionNothingKey]) {
 		return;
@@ -506,8 +568,11 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	CDKTask *task = [self objectForViewIndexPath:indexPath];
-	return [CDITaskTableViewCell cellHeightForTask:task width:tableView.frame.size.width];
+    NSDictionary *task = options[indexPath.row];//[self objectForViewIndexPath:indexPath];
+    NSMutableDictionary* muTask = [task mutableCopy];
+    NSString* name=[task objectForKey:@"name"] == [NSNull null]?@"-":[task objectForKey:@"name"];
+    [muTask setValue:name forKey:@"name"];
+	return [CDITaskTableViewCell cellHeightForTask:muTask width:tableView.frame.size.width];
 }
 
 
@@ -525,10 +590,9 @@
 #pragma mark - CDIAddTaskViewDelegate
 
 - (void)addTaskView:(CDIAddTaskView *)addTaskView didReturnWithTitle:(NSString *)title {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-		dispatch_semaphore_wait(_createTaskSemaphore, DISPATCH_TIME_FOREVER);
-		dispatch_async(dispatch_get_main_queue(), ^{
-			
+	        CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Inserting Task..." loading:YES];
+            [hud show];
+            
             CDIAddTaskAnimationView *animation = [[CDIAddTaskAnimationView alloc] initWithFrame:self.view.bounds];
 			animation.title = title;
 			[self.view addSubview:animation];
@@ -538,7 +602,6 @@
 			NSInteger numberOfRows = [self.tableView numberOfRowsInSection:0];
 			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:0];
 			
-			//CDKTask *task = [[CDKTask alloc] init];
 			NSNumber* position = [NSNumber numberWithInteger:self.list.highestPosition + 1];
 			
             
@@ -572,18 +635,32 @@
 			} else {
 				point.y = [CDIAddTaskView height];
 			}
-			
-			[animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
-				[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-				self.ignoreChange = NO;
-			} completion:^{		
-				[animation removeFromSuperview];
-				dispatch_semaphore_signal(_createTaskSemaphore);
-			}];
-            
+    
+    
             if([self.fetchedResultsController fetchedObjects].count == 0){
             [[TNAPIClient sharedClient] sendInsertTaskList:taskList withUserId:[TNUserModel currentUser].user_id withUseData:nil withCompleteBlock:^(WM_NetworkStatus success, NSError* error, id userDate){
-                
+                if (error) {
+                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+                    [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
+                        //self.ignoreChange = NO;
+                    } completion:^{
+                        [animation removeFromSuperview];
+                        
+                        [self hideCoverView];
+                    }];
+                    
+                }else{
+                    [hud completeAndDismissWithTitle:@"Inserted Successfully"];
+                    
+                    [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
+                        //self.ignoreChange = NO;
+                    } completion:^{
+                        [animation removeFromSuperview];
+                        
+                        [self hideCoverView];
+                    }];
+                    
+                }
                 NSLog(@"received data = %@",userDate);
 
             }];
@@ -593,7 +670,7 @@
                 NSDictionary* kNote=nil;
                 for(NSString* kNoteId in kNotes){
                     kNote = [kNotes objectForKey:kNoteId];
-                    if([[kNote objectForKey:@"topic_id"]isEqualToString:self.list.id] && [[kNote objectForKey:@"archived"] boolValue] == false){
+                    if([[kNote objectForKey:@"title"]isEqualToString:@"TaskNotes"] &&[[kNote objectForKey:@"topic_id"]isEqualToString:self.list.id] && [[kNote objectForKey:@"archived"] boolValue] == false){
                         NSMutableArray* oldOptions = [kNote objectForKey:@"options"];
                         Boolean alreadyAdded = false;
                         if(oldOptions){
@@ -622,6 +699,30 @@
                         }
                         
                         [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
+                            if (error) {
+                                [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+                                
+                                [self setEditing:NO animated:NO];
+                                [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
+                                    //self.ignoreChange = NO;
+                                } completion:^{
+                                    [animation removeFromSuperview];
+                                    //[self hideCoverView];
+                                    
+                                }];
+
+                            }else{
+                                [hud completeAndDismissWithTitle:@"Inserted Successfully"];
+                                [self setEditing:NO animated:NO];
+                                [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
+                                    //self.ignoreChange = NO;
+                                } completion:^{
+                                    [animation removeFromSuperview];
+                                    [self hideCoverView];
+                                    
+                                }];
+                                
+                            }
                             NSLog(@"returned data : %@",userDate);
 
                         }];
@@ -629,8 +730,11 @@
                     }
                 }
             }
-		});
-	});
+
+    
+    
+    
+
 }
 
 
@@ -745,6 +849,18 @@
 			[self.navigationController popToRootViewControllerAnimated:YES];
 		}
 	}
+}
+
+
+#pragma mark - NSFetchedResultsController
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [super controllerDidChangeContent:controller];
+    
+   }
+
+-(BOOL)hasContent{
+    return [super hasContent] ? true : [options count];
 }
 
 @end

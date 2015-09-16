@@ -24,6 +24,7 @@
 @dynamic user;
 @dynamic list;
 @dynamic tags;
+@dynamic checkList;
 
 - (void)setCompleted:(BOOL)completed {
 	if (completed == [self isCompleted]) {

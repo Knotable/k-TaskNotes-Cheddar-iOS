@@ -113,7 +113,7 @@
 	if (results.count == 0) {
 		return 0;
 	}
-	return [[(CDKList *)[results objectAtIndex:0] position] integerValue];
+	return [[(CDKTask *)[results objectAtIndex:0] checkList] count];
 }
 
 
