@@ -9,6 +9,7 @@
 #import "CDIAppDelegate.h"
 #import "CDISplitViewController.h"
 #import "CDIListsViewController.h"
+#import "CDISignInViewController.h"
 #import "CDITransactionObserver.h"
 #import "CDIDefines.h"
 #import "CDISettingsTapPickerViewController.h"
@@ -66,8 +67,13 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.window.rootViewController = [[CDISplitViewController alloc] init];
 	} else {
-		UIViewController *viewController = [[CDIListsViewController alloc] init];
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		UIViewController *viewController;
+        if([CDKUser currentUser]){
+            viewController = [[CDIListsViewController alloc] init];
+        }else{
+            viewController= [[CDISignInViewController alloc]init];
+        }
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}
     [self loadServerConfig];
@@ -222,20 +228,20 @@
         self.ddp = [[ObjectiveDDP alloc]initWithURLString:[model meteorWebsocketURL] delegate:self.meteorClient];
         self.meteorClient.ddp = self.ddp;
         [self.ddp connectWebSocket];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
-        [self.meteorClient addSubscription:METEORCOLLECTION_MESSAGES];
-        [self.meteorClient addSubscription:METEORCOLLECTION_MUTEKNOTES];
-        [self.meteorClient addSubscription:METEORCOLLECTION_NOTIFICATIONS];
-        [self.meteorClient addSubscription:METEORCOLLECTION_PEOPLE];
-        [self.meteorClient addSubscription:METEORCOLLECTION_TOPICS];
-        [self.meteorClient addSubscription:METEORCOLLECTION_USERPRIVATEDATA];
-        [self.meteorClient addSubscription:METEORCOLLECTION_USERS];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_TOPIC];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_REST];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_PINNED];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KEY];
-        [self.meteorClient addSubscription:METEORCOLLECTION_HOTKNOTES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_MESSAGES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_MUTEKNOTES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_NOTIFICATIONS];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_PEOPLE];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_TOPICS];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_USERPRIVATEDATA];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_USERS];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_TOPIC];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_REST];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_PINNED];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KEY];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_HOTKNOTES];
 
 //        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
 //        [self.meteorClient addObserver:self

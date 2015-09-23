@@ -45,9 +45,15 @@
 }
 
 + (TNUserModel*)currentUser{
-        NSDictionary* userInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kTNUserIDKey] ;
-        TNUserModel *userModel =[[TNUserModel alloc]initWithDict:userInfo];
-        if (userInfo != nil ) {
+        NSString* user_ID = [[NSUserDefaults standardUserDefaults] objectForKey:kTNUserIDKey] ;
+    
+        TNUserModel *userModel =[[TNUserModel alloc]init];
+    
+        if (user_ID != nil ) {
+            userModel.user_id = user_ID;
+            userModel.user_email = [[NSUserDefaults standardUserDefaults] objectForKey:kTNUserEmail];
+            userModel.user_sessiontoken = [[NSUserDefaults standardUserDefaults] objectForKey:kTNUserSessionToken];
+            userModel.user_username = [[NSUserDefaults standardUserDefaults] objectForKey:kTNUserName];
             return userModel;
         }
     return nil;
@@ -57,7 +63,14 @@
         if (user == nil) {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kTNUserIDKey];
         }else{
-            [[NSUserDefaults standardUserDefaults] setObject:user forKey:kTNUserIDKey];
+//            NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+//            f.numberStyle = NSNumberFormatterDecimalStyle;
+//            NSNumber *user_ID = [f numberFromString:user.user_id];
+//            
+            [[NSUserDefaults standardUserDefaults] setObject:user.user_id forKey:kTNUserIDKey];
+            [[NSUserDefaults standardUserDefaults] setObject:user.user_email forKey:kTNUserEmail];
+            [[NSUserDefaults standardUserDefaults] setObject:user.user_sessiontoken forKey:kTNUserSessionToken];
+            [[NSUserDefaults standardUserDefaults] setObject:user.user_username forKey:kTNUserName];
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
         [CDIAppDelegate sharedAppDelegate].userModel = user;

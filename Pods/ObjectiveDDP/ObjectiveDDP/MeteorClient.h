@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, AuthState) {
 
 typedef void(^MeteorClientMethodCallback)(NSDictionary *response, NSError *error);
 
+
 @interface MeteorClient : NSObject<ObjectiveDDPDelegate>
 
 @property (nonatomic, strong) ObjectiveDDP *ddp;

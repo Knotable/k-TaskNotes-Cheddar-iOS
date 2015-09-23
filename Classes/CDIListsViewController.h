@@ -14,5 +14,5 @@ extern NSString *const kCDISelectedListKey;
 @property (nonatomic,strong) MeteorClient *meteor;
 - (void)showSettings:(id)sender;
 - (void)createList:(id)sender;
-
+-(void)turnOnBackground;
 @end

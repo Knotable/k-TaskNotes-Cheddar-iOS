@@ -16,12 +16,12 @@
 
 #pragma mark -
 
-+ (id)objectWithRemoteID:(NSNumber *)remoteID {
++ (id)objectWithRemoteID:(id )remoteID {
 	return [self objectWithRemoteID:remoteID context:nil];
 }
 
 
-+ (id)objectWithRemoteID:(NSNumber *)remoteID context:(NSManagedObjectContext *)context {
++ (id)objectWithRemoteID:(id )remoteID context:(NSManagedObjectContext *)context {
 	// Look up the object
 	SSRemoteManagedObject *object = [self existingObjectWithRemoteID:remoteID context:context];
 	
@@ -36,12 +36,12 @@
 }
 
 
-+ (id)existingObjectWithRemoteID:(NSNumber *)remoteID {
++ (id)existingObjectWithRemoteID:(id )remoteID {
 	return [self existingObjectWithRemoteID:remoteID context:nil];
 }
 
 
-+ (id)existingObjectWithRemoteID:(NSNumber *)remoteID context:(NSManagedObjectContext *)context {
++ (id)existingObjectWithRemoteID:(id )remoteID context:(NSManagedObjectContext *)context {
 	// Default to the main context
 	if (!context) {
 		context = [self mainContext];
@@ -159,7 +159,13 @@
 
 
 - (BOOL)isRemote {
-	return self.remoteID.integerValue > 0;
+    if([self.remoteID class] == [NSString class]){
+        return true;
+    }else if([self.remoteID class] == [NSNumber class]){
+        NSNumber* remote_id = self.remoteID;
+        return remote_id.integerValue > 0;
+    }
+    return false;//self.remoteID.integerValue > 0;
 }
 
 

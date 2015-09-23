@@ -12,7 +12,7 @@
 
 @interface SSRemoteManagedObject : SSManagedObject
 
-@property (nonatomic, strong) NSNumber *remoteID;
+@property (nonatomic, strong) id remoteID;
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;
 
@@ -21,16 +21,16 @@
  called on a subclass. The object will be created if it is not found. If a context is not specified, the `mainContext`
  will be used.
  */
-+ (id)objectWithRemoteID:(NSNumber *)remoteID;
-+ (id)objectWithRemoteID:(NSNumber *)remoteID context:(NSManagedObjectContext *)context;
++ (id)objectWithRemoteID:(id )remoteID;
++ (id)objectWithRemoteID:(id )remoteID context:(NSManagedObjectContext *)context;
 
 /**
  Find an existing object with a given remote ID. The class' entity is used in the find. Therefore, this should only be
  called on a subclass. `nil` is returned if the object is not found. If a context is not specified, the `mainContext`
  will be used.
  */
-+ (id)existingObjectWithRemoteID:(NSNumber *)remoteID;
-+ (id)existingObjectWithRemoteID:(NSNumber *)remoteID context:(NSManagedObjectContext *)context;
++ (id)existingObjectWithRemoteID:(id )remoteID;
++ (id)existingObjectWithRemoteID:(id )remoteID context:(NSManagedObjectContext *)context;
 
 /**
  Find an existing object with a given remote ID. The class' entity is used in the find. Therefore, this should only be
