@@ -1698,7 +1698,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1816,7 +1816,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1874,7 +1874,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
