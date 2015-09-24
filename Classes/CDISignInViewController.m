@@ -86,7 +86,7 @@
 
 - (id)init {
 	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {
-		self.title = @"Tasknote";
+		self.title = @"Tasknotes";
 		UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
 		title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
 //		self.navigationItem.titleView = title;

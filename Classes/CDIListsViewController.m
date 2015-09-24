@@ -80,9 +80,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     _meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
     
 	UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
-    title.accessibilityLabel = @"Tasknote";
+    title.accessibilityLabel = @"Tasknotes";
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
-    self.title = @"Tasknote";
+    self.title = @"Tasknotes";
     
 //	self.navigationItem.titleView = title;
 
