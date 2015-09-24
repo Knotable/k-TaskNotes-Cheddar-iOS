@@ -14,9 +14,9 @@
 
 @interface CDITaskTableViewCell : CDITableViewCell
 
-+ (CGFloat)cellHeightForTask:(CDKTask *)task width:(CGFloat)width;
++ (CGFloat)cellHeightForTask:(NSDictionary *)task width:(CGFloat)width;
 
-@property (nonatomic, strong) CDKTask *task;
+@property (nonatomic, strong) NSDictionary *task;
 @property (nonatomic, strong, readonly) CDIAttributedLabel *attributedLabel;
 @property (nonatomic, strong, readonly) CDICheckboxButton *checkboxButton;
 

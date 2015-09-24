@@ -31,6 +31,8 @@
 		21396B6717728AF70040FCA2 /* SSPullToRefreshSimpleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6317728AE50040FCA2 /* SSPullToRefreshSimpleContentView.m */; };
 		21396B6817728AF70040FCA2 /* SSPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6517728AE50040FCA2 /* SSPullToRefreshView.m */; };
 		21E0A67A16AAE0BA002479F9 /* CDIViewArchiveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E0A67916AAE0BA002479F9 /* CDIViewArchiveButton.m */; };
+		57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E2FBF11B8A03440076981B /* TNTaskList.m */; };
+		57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */; };
 		B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */; };
 		B208BC2A15BF63A80080705D /* CDIAddTaskAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9515BF63A80080705D /* CDIAddTaskAnimationView.m */; };
 		B208BC2B15BF63A80080705D /* CDIAddTaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9715BF63A80080705D /* CDIAddTaskView.m */; };
@@ -334,6 +336,9 @@
 		21E0A67816AAE0BA002479F9 /* CDIViewArchiveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIViewArchiveButton.h; sourceTree = "<group>"; };
 		21E0A67916AAE0BA002479F9 /* CDIViewArchiveButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIViewArchiveButton.m; sourceTree = "<group>"; };
 		35BC470360D304F7DFF584A3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		57E2FBF01B8A03440076981B /* TNTaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNTaskList.h; sourceTree = "<group>"; };
+		57E2FBF11B8A03440076981B /* TNTaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNTaskList.m; sourceTree = "<group>"; };
+		57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		AFA60E65018E6ADEF158EAA5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B208BB9215BF63A80080705D /* CDIAddListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIAddListTableViewCell.h; sourceTree = "<group>"; };
 		B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIAddListTableViewCell.m; sourceTree = "<group>"; };
@@ -602,6 +607,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */,
 				1F4C23BC1B68829600EDCBA4 /* libM13OrderedDictionary.a in Frameworks */,
 				1F4C23BD1B68829600EDCBA4 /* libPods.a in Frameworks */,
 				B294593C16193EFE0098FFE8 /* MessageUI.framework in Frameworks */,
@@ -635,6 +641,8 @@
 			children = (
 				1FCCDF641B61F04200872CEE /* TNAPIClient.h */,
 				1FCCDF651B61F04200872CEE /* TNAPIClient.m */,
+				57E2FBF01B8A03440076981B /* TNTaskList.h */,
+				57E2FBF11B8A03440076981B /* TNTaskList.m */,
 			);
 			path = TaskNoteAPIClient;
 			sourceTree = "<group>";
@@ -937,6 +945,7 @@
 		B208C1FC15BF64690080705D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */,
 				1F4C23BA1B68829600EDCBA4 /* libM13OrderedDictionary.a */,
 				1F4C23BB1B68829600EDCBA4 /* libPods.a */,
 				B2AD031815C4896E00D9B909 /* AudioToolbox.framework */,
@@ -1543,6 +1552,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */,
 				B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */,
 				1FCCDF6C1B61F04200872CEE /* ServerConfigModel.m in Sources */,
 				B208BC2A15BF63A80080705D /* CDIAddTaskAnimationView.m in Sources */,
@@ -1688,7 +1698,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1698,13 +1708,13 @@
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
-					$inherited,
+					"$(inherited)",
 					"-lc++",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
+				PROVISIONING_PROFILE = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Adhoc;
@@ -1806,7 +1816,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1819,12 +1829,20 @@
 					"-ObjC",
 					"-lc++",
 					"$(FRANK_LDFLAGS)",
-					$inherited,
+					"$(inherited)",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-all_load",
+					"-ObjC",
+					"-lc++",
+					"$(FRANK_LDFLAGS)",
+					"$(inherited)",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "b77ef7df-07e1-4bda-96f6-57964c750e69";
+				PROVISIONING_PROFILE = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1856,7 +1874,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1866,12 +1884,13 @@
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
-					$inherited,
+					"$(inherited)",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "d76e68d9-5f9d-42ed-90fb-b85f0695448e";
+				PROVISIONING_PROFILE = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
