@@ -145,7 +145,7 @@
 	}
 
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Signing in..." loading:YES];
-	[hud show];
+//	[hud show];
 
     [[TNAPIClient sharedClient] logonWithUsernameOrEmail:self.usernameTextField.text password:self.passwordTextField.text withBlock:^(NSDictionary *response, NSError *error) {
         if (error) {
@@ -206,7 +206,7 @@
 	}
 
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Signing up..." loading:YES];
-	[hud show];
+//	[hud show];
 
     NSDictionary *registrationInfo = @{
                                        @"username":self.usernameTextField.text,

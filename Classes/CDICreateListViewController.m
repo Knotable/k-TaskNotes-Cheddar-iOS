@@ -109,7 +109,7 @@
 
 	// Create list
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
-	[hud show];
+//	[hud show];
 	
 	CDKList *list = [[CDKList alloc] init];
 	list.title = title;

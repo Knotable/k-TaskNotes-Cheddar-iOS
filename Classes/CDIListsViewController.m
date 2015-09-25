@@ -398,7 +398,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         
         if(!todoExists){
             CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
-            [hud show];
+//            [hud show];
             
             [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasks from IOS" withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
                 if (error) {
@@ -1433,7 +1433,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     NSArray *params = @[requiredTopicParams, optionalTopicParams, additionalOptions];
 
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
-	[hud show];
+//	[hud show];
 
     [[TNAPIClient sharedClient] insertTopicWithParam:@"create_topic" withPram:params withBlock:^(NSDictionary *model, NSError *error) {
         if (!error) {

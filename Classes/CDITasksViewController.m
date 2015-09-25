@@ -591,8 +591,8 @@
 
 - (void)addTaskView:(CDIAddTaskView *)addTaskView didReturnWithTitle:(NSString *)title {
 	        CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Inserting Task..." loading:YES];
-            [hud show];
-            
+//            [hud show];
+    
             CDIAddTaskAnimationView *animation = [[CDIAddTaskAnimationView alloc] initWithFrame:self.view.bounds];
 			animation.title = title;
 			[self.view addSubview:animation];

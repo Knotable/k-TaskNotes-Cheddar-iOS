@@ -132,7 +132,7 @@
 		return;
 	}
 	_animating = YES;
-	
+
 	CGFloat width = self.view.frame.size.width;
 	CGFloat x = roundf((width - 280.0f) / 2.0f);
 	CGFloat offset = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 30.0f : 0.0f;
@@ -196,7 +196,7 @@
 	_purchasing = YES;
 	
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Upgrading..."];
-	[hud show];
+//	[hud show];
 	
 	NSDictionary *products = [[CDITransactionObserver defaultObserver] products];
 	SKProduct *product = [products objectForKey:identifier];
@@ -208,7 +208,7 @@
 	
 	SKPayment *payment = [SKPayment paymentWithProduct:product];
 	[[SKPaymentQueue defaultQueue] addPayment:payment];
-	
+
 	__weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserverForName:kCDIPaymentTransactionDidCompleteNotificationName object:nil queue:nil usingBlock:^(NSNotification *notificaiton) {
 		[hud dismiss];
