@@ -1275,29 +1275,29 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	}
 	self.loading = YES;
 
-	[[CDKHTTPClient sharedClient] getListsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
-		dispatch_async(dispatch_get_main_queue(), ^{
+//	[[CDKHTTPClient sharedClient] getListsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			self.loading = NO;
+//
+//			[_archiveButton setTitle:@"19 Archived Lists" forState:UIControlStateNormal];
+//			if (_archiveButton.alpha < 1.0f) {
+//				[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+//					_archiveButton.alpha = 1.0f;
+//				} completion:nil];
+//			}
+//		});
+//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			[SSRateLimit resetLimitForName:@"refresh-lists"];
 			self.loading = NO;
-
-			[_archiveButton setTitle:@"19 Archived Lists" forState:UIControlStateNormal];
-			if (_archiveButton.alpha < 1.0f) {
-				[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-					_archiveButton.alpha = 1.0f;
-				} completion:nil];
-			}
-		});
-	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[SSRateLimit resetLimitForName:@"refresh-lists"];
-			self.loading = NO;
-            [_archiveButton setTitle:@"19 Archived Lists" forState:UIControlStateNormal];
-            if (_archiveButton.alpha < 1.0f) {
-                [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-                    _archiveButton.alpha = 1.0f;
-                } completion:nil];
-            }
-        });
-	}];
+//            [_archiveButton setTitle:@"19 Archived Lists" forState:UIControlStateNormal];
+//            if (_archiveButton.alpha < 1.0f) {
+//                [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+//                    _archiveButton.alpha = 1.0f;
+//                } completion:nil];
+//            }
+//        });
+//	}];
 
 	// Also update their user incase push for updates failed
 	//[[CDKHTTPClient sharedClient] updateCurrentUserWithSuccess:nil failure:nil];

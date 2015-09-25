@@ -33,6 +33,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Configure analytics
 	// If you don't work at Nothing Magical, you shouldn't turn these on.
+    
 #if CHEDDAR_PRODUCTION_MODE
 	#ifdef CHEDDAR_CRASHLYTICS_KEY
 	[Crashlytics startWithAPIKey:CHEDDAR_CRASHLYTICS_KEY];
@@ -49,7 +50,8 @@
 	[CDKHTTPClient setDevelopmentModeEnabled:YES];
 	[CDKPushController setDevelopmentModeEnabled:YES];
 #endif
-
+    // Set status bar
+    [application setStatusBarStyle:UIStatusBarStyleLightContent];
 	// Default defaults
 	NSDictionary *defaults = @{
 		kCDITapActionDefaultsKey: kCDITapActionCompleteKey,
@@ -72,6 +74,7 @@
             viewController = [[CDIListsViewController alloc] init];
         }else{
             viewController= [[CDISignInViewController alloc]init];
+//            viewController = [[CDIFirstLaunchViewController alloc]init];
         }
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;

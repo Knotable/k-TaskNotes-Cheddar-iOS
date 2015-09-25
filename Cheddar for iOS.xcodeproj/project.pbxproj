@@ -31,8 +31,21 @@
 		21396B6717728AF70040FCA2 /* SSPullToRefreshSimpleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6317728AE50040FCA2 /* SSPullToRefreshSimpleContentView.m */; };
 		21396B6817728AF70040FCA2 /* SSPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6517728AE50040FCA2 /* SSPullToRefreshView.m */; };
 		21E0A67A16AAE0BA002479F9 /* CDIViewArchiveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E0A67916AAE0BA002479F9 /* CDIViewArchiveButton.m */; };
+		22AFD5DF1BB4D91700E99320 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22AFD5DE1BB4D91700E99320 /* JavaScriptCore.framework */; };
+		22AFD5E51BB4DDE000E99320 /* iTunesArtwork@2x_(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5E41BB4DDE000E99320 /* iTunesArtwork@2x_(1).png */; };
+		22AFD5E71BB4E06C00E99320 /* firstlauch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5E61BB4E06C00E99320 /* firstlauch@2x.png */; };
+		22AFD5E91BB4E0C900E99320 /* firstlauch.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5E81BB4E0C900E99320 /* firstlauch.png */; };
+		22AFD5EB1BB4E87700E99320 /* firstlauch@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5EA1BB4E87700E99320 /* firstlauch@3x.png */; };
+		22AFD5EF1BB4F82700E99320 /* k_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5EC1BB4F82700E99320 /* k_image.png */; };
+		22AFD5F01BB4F82700E99320 /* k_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5ED1BB4F82700E99320 /* k_image@2x.png */; };
+		22AFD5F11BB4F82700E99320 /* k_image@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5EE1BB4F82700E99320 /* k_image@3x.png */; };
+		22AFD5F81BB52CBF00E99320 /* Default-568h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F21BB52CBF00E99320 /* Default-568h@3x.png */; };
+		22AFD5F91BB52CBF00E99320 /* Default-Landscape_IO7@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F31BB52CBF00E99320 /* Default-Landscape_IO7@3x.png */; };
+		22AFD5FA1BB52CBF00E99320 /* Default-Landscape@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F41BB52CBF00E99320 /* Default-Landscape@3x.png */; };
+		22AFD5FB1BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F51BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png */; };
+		22AFD5FC1BB52CBF00E99320 /* Default-Portrait@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F61BB52CBF00E99320 /* Default-Portrait@3x.png */; };
+		22AFD5FD1BB52CBF00E99320 /* Default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F71BB52CBF00E99320 /* Default@3x.png */; };
 		57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E2FBF11B8A03440076981B /* TNTaskList.m */; };
-		57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */; };
 		B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */; };
 		B208BC2A15BF63A80080705D /* CDIAddTaskAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9515BF63A80080705D /* CDIAddTaskAnimationView.m */; };
 		B208BC2B15BF63A80080705D /* CDIAddTaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9715BF63A80080705D /* CDIAddTaskView.m */; };
@@ -335,10 +348,23 @@
 		21396B6517728AE50040FCA2 /* SSPullToRefreshView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSPullToRefreshView.m; sourceTree = "<group>"; };
 		21E0A67816AAE0BA002479F9 /* CDIViewArchiveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIViewArchiveButton.h; sourceTree = "<group>"; };
 		21E0A67916AAE0BA002479F9 /* CDIViewArchiveButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIViewArchiveButton.m; sourceTree = "<group>"; };
+		22AFD5DE1BB4D91700E99320 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		22AFD5E41BB4DDE000E99320 /* iTunesArtwork@2x_(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x_(1).png"; sourceTree = "<group>"; };
+		22AFD5E61BB4E06C00E99320 /* firstlauch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firstlauch@2x.png"; sourceTree = "<group>"; };
+		22AFD5E81BB4E0C900E99320 /* firstlauch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firstlauch.png; sourceTree = "<group>"; };
+		22AFD5EA1BB4E87700E99320 /* firstlauch@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firstlauch@3x.png"; sourceTree = "<group>"; };
+		22AFD5EC1BB4F82700E99320 /* k_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = k_image.png; sourceTree = "<group>"; };
+		22AFD5ED1BB4F82700E99320 /* k_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "k_image@2x.png"; sourceTree = "<group>"; };
+		22AFD5EE1BB4F82700E99320 /* k_image@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "k_image@3x.png"; sourceTree = "<group>"; };
+		22AFD5F21BB52CBF00E99320 /* Default-568h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@3x.png"; sourceTree = "<group>"; };
+		22AFD5F31BB52CBF00E99320 /* Default-Landscape_IO7@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape_IO7@3x.png"; sourceTree = "<group>"; };
+		22AFD5F41BB52CBF00E99320 /* Default-Landscape@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@3x.png"; sourceTree = "<group>"; };
+		22AFD5F51BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait_IOS7@3x.png"; sourceTree = "<group>"; };
+		22AFD5F61BB52CBF00E99320 /* Default-Portrait@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@3x.png"; sourceTree = "<group>"; };
+		22AFD5F71BB52CBF00E99320 /* Default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@3x.png"; sourceTree = "<group>"; };
 		35BC470360D304F7DFF584A3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		57E2FBF01B8A03440076981B /* TNTaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNTaskList.h; sourceTree = "<group>"; };
 		57E2FBF11B8A03440076981B /* TNTaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNTaskList.m; sourceTree = "<group>"; };
-		57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		AFA60E65018E6ADEF158EAA5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B208BB9215BF63A80080705D /* CDIAddListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIAddListTableViewCell.h; sourceTree = "<group>"; };
 		B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIAddListTableViewCell.m; sourceTree = "<group>"; };
@@ -607,7 +633,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */,
+				22AFD5DF1BB4D91700E99320 /* JavaScriptCore.framework in Frameworks */,
 				1F4C23BC1B68829600EDCBA4 /* libM13OrderedDictionary.a in Frameworks */,
 				1F4C23BD1B68829600EDCBA4 /* libPods.a in Frameworks */,
 				B294593C16193EFE0098FFE8 /* MessageUI.framework in Frameworks */,
@@ -735,6 +761,19 @@
 		B208BBD615BF63A80080705D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				22AFD5F21BB52CBF00E99320 /* Default-568h@3x.png */,
+				22AFD5F31BB52CBF00E99320 /* Default-Landscape_IO7@3x.png */,
+				22AFD5F41BB52CBF00E99320 /* Default-Landscape@3x.png */,
+				22AFD5F51BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png */,
+				22AFD5F61BB52CBF00E99320 /* Default-Portrait@3x.png */,
+				22AFD5F71BB52CBF00E99320 /* Default@3x.png */,
+				22AFD5EC1BB4F82700E99320 /* k_image.png */,
+				22AFD5ED1BB4F82700E99320 /* k_image@2x.png */,
+				22AFD5EE1BB4F82700E99320 /* k_image@3x.png */,
+				22AFD5EA1BB4E87700E99320 /* firstlauch@3x.png */,
+				22AFD5E81BB4E0C900E99320 /* firstlauch.png */,
+				22AFD5E61BB4E06C00E99320 /* firstlauch@2x.png */,
+				22AFD5E41BB4DDE000E99320 /* iTunesArtwork@2x_(1).png */,
 				1FB095891B58AF5C0024A731 /* Icon-129.png */,
 				1BB318A21A9F00200095F49D /* Icon-180.png */,
 				1B2312DE1A9ECCBF0048A86B /* Default-Landscape_IO7.png */,
@@ -945,7 +984,7 @@
 		B208C1FC15BF64690080705D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */,
+				22AFD5DE1BB4D91700E99320 /* JavaScriptCore.framework */,
 				1F4C23BA1B68829600EDCBA4 /* libM13OrderedDictionary.a */,
 				1F4C23BB1B68829600EDCBA4 /* libPods.a */,
 				B2AD031815C4896E00D9B909 /* AudioToolbox.framework */,
@@ -1257,7 +1296,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CDI;
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Nothing Magical";
 				TargetAttributes = {
 					B23FA754151FE0710069A0D1 = {
@@ -1361,11 +1400,13 @@
 				B208BC5315BF63A80080705D /* archive-button.png in Resources */,
 				B208BC5415BF63A80080705D /* archive-button@2x.png in Resources */,
 				B208BC5515BF63A80080705D /* big-button-highlighted.png in Resources */,
+				22AFD5E71BB4E06C00E99320 /* firstlauch@2x.png in Resources */,
 				B208BC5615BF63A80080705D /* big-button-highlighted@2x.png in Resources */,
 				B208BC5715BF63A80080705D /* big-button.png in Resources */,
 				B208BC5815BF63A80080705D /* big-button@2x.png in Resources */,
 				B208BC5915BF63A80080705D /* big-gray-button-highlighted.png in Resources */,
 				B208BC5A15BF63A80080705D /* big-gray-button-highlighted@2x.png in Resources */,
+				22AFD5E91BB4E0C900E99320 /* firstlauch.png in Resources */,
 				B208BC5B15BF63A80080705D /* big-gray-button.png in Resources */,
 				B208BC5C15BF63A80080705D /* big-gray-button@2x.png in Resources */,
 				B208BC5D15BF63A80080705D /* big-orange-button-highlighted.png in Resources */,
@@ -1379,13 +1420,18 @@
 				B208BC6D15BF63A80080705D /* Default-Portrait.png in Resources */,
 				B208BC6E15BF63A80080705D /* Default-Portrait@2x.png in Resources */,
 				B208BC6F15BF63A80080705D /* Default.png in Resources */,
+				22AFD5FA1BB52CBF00E99320 /* Default-Landscape@3x.png in Resources */,
 				B208BC7015BF63A80080705D /* Default@2x.png in Resources */,
 				B208BC7115BF63A80080705D /* disclosure-highlighted.png in Resources */,
 				B208BC7215BF63A80080705D /* disclosure-highlighted@2x.png in Resources */,
 				B208BC7315BF63A80080705D /* disclosure.png in Resources */,
+				22AFD5FB1BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png in Resources */,
 				B208BC7415BF63A80080705D /* disclosure@2x.png in Resources */,
+				22AFD5FC1BB52CBF00E99320 /* Default-Portrait@3x.png in Resources */,
+				22AFD5EF1BB4F82700E99320 /* k_image.png in Resources */,
 				B208BC7515BF63A80080705D /* Icon-100.png in Resources */,
 				B208BC7615BF63A80080705D /* Icon-114.png in Resources */,
+				22AFD5F91BB52CBF00E99320 /* Default-Landscape_IO7@3x.png in Resources */,
 				B208BC7715BF63A80080705D /* Icon-144.png in Resources */,
 				B208BC7815BF63A80080705D /* Icon-29.png in Resources */,
 				1B2312D71A9ECA230048A86B /* Icon-80.png in Resources */,
@@ -1394,6 +1440,7 @@
 				B208BC7B15BF63A80080705D /* Icon-58.png in Resources */,
 				B208BC7C15BF63A80080705D /* Icon-72.png in Resources */,
 				1B2312D51A9EC9E30048A86B /* Icon-152.png in Resources */,
+				22AFD5EB1BB4E87700E99320 /* firstlauch@3x.png in Resources */,
 				B208BC7D15BF63A80080705D /* list-icon.png in Resources */,
 				B208BC7E15BF63A80080705D /* list-icon@2x.png in Resources */,
 				B208BC7F15BF63A80080705D /* nav-back-highlighted.png in Resources */,
@@ -1424,9 +1471,11 @@
 				B208BC9715BF63A80080705D /* textfield-focused.png in Resources */,
 				B208BC9815BF63A80080705D /* textfield-focused@2x.png in Resources */,
 				B208BC9915BF63A80080705D /* textfield.png in Resources */,
+				22AFD5FD1BB52CBF00E99320 /* Default@3x.png in Resources */,
 				B208BC9A15BF63A80080705D /* textfield@2x.png in Resources */,
 				B208BC9B15BF63A80080705D /* x.png in Resources */,
 				B208BC9C15BF63A80080705D /* x@2x.png in Resources */,
+				22AFD5E51BB4DDE000E99320 /* iTunesArtwork@2x_(1).png in Resources */,
 				B28FD2DB15BF742D00365CD6 /* Gotham-Bold.otf in Resources */,
 				B28FD2DC15BF742D00365CD6 /* Gotham-BoldItalic.otf in Resources */,
 				B28FD2DD15BF742D00365CD6 /* Gotham-Book.otf in Resources */,
@@ -1471,8 +1520,10 @@
 				1B2312D91A9ECA500048A86B /* Icon-40.png in Resources */,
 				B29011BC15C4D247008FC626 /* reload-button-mini@2x.png in Resources */,
 				B29011BD15C4D247008FC626 /* safari-button-mini.png in Resources */,
+				22AFD5F11BB4F82700E99320 /* k_image@3x.png in Resources */,
 				B29011BE15C4D247008FC626 /* safari-button-mini@2x.png in Resources */,
 				B29011BF15C4D247008FC626 /* stop-button-mini.png in Resources */,
+				22AFD5F01BB4F82700E99320 /* k_image@2x.png in Resources */,
 				B29011C015C4D247008FC626 /* stop-button-mini@2x.png in Resources */,
 				B296A76A15C7B610006137C7 /* cell-checkmark@2x.png in Resources */,
 				B296A76D15C7B6BB006137C7 /* cell-checkmark-highlighted.png in Resources */,
@@ -1483,6 +1534,7 @@
 				B2B25FDE161651F900ACFD3E /* About.html in Resources */,
 				B2746E7B1618EE4A007A750B /* move_task.png in Resources */,
 				B2746E7C1618EE4A007A750B /* move_task@2x.png in Resources */,
+				22AFD5F81BB52CBF00E99320 /* Default-568h@3x.png in Resources */,
 				1BB318A31A9F00200095F49D /* Icon-180.png in Resources */,
 				DAA8ED5C161C7ABB0024C172 /* DevIcon-29.png in Resources */,
 				DAA8ED5D161C7ABB0024C172 /* DevIcon-50.png in Resources */,
@@ -1642,17 +1694,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_ID = "com.nothingmagical.cheddar-ios";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ICON_100 = "Icon-100.png";
 				ICON_114 = "Icon-114.png";
@@ -1674,7 +1737,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1B2993BC202EBDDC58596003 /* Pods.adhoc.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1712,7 +1774,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "ba5cdc81-688b-4825-8943-8b281783e82a";
+				PROVISIONING_PROFILE = "a2339789-7be4-49d2-8258-78fbab1aee51";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1723,15 +1785,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_ID = "com.nothingmagical.cheddar-ios.dev";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1739,8 +1809,11 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ICON_100 = "DevIcon-100.png";
 				ICON_114 = "DevIcon-114.png";
@@ -1751,6 +1824,7 @@
 				ICON_58 = "DevIcon-58.png";
 				ICON_72 = "DevIcon-72.png";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
@@ -1760,17 +1834,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_ID = "com.nothingmagical.cheddar-ios";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ICON_100 = "Icon-100.png";
 				ICON_114 = "Icon-114.png";
@@ -1792,7 +1877,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AFA60E65018E6ADEF158EAA5 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1839,8 +1923,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "ba5cdc81-688b-4825-8943-8b281783e82a";
-				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
+				PROVISIONING_PROFILE = "a2339789-7be4-49d2-8258-78fbab1aee51";
+				"PROVISIONING_PROFILE[sdk=*]" = "a2339789-7be4-49d2-8258-78fbab1aee51";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1851,7 +1935,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35BC470360D304F7DFF584A3 /* Pods.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1887,8 +1970,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "ba5cdc81-688b-4825-8943-8b281783e82a";
-				"PROVISIONING_PROFILE[sdk=*]" = "ba5cdc81-688b-4825-8943-8b281783e82a";
+				PROVISIONING_PROFILE = "a2339789-7be4-49d2-8258-78fbab1aee51";
+				"PROVISIONING_PROFILE[sdk=*]" = "a2339789-7be4-49d2-8258-78fbab1aee51";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
