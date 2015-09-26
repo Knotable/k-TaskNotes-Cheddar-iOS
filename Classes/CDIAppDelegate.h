@@ -14,6 +14,7 @@
 @property (strong, nonatomic) MeteorClient *meteorClientOld;
 @property (strong, nonatomic) ObjectiveDDP *ddp;
 @property (strong, nonatomic) TNUserModel* userModel;
+@property (nonatomic, assign) BOOL isFirstLaunch;
 + (CDIAppDelegate *)sharedAppDelegate;
 - (void)applyStylesheet;
 - (NSString*)idRandom;

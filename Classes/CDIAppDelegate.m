@@ -19,11 +19,10 @@
 #import "LocalyticsUtilities.h"
 #import <Crashlytics/Crashlytics.h>
 #import <StoreKit/StoreKit.h>
-
+#import "CDIFirstLaunchViewController.h"
 @implementation CDIAppDelegate
 
 @synthesize window = _window;
-
 
 + (CDIAppDelegate *)sharedAppDelegate {
 	return (CDIAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -70,12 +69,22 @@
 		self.window.rootViewController = [[CDISplitViewController alloc] init];
 	} else {
 		UIViewController *viewController;
-        if([CDKUser currentUser]){
-            viewController = [[CDIListsViewController alloc] init];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"FIRST_LAUNCH"]) {
+            viewController = [[CDIFirstLaunchViewController alloc]init];
+            _isFirstLaunch = YES;
         }else{
             viewController= [[CDISignInViewController alloc]init];
-//            viewController = [[CDIFirstLaunchViewController alloc]init];
+            _isFirstLaunch = NO;
         }
+//        if([CDKUser currentUser]){
+////            viewController = [[CDIListsViewController alloc]           ];
+//            viewController= [[CDISignInViewController alloc]init];
+//            _isFirstLaunch = NO;
+//        }else{
+////            viewController= [[CDISignInViewController alloc]init];
+//            viewController = [[CDIFirstLaunchViewController alloc]init];
+//            _isFirstLaunch = YES;
+//        }
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}

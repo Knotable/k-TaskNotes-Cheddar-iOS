@@ -211,20 +211,20 @@
 
 	__weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserverForName:kCDIPaymentTransactionDidCompleteNotificationName object:nil queue:nil usingBlock:^(NSNotification *notificaiton) {
-		[hud dismiss];
+//		[hud dismiss];
 		_purchasing = NO;
-		[self.navigationController dismissModalViewControllerAnimated:YES];
+		[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 		[notificationCenter removeObserver:self];
 	}];
-	
+
 	[notificationCenter addObserverForName:kCDIPaymentTransactionDidFailNotificationName object:nil queue:nil usingBlock:^(NSNotification *notificaiton) {
-		[hud failAndDismissWithTitle:@"Failed"];
+//		[hud failAndDismissWithTitle:@"Failed"];
 		[notificationCenter removeObserver:self];
 		_purchasing = NO;
 	}];
 
 	[notificationCenter addObserverForName:kCDIPaymentTransactionDidCancelNotificationName object:nil queue:nil usingBlock:^(NSNotification *notificaiton) {
-		[hud dismiss];
+//		[hud dismiss];
 		[notificationCenter removeObserver:self];
 		_purchasing = NO;
 	}];

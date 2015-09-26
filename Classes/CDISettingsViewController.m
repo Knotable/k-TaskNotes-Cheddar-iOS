@@ -146,7 +146,8 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	// Sign out
     [TNUserModel setCurrentUser:nil];
     [self.meteor logout];
-//	[CDKUser setCurrentUser:nil];
+    [CDIAppDelegate sharedAppDelegate].isFirstLaunch = NO;
+    //	[CDKUser setCurrentUser:nil];
 //	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //	[userDefaults removeObjectForKey:kCDISelectedListKey];
 //	[userDefaults synchronize];

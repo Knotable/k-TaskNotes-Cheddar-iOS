@@ -640,7 +640,7 @@
             if([self.fetchedResultsController fetchedObjects].count == 0){
             [[TNAPIClient sharedClient] sendInsertTaskList:taskList withUserId:[TNUserModel currentUser].user_id withUseData:nil withCompleteBlock:^(WM_NetworkStatus success, NSError* error, id userDate){
                 if (error) {
-                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+//                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
                     [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
                         //self.ignoreChange = NO;
                     } completion:^{
@@ -650,7 +650,7 @@
                     }];
                     
                 }else{
-                    [hud completeAndDismissWithTitle:@"Inserted Successfully"];
+//                    [hud completeAndDismissWithTitle:@"Inserted Successfully"];
                     
                     [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
                         //self.ignoreChange = NO;
@@ -700,7 +700,7 @@
                         
                         [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
                             if (error) {
-                                [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+//                                [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
                                 
                                 [self setEditing:NO animated:NO];
                                 [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
@@ -712,7 +712,7 @@
                                 }];
 
                             }else{
-                                [hud completeAndDismissWithTitle:@"Inserted Successfully"];
+//                                [hud completeAndDismissWithTitle:@"Inserted Successfully"];
                                 [self setEditing:NO animated:NO];
                                 [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
                                     //self.ignoreChange = NO;

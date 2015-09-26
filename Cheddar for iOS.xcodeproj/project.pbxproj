@@ -45,6 +45,7 @@
 		22AFD5FB1BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F51BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png */; };
 		22AFD5FC1BB52CBF00E99320 /* Default-Portrait@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F61BB52CBF00E99320 /* Default-Portrait@3x.png */; };
 		22AFD5FD1BB52CBF00E99320 /* Default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F71BB52CBF00E99320 /* Default@3x.png */; };
+		22EDC8D81BB6389B007C97F6 /* CDIFirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22EDC8D71BB6389B007C97F6 /* CDIFirstLaunchViewController.m */; };
 		57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E2FBF11B8A03440076981B /* TNTaskList.m */; };
 		B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */; };
 		B208BC2A15BF63A80080705D /* CDIAddTaskAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9515BF63A80080705D /* CDIAddTaskAnimationView.m */; };
@@ -362,6 +363,8 @@
 		22AFD5F51BB52CBF00E99320 /* Default-Portrait_IOS7@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait_IOS7@3x.png"; sourceTree = "<group>"; };
 		22AFD5F61BB52CBF00E99320 /* Default-Portrait@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@3x.png"; sourceTree = "<group>"; };
 		22AFD5F71BB52CBF00E99320 /* Default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@3x.png"; sourceTree = "<group>"; };
+		22EDC8D61BB6389B007C97F6 /* CDIFirstLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIFirstLaunchViewController.h; sourceTree = "<group>"; };
+		22EDC8D71BB6389B007C97F6 /* CDIFirstLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIFirstLaunchViewController.m; sourceTree = "<group>"; };
 		35BC470360D304F7DFF584A3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		57E2FBF01B8A03440076981B /* TNTaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNTaskList.h; sourceTree = "<group>"; };
 		57E2FBF11B8A03440076981B /* TNTaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNTaskList.m; sourceTree = "<group>"; };
@@ -707,6 +710,15 @@
 				21396B6517728AE50040FCA2 /* SSPullToRefreshView.m */,
 			);
 			path = SSPullToRefresh;
+			sourceTree = "<group>";
+		};
+		22EDC8D31BB63885007C97F6 /* FirstLaunch */ = {
+			isa = PBXGroup;
+			children = (
+				22EDC8D61BB6389B007C97F6 /* CDIFirstLaunchViewController.h */,
+				22EDC8D71BB6389B007C97F6 /* CDIFirstLaunchViewController.m */,
+			);
+			name = FirstLaunch;
 			sourceTree = "<group>";
 		};
 		7D9759E9A30146F4EBB78D92 /* Pods */ = {
@@ -1236,6 +1248,7 @@
 		B2D1242115C1FC7000ED1218 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				22EDC8D31BB63885007C97F6 /* FirstLaunch */,
 				B23261A215C206EC00D455EF /* Lists */,
 				B23261A315C206F200D455EF /* Tasks */,
 				B23261A615C2070D00D455EF /* Abstract */,
@@ -1666,6 +1679,7 @@
 				B2B25FE416165B6D00ACFD3E /* CDIKeyboardButton.m in Sources */,
 				B2746E621618EAC8007A750B /* CDIMoveTaskView.m in Sources */,
 				21E0A67A16AAE0BA002479F9 /* CDIViewArchiveButton.m in Sources */,
+				22EDC8D81BB6389B007C97F6 /* CDIFirstLaunchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

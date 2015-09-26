@@ -22,6 +22,7 @@
 @implementation CDISignInViewController {
 	UIButton *_footerButton;
 	BOOL _signUpMode;
+    NSTimer *_timer;
 }
 
 @synthesize usernameTextField = _usernameTextField;
@@ -100,7 +101,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-    	_meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
+   _meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
 
 	UIView *background = [[UIView alloc] initWithFrame:CGRectZero];
 	background.backgroundColor = [UIColor cheddarArchesColor];
@@ -115,9 +116,15 @@
 
 	_signUpMode = NO;
 	[self _toggleModeAnimated:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(switchSignUp) userInfo:nil repeats:NO];
+    
 }
 
-
+-(void)switchSignUp{
+    if (![CDIAppDelegate sharedAppDelegate].isFirstLaunch) {
+        [self _toggleModeAnimated:YES];
+    }
+}
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
@@ -149,11 +156,11 @@
 
     [[TNAPIClient sharedClient] logonWithUsernameOrEmail:self.usernameTextField.text password:self.passwordTextField.text withBlock:^(NSDictionary *response, NSError *error) {
         if (error) {
-            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+//            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
             NSLog(@"signin response: %@",response);
-            [hud completeAndDismissWithTitle:@"Signed In!"];
+//            [hud completeAndDismissWithTitle:@"Signed In!"];
             
             NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
             NSLog(@"userDict response: %@",userDict);
@@ -219,7 +226,7 @@
 
     [[TNAPIClient sharedClient] sigupWithUsernameAndEmail:@"createAccount" withDict:registrationInfo withBlock:^(NSDictionary *response, NSError *error) {
         if (error) {
-            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+//            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
             
@@ -236,7 +243,7 @@
                 };0917615010
              }
              */
-            [hud completeAndDismissWithTitle:@"Signed Up!"];
+//            [hud completeAndDismissWithTitle:@"Signed Up!"];
 //            NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
 //            NSLog(@"userDict response: %@",userDict);
 //            NSString* sessiontoken = [[response objectForKey:@"result"] objectForKey:@"token"];

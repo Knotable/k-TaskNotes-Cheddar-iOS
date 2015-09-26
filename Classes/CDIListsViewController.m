@@ -378,7 +378,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     //Fetch first time
     NSInteger num = [self.meteor.collections[METEORCOLLECTION_TOPICS] count];
 
-    NSLog(@"Updated %d %d",numberTopic,num );
+    NSLog(@"Updated %ld %ld",(long)numberTopic,(long)num );
 
     if (num == numberTopic) {
         isUpdateFirst = YES;
@@ -402,11 +402,11 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             
             [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasks from IOS" withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
                 if (error) {
-                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+//                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
                 }
                 if (response) {
                     NSLog(@"response = %@",response);
-                    [hud completeAndDismissWithTitle:@"Done !"];
+//                    [hud completeAndDismissWithTitle:@"Done !"];
                     
                 }
                 
@@ -443,7 +443,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     list.remoteID = [NSNumber numberWithInt:remote_id];
                     [list save];
                     [savedLists addObject:list];
-                        
+   
                 }];
             });
             }
@@ -560,9 +560,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     if(knoteAdded ){
         NSString* knoteType = [knoteAdded objectForKey:@"type"];
         if([knoteType isEqualToString:@"checklist"]){
-            
-            
-            
+    
+ 
+         
             NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
             dispatch_async( myCustomQueue, ^{
                 
@@ -639,8 +639,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     
                     NSError *error = nil;
                     NSArray *results = [moc executeFetchRequest:request error:&error];
-                    
-                    
+                  
+          
                     
                     if(results.count > 0){
                         CDKTask* task = results[0];
@@ -872,7 +872,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     savingKnoteId=[knoteAdded objectForKey:@"_id"];
                 NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
                 for (NSString *objectId in models) {
-                    
+            
                     NSDictionary *model = [models objectForKey:objectId];
                     CDKList *list =nil;
                     if ([[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]] && ![self doesModelAlreadyExist:model]) {
@@ -895,7 +895,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     }
                     
                     
-                    
+              
                     NSArray* options = [[knoteAdded objectForKey:@"options"] mutableCopy];
                     options = [options sortedArrayUsingComparator:^NSComparisonResult(NSDictionary* a, NSDictionary* b) {
                         NSNumber* positionA = [a objectForKey:@"num"]==[NSNull null]? [NSNumber numberWithInt:0]:[a objectForKey:@"num"];
@@ -904,7 +904,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                             return NSOrderedAscending;
                         else if(positionA.integerValue > positionB.integerValue)
                             return NSOrderedDescending;
-                        
+                  
                         return NSOrderedSame;
                     }];
                     
@@ -927,8 +927,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         
                         NSError *error = nil;
                         NSArray *results = [moc executeFetchRequest:request error:&error];
-                        
-                        
+         
+          
                         
                         if(results.count > 0){
                             CDKTask* task = results[0];
@@ -1437,7 +1437,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     [[TNAPIClient sharedClient] insertTopicWithParam:@"create_topic" withPram:params withBlock:^(NSDictionary *model, NSError *error) {
         if (!error) {
-            [hud completeAndDismissWithTitle:@"Create!"];
+//            [hud completeAndDismissWithTitle:@"Create!"];
             textField.text = nil;
             modelId = [model objectForKeyedSubscript:@"result"];
         }
