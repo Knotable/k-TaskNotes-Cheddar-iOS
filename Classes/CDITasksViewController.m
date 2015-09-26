@@ -176,10 +176,18 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         //Your main thread code goes in here
-        self.fetchedResultsController.fetchRequest.predicate = self.predicate;
+        if ([[self.fetchedResultsController fetchedObjects] count]==0) {
+            
+            [self setFetchedResultsController:nil];
+        }
+//        self.fetchedResultsController.fetchRequest.predicate = self.predicate;
+//        
+//        [self.fetchedResultsController performFetch:nil];
+//        
         
-        [self.fetchedResultsController performFetch:nil];
-        
+        if ([[[self fetchedResultsController] fetchedObjects] count]>0) {
+            NSLog(@"hurray");
+        }
         NSLog(@"Im on the main thread");
         NSDictionary* userInfo = notification.userInfo;
         options = [userInfo objectForKey:@"options"];

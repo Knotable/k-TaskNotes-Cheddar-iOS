@@ -50,6 +50,9 @@
 	[CDKPushController setDevelopmentModeEnabled:YES];
 #endif
 
+    
+    
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
 	// Default defaults
 	NSDictionary *defaults = @{
 		kCDITapActionDefaultsKey: kCDITapActionCompleteKey,

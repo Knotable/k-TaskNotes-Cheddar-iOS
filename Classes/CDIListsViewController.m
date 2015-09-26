@@ -425,15 +425,23 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             
             if ([[model objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"] && ![self doesModelAlreadyExist:model]) {
                 
+                NSDictionary* taskFromIOS = [model copy];
                 NSLog(@"current pad = %@",model);
+                NSString* knoteAddedId =[taskFromIOS objectForKey:@"_id"];
+                BOOL alreadyAdded = false;
+                for(CDKList* savedList in savedLists){
+                    if([knoteAddedId isEqualToString: savedList.id] ){
+                        alreadyAdded=true;
+                        _checkForOneList = NO;
+                    }
+                }
+                if(!alreadyAdded)
                 dispatch_async( myCustomQueue, ^{
-                    
-                [[self managedObjectContext] performBlock:^{
                     CDKList *list = [[CDKList alloc] init];
                     int64_t remote_id = [[NSDate date] timeIntervalSince1970];
-                    list.id = [model objectForKey:@"_id"];
-                    list.title = [model objectForKey:@"subject"];
-                    list.position = [[model objectForKey:@"order"] objectForKey:@"undefined"];
+                    list.id = [taskFromIOS objectForKey:@"_id"];
+                    list.title = [taskFromIOS objectForKey:@"subject"];
+                    list.position = [[taskFromIOS objectForKey:@"order"] objectForKey:@"undefined"];
                     list.slug = @"";
                     list.archivedAt = nil;
                     list.updatedAt = nil;
@@ -443,8 +451,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     list.remoteID = [NSNumber numberWithInt:remote_id];
                     [list save];
                     [savedLists addObject:list];
-                        
-                }];
+                    
             });
             }
 
@@ -483,6 +490,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 {
 
 }
+
 
 
 -(void)knotesAdded:(NSNotification *)note
@@ -613,8 +621,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     return NSOrderedSame;
                 }];
                 
-                if([[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"] && [[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&& [options count]>0 && ([self doesModelAlreadyExist:model]|| list)  )
+                if([[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"] && [[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&& [options count]>0 )
                 {
+                    // && ([self doesModelAlreadyExist:model]|| list)
                     if(!list){
                         list = [self findObject:[knoteAdded objectForKey:@"topic_id"]];
                     }
@@ -628,6 +637,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         }
                         
                     }
+                    
                     NSManagedObjectContext *moc = [self managedObjectContext];
                     
                     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -654,7 +664,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         task.text =title;
                         task.position = [NSNumber numberWithInt:0];
                         task.list = list;
-                        [task setCheckList: options];
+                        [task setCheckList: [options copy]];
                         
                         //[[self managedObjectContext] performBlock:^{
                         
@@ -673,7 +683,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         task.text =title;
                         task.position = [NSNumber numberWithInt:0];
                         task.list = list;
-                        [task setCheckList: options];
+                        [task setCheckList: [options copy]];
                         
                         //[[self managedObjectContext] performBlock:^{
                             
@@ -692,6 +702,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         _checkForOneList=YES;
                         
                     }
+                    if(_selectedList)
+                        if([list.id isEqualToString:_selectedList.id]){
+                            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:options forKey:@"options"];
+                            NSLog(@"options are : %@",options);
+                            [[NSNotificationCenter defaultCenter]
+                             postNotificationName:kTaskChangedNotification
+                             object:self userInfo: userInfo];
+                        }
                 }
                 
                 }
@@ -1749,6 +1767,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		}
 		_checkForOneList = NO;
 	}
+}
+
+
+-(BOOL)checkForUpdatesAndPush{
+    
+    
+    
+    return false;
 }
 
 @end

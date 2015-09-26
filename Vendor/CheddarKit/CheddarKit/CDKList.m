@@ -38,6 +38,7 @@
 #pragma mark - SSRemoteManagedObject
 
 - (void)unpackDictionary:(NSDictionary *)dictionary {
+    [self save];
 	[super unpackDictionary:dictionary];
 	self.archivedAt = [[self class] parseDate:[dictionary objectForKey:@"archived_at"]];
 	self.position = [dictionary objectForKey:@"position"];

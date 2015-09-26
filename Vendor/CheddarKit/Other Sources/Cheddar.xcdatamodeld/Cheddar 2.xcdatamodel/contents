@@ -37,6 +37,10 @@
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="tasks" inverseEntity="Tag" syncable="YES"/>
         <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="tasks" inverseEntity="User" syncable="YES"/>
     </entity>
+    <entity name="Update" representedClassName="Update" syncable="YES">
+        <attribute name="updated_entity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="updated_ID" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="User" representedClassName="CDKUser" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
@@ -54,6 +58,7 @@
         <element name="List" positionX="160" positionY="192" width="128" height="210"/>
         <element name="Tag" positionX="160" positionY="192" width="128" height="135"/>
         <element name="Task" positionX="160" positionY="192" width="128" height="255"/>
+        <element name="Update" positionX="171" positionY="306" width="128" height="75"/>
         <element name="User" positionX="160" positionY="192" width="128" height="210"/>
     </elements>
 </model>
