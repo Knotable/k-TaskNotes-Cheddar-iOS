@@ -717,14 +717,13 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
                 
                 }
+            }
+            
             });
             
 
             
         }
-//        else{
-//            if()
-//        }
     }
 }
 
