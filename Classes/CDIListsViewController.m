@@ -442,6 +442,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     list.id = [taskFromIOS objectForKey:@"_id"];
                     list.title = [taskFromIOS objectForKey:@"subject"];
                     list.position = [[taskFromIOS objectForKey:@"order"] objectForKey:@"undefined"];
+
                     list.slug = @"";
                     list.archivedAt = nil;
                     list.updatedAt = nil;
@@ -451,7 +452,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     list.remoteID = [NSNumber numberWithInt:remote_id];
                     [list save];
                     [savedLists addObject:list];
-                    
+
             });
             }
 
@@ -624,6 +625,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 if([[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"] && [[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&& [options count]>0 )
                 {
                     // && ([self doesModelAlreadyExist:model]|| list)
+
                     if(!list){
                         list = [self findObject:[knoteAdded objectForKey:@"topic_id"]];
                     }
@@ -637,7 +639,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         }
                         
                     }
-                    
+
                     NSManagedObjectContext *moc = [self managedObjectContext];
                     
                     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -665,6 +667,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         task.position = [NSNumber numberWithInt:0];
                         task.list = list;
                         [task setCheckList: [options copy]];
+
                         
                         //[[self managedObjectContext] performBlock:^{
                         
@@ -684,6 +687,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         task.position = [NSNumber numberWithInt:0];
                         task.list = list;
                         [task setCheckList: [options copy]];
+
                         
                         //[[self managedObjectContext] performBlock:^{
                             
@@ -710,7 +714,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                              postNotificationName:kTaskChangedNotification
                              object:self userInfo: userInfo];
                         }
-                }
+
                 
                 }
             });

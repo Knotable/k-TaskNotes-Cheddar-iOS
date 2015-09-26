@@ -188,6 +188,7 @@
         if ([[[self fetchedResultsController] fetchedObjects] count]>0) {
             NSLog(@"hurray");
         }
+
         NSLog(@"Im on the main thread");
         NSDictionary* userInfo = notification.userInfo;
         options = [userInfo objectForKey:@"options"];

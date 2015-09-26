@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1054"
             endingLineNumber = "1054"
-            landmarkName = "-topicsRemoved:"
+            landmarkName = "-topicsUpdated:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -48,22 +48,6 @@
             startingLineNumber = "211"
             endingLineNumber = "211"
             landmarkName = "-taskChangedNotification:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Classes/CDIListsViewController.m"
-            timestampString = "464904815.414084"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "635"
-            endingLineNumber = "635"
-            landmarkName = "-knotesAdded:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
