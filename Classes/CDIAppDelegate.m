@@ -58,7 +58,7 @@
 		kCDITextSizeDefaultsKey: kCDITextSizeMediumKey
 	};
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-
+    
 	// Initialize the window
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor blackColor];

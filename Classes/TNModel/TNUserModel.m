@@ -63,10 +63,6 @@
         if (user == nil) {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kTNUserIDKey];
         }else{
-//            NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-//            f.numberStyle = NSNumberFormatterDecimalStyle;
-//            NSNumber *user_ID = [f numberFromString:user.user_id];
-//            
             [[NSUserDefaults standardUserDefaults] setObject:user.user_id forKey:kTNUserIDKey];
             [[NSUserDefaults standardUserDefaults] setObject:user.user_email forKey:kTNUserEmail];
             [[NSUserDefaults standardUserDefaults] setObject:user.user_sessiontoken forKey:kTNUserSessionToken];

@@ -305,12 +305,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                                  name:@"knotes_added"
                                                object:nil];
     
-    
+
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(knotesAdded:)
 //                                                 name:@"messages_added"
 //                                               object:nil];
-//    
+//
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(knotesAdded:)
 //                                                 name:@"messages_changed"
@@ -326,7 +326,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                                  name:@"knotes_changed"
                                                object:nil];
     
-    
+   
     
     // Check ready state
 //    
@@ -339,7 +339,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //                                             selector:@selector(Ready_pinnedKnotes)
 //                                                 name:@"pinnedKnotesForTopic_ready"
 //                                               object:nil];
-//    
+//
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(Ready_archivedKnotes)
 //                                                 name:@"archivedKnotesForTopic_ready"
@@ -386,7 +386,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
         
         dispatch_async( myCustomQueue, ^{
-            
+ 
         BOOL todoExists = false;
         for(int t=0 ; t< [_meteor.collections[METEORCOLLECTION_TOPICS] count];t++){
             if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"]){
@@ -397,9 +397,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         
         
         if(!todoExists){
-            CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
+//            CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
 //            [hud show];
-            
+   
             [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasks from IOS" withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
                 if (error) {
 //                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
@@ -407,7 +407,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 if (response) {
                     NSLog(@"response = %@",response);
 //                    [hud completeAndDismissWithTitle:@"Done !"];
-                    
+         
                 }
                 
             }];
@@ -418,9 +418,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         
         
         for (NSString *objectId in models) {
-            
+         
             NSDictionary *model = [models objectForKey:objectId];
-            
+           
             NSString* model_id = [model objectForKeyedSubscript:@"_id"];
             
             if ([[model objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"] && ![self doesModelAlreadyExist:model]) {

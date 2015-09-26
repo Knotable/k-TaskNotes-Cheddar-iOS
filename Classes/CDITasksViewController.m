@@ -626,7 +626,7 @@
             taskList.sectionId = @"";
             taskList.order = [NSString stringWithFormat:@"%@", position];
             
-            
+  
 			CGPoint point = CGPointZero;
 			if (numberOfRows > 0) {
 				CGRect rect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:numberOfRows - 1 inSection:0]];
@@ -697,7 +697,7 @@
                         else{
                             options = oldOptions;
                         }
-                        
+                   
                         [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
                             if (error) {
 //                                [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];

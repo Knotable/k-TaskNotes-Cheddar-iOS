@@ -72,7 +72,7 @@
 	} completion:nil];
 	
 	[[CDKHTTPClient sharedClient] signInWithAuthorizationCode:code success:^(AFJSONRequestOperation *operation, id responseObject) {
-		[self.navigationController dismissModalViewControllerAnimated:YES];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
 		NSLog(@"Failed to sign in: %@", error);
 		[_webView loadURLString:[NSString stringWithFormat:@"https://api.cheddarapp.com/oauth/authorize?client_id=%@", kCDIAPIClientID]];

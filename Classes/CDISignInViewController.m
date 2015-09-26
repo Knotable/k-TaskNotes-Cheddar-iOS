@@ -175,16 +175,12 @@
             [useInfo setObject:sessiontoken forKey:@"token"];
             TNUserModel * user = [[TNUserModel alloc]initWithDict:useInfo];
             [TNUserModel setCurrentUser:user];
-            [CDIAppDelegate sharedAppDelegate].userModel = user;
             
 
             NSString* username = [CDIAppDelegate sharedAppDelegate].userModel.user_username;
             NSString* password = self.passwordTextField.text;
             [SSKeychain setPassword:password forService:@"Tasknote" account:username];
             NSLog(@"%@",_meteor.collections);
-            
-            
-            
             
                 CDKUser* currentUser = [[CDKUser alloc]init];
                 [[currentUser managedObjectContext] performBlock:^{
@@ -197,9 +193,6 @@
                     
                     [self.navigationController pushViewController:viewController animated:YES];
                 }];
-            
-    
-            
         }
     }];
 
@@ -226,43 +219,11 @@
 
     [[TNAPIClient sharedClient] sigupWithUsernameAndEmail:@"createAccount" withDict:registrationInfo withBlock:^(NSDictionary *response, NSError *error) {
         if (error) {
+             NSLog(@"signUp error :%@",error.userInfo);
 //            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
-            
-            NSLog(@"signUp response :%@",response);
-            /*
-             {
-                id = 30;
-                msg = result;
-                result =     {
-                    email = "sami_bahtti@12345.com";
-                    fullname = "sami_bahtti@12345.com";
-                    userId = 74SwWcQaWRxB2eg7X;
-                    username = "sami_bahtti@12345_com";
-                };0917615010
-             }
-             */
-//            [hud completeAndDismissWithTitle:@"Signed Up!"];
-//            NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
-//            NSLog(@"userDict response: %@",userDict);
-//            NSString* sessiontoken = [[response objectForKey:@"result"] objectForKey:@"token"];
-//
-//            NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
-//            [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
-//            [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
-//            NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
-//            [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
-//            [useInfo setObject:sessiontoken forKey:@"token"];
-//
-//            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
-//            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
-//            [[NSUserDefaults standardUserDefaults] synchronize];
-//
-//             
-//            [self dismissViewControllerAnimated:YES completion:nil];
-            [self _toggleModeAnimated:YES];
-
+//            [self _toggleModeAnimated:YES];
         }
     }];
 }
