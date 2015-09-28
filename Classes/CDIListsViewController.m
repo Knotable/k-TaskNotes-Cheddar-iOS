@@ -122,11 +122,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	_archiveButton = [[CDIViewArchiveButton alloc] initWithFrame:CGRectMake(20.0f, 12.0f, 280.0f, 32.0)];
 	_archiveButton.alpha = 0.0f;
 	[footer addSubview:_archiveButton];
-    if (![[CDIAppDelegate sharedAppDelegate].previousUserID isEqualToString:[CDIAppDelegate sharedAppDelegate].currentUserID]) {
-        [self removePreviousSavedLists];
-    }
-
     
+    [self removePreviousSavedLists];
 //    if([CDKUser currentUser])
         [self turnOnBackground];
     
@@ -137,6 +134,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     self.fetchedResultsController.fetchRequest.predicate = self.predicate;
     [self.fetchedResultsController performFetch:nil];
     NSArray* lists = [self.fetchedResultsController fetchedObjects];
+    NSLog(@"---- %@",lists);
     for(int t=0; t<lists.count; t++){
         CDKList* list = lists[t];
         [[self managedObjectContext] deleteObject:list];
@@ -149,6 +147,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (void)viewWillAppear:(BOOL)animated {
+   
     self.topicModel = nil;
 	[super viewWillAppear:animated];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -161,7 +160,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 }
 
 - (void)registerNotification{
-
+/*
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveAdd:)
@@ -182,6 +181,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                              selector:@selector(didReceiveRemove:)
                                                  name:@"removed"
                                                object:nil];
+ */
 
 }
 
@@ -214,7 +214,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                              selector:@selector(topicsRemoved:)
                                                  name:@"topics_removed"
                                                object:nil];
-
+/*
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(topicsUpdated:)
 //                                                 name:@"archivedKnotesForTopic_added"
@@ -224,12 +224,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //                                             selector:@selector(topicsUpdated:)
 //                                                 name:@"archivedKnotesForTopic_changed"
 //                                               object:nil];
-
+*/
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(topicsRemoved:)
                                                  name:@"archivedKnotesForTopic_removed"
                                                object:nil];
-
+/*
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(topicsUpdated:)
 //                                                 name:@"pinnedKnotesForTopic_added"
@@ -239,7 +239,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //                                             selector:@selector(topicsUpdated:)
 //                                                 name:@"pinnedKnotesForTopic_changed"
 //                                               object:nil];
-
+*/
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(topicsRemoved:)
                                                  name:@"pinnedKnotesForTopic_removed"
@@ -266,7 +266,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                                  name:@"contacts_removed"
                                                object:nil];
     
-    
+ /*
     
     
     /////////// KNOTES methods
@@ -301,12 +301,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //                                                     selector:@selector(knotesRemoved:)
 //                                                         name:@"allRestKnotesByTopicId_removed"
 //                                                       object:nil];
-    
+    */
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(knotesAdded:)
                                                  name:@"knotes_added"
                                                object:nil];
-    
+  /*
 
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(knotesAdded:)
@@ -322,13 +322,13 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     //                                                 selector:@selector(knotesRemoved:)
     //                                                     name:@"knotes_removed"
     //                                                   object:nil];
-    
+    */
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(knotesChanged:)
                                                  name:@"knotes_changed"
                                                object:nil];
     
-   
+/*
     
     // Check ready state
 //    
@@ -349,12 +349,13 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //    
 //    
 //
-    
+    */
     [self.meteor addSubscription:METEORCOLLECTION_TOPICS];
     
 }
 
 - (void)topicsUpdated:(NSNotification *)note{
+    NSLog(@"Topic Updated");
     NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
     NSDictionary *topic = [models objectForKey:modelId];
     //Update from web
@@ -391,7 +392,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
  
         BOOL todoExists = false;
         for(int t=0 ; t< [_meteor.collections[METEORCOLLECTION_TOPICS] count];t++){
-            if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"]){
+            if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:@"Tasknotes"]){
                 todoExists = true;
                 break;
             }
@@ -402,7 +403,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //            CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
 //            [hud show];
    
-            [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasks from IOS" withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
+            [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasknotes" withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
                 if (error) {
 //                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
                 }
@@ -418,14 +419,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         
         
         
-        
+        NSLog(@"model count %d",models.count);
         for (NSString *objectId in models) {
          
             NSDictionary *model = [models objectForKey:objectId];
            
             NSString* model_id = [model objectForKeyedSubscript:@"_id"];
             
-            if ([[model objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"] && ![self doesModelAlreadyExist:model]) {
+            if ([[model objectForKey:@"subject"] isEqualToString:@"Tasknotes"] && ![self doesModelAlreadyExist:model]) {
                 
                 NSLog(@"current pad = %@",model);
                 dispatch_async( myCustomQueue, ^{
@@ -442,7 +443,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     list.isArchived = NO;
                     list.user = [CDKUser currentUser];
                     list.createdAt  = [NSDate date];
-                    list.remoteID = [NSNumber numberWithInt:remote_id];
+                    list.remoteID = [NSNumber numberWithInt:(long)remote_id];
                     [list save];
                     [savedLists addObject:list];
    
@@ -597,7 +598,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         list.isArchived = NO;
                         list.user = [CDKUser currentUser];
                         list.createdAt  = [NSDate date];
-                        list.remoteID = [NSNumber numberWithInt:remote_id];
+                        list.remoteID = [NSNumber numberWithInt:(long)remote_id];
                         
                    // }];
                     
@@ -648,7 +649,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         CDKTask* task = results[0];
                         int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                         task.id = kNoteId;
-                        task.remoteID = [NSNumber numberWithInt:remote_id];
+                        task.remoteID = [NSNumber numberWithInt:(long)remote_id];
                         NSString* title =[knoteAdded objectForKey:@"title"];
                         title= [title isEqualToString:@""]?@" _ ":title;
                         //if([title isEqualToString:@""])title = @" _ ";
@@ -667,7 +668,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         CDKTask* task = [[CDKTask alloc] init];
                         int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                         task.id = kNoteId;
-                        task.remoteID = [NSNumber numberWithInt:remote_id];
+                        task.remoteID = [NSNumber numberWithInt:(long)remote_id];
                         NSString* title =[knoteAdded objectForKey:@"title"];
                         title= [title isEqualToString:@""]?@" _ ":title;
                         //if([title isEqualToString:@""])title = @" _ ";
@@ -683,7 +684,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     
                         //}];
                     }
-                    if([list.title isEqualToString:@"Tasks from IOS"]){
+                    if([list.title isEqualToString:@"Tasknotes"]){
 //                        NSNumber *selectedList = [[NSUserDefaults standardUserDefaults] objectForKey:kCDISelectedListKey];
 //                        //if (!selectedList) {
 //                            
@@ -889,7 +890,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         list.isArchived = NO;
                         list.user = [CDKUser currentUser];
                         list.createdAt  = [NSDate date];
-                        list.remoteID = [NSNumber numberWithInt:remote_id];
+                        list.remoteID = [NSNumber numberWithInt:(long)remote_id];
                         __weak NSManagedObjectContext *context = [CDKList mainContext];
                         [context performBlockAndWait:^{
                             [list save];
@@ -936,7 +937,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                             CDKTask* task = results[0];
                             int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                             task.id = kNoteId;
-                            task.remoteID = [NSNumber numberWithInt:remote_id];
+                            task.remoteID = [NSNumber numberWithInt:(long)remote_id];
                             NSString* title =[knoteAdded objectForKey:@"title"];
                             title= [title isEqualToString:@""]?@" _ ":title;
                             //if([title isEqualToString:@""])title = @" _ ";
@@ -954,7 +955,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                             CDKTask* task = [[CDKTask alloc] init];
                             int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                             task.id = kNoteId;
-                            task.remoteID = [NSNumber numberWithInt:remote_id];
+                            task.remoteID = [NSNumber numberWithInt:(long)remote_id];
                             NSString* title =[knoteAdded objectForKey:@"title"];
                             title= [title isEqualToString:@""]?@" _ ":title;
                             //if([title isEqualToString:@""])title = @" _ ";
@@ -1034,7 +1035,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 }
 
 - (void)topicsRemoved:(NSNotification *)note{
-    NSLog(@"Topic Remove %@",note);
+    NSLog(@"Topic Remove %@",@"");
     NSDictionary *value = [note userInfo];
     CDKList *list = [self findObject:[value objectForKeyedSubscript:@"_id"]];
     if (list) {
@@ -1046,7 +1047,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 }
 
 - (void)topicsChanged:(NSNotification *)note{
-    NSLog(@"Topic Changed %@",note);
+    NSLog(@"Topic Changed %@",@"");
     
     /*
      userInfo = {
@@ -1103,26 +1104,23 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     NSString* _id = [model objectForKey:@"_id"];
     dispatch_async( myCustomQueue, ^{
         BOOL alreadyExists = false;
-    for (CDKList *list in topics) {
-        if([list.id isEqualToString:_id]){
-            
-            list.title = [model objectForKey:@"changed_subject"]?[model objectForKey:@"changed_subject"]:[model objectForKey:@"subject"];
-            list.position = [model objectForKey:@"uniqueNumber"];
-            list.slug = @"";
-            list.archivedAt = [[model objectForKey:@"archived"] count]>0?[NSDate date]:nil;
-            //list.updatedAt = [NSDate date];
-            list.isArchived = NO;
-            [self.managedObjectContext performBlockAndWait:^(){
-                [list save];
-            }];
-            //[list update];
-            alreadyExists=true;
-            break;
+        for (CDKList *list in topics) {
+            if([list.id isEqualToString:_id]){
+                list.title = [model objectForKey:@"changed_subject"]?[model objectForKey:@"changed_subject"]:[model objectForKey:@"subject"];
+                list.position = [model objectForKey:@"uniqueNumber"];
+                list.slug = @"";
+                list.archivedAt = [[model objectForKey:@"archived"] count]>0?[NSDate date]:nil;
+                //list.updatedAt = [NSDate date];
+                list.isArchived = NO;
+                [self.managedObjectContext performBlockAndWait:^(){
+                    [list save];
+                }];
+                //[list update];
+                alreadyExists=true;
+                break;
+            }
         }
-    }
     });
-
-    
 }
 
 - (void)gotTopicCount:(NSNotification *)note{
@@ -1136,23 +1134,23 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 }
 
 - (void)gotArchivedTopicCount:(NSNotification *)note{
- NSLog(@"333333 %@",note);
+// NSLog(@"333333 %@",note);
 }
 
 - (void)contactsCountAdded:(NSNotification *)note{
- NSLog(@"444444 %@",note);
+// NSLog(@"444444 %@",note);
 }
 
 - (void)contactsAdded:(NSNotification *)note{
- NSLog(@"5555555 %@",note);
+// NSLog(@"5555555 %@",note);
 }
 
 - (void)contactsChanged:(NSNotification *)note{
- NSLog(@"6666666 %@",note);
+// NSLog(@"6666666 %@",note);
 }
 
 - (void)contactsRemoved:(NSNotification *)note{
- NSLog(@"7777777 %@",note);
+// NSLog(@"7777777 %@",note);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -1311,7 +1309,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 //	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self toggleEditMode:self];
-	[self.navigationController presentModalViewController:navigationController animated:YES];
+	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 
@@ -1391,7 +1389,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     list.updatedAt = nil;
     list.user = [CDKUser currentUser];
     list.createdAt  = [NSDate date];
-    list.remoteID = [NSNumber numberWithInt:remote_id];
+    list.remoteID = [NSNumber numberWithInt:(long)remote_id];
 
     [list createWithSuccess:^{
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1434,7 +1432,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     NSArray *params = @[requiredTopicParams, optionalTopicParams, additionalOptions];
 
-	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
+//	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
 //	[hud show];
 
     [[TNAPIClient sharedClient] insertTopicWithParam:@"create_topic" withPram:params withBlock:^(NSDictionary *model, NSError *error) {
@@ -1738,7 +1736,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         
                         for(int t=0; t<[self.fetchedResultsController fetchedObjects].count;t++){
                             CDKList* list = [self objectForViewIndexPath:[NSIndexPath indexPathForRow:t inSection:0]];
-                            if([list.title isEqualToString:@"Tasks from IOS"]){
+                            if([list.title isEqualToString:@"Tasknotes"]){
                                 [self _selectListAtIndexPath:[NSIndexPath indexPathForRow:t inSection:0] newList:NO];
                                 break;
                             }
