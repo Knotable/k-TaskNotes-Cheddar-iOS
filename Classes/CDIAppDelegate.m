@@ -89,7 +89,9 @@
 		self.window.rootViewController = navigationController;
 	}
     [self loadServerConfig];
-
+    
+    // Get id previus user.
+    _previousUserID = [[NSUserDefaults standardUserDefaults] objectForKey:@"CDKUserID"];
 //    [MagicalRecord setupCoreDataStack];
 
 	[self.window makeKeyAndVisible];

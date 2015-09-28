@@ -122,7 +122,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	_archiveButton = [[CDIViewArchiveButton alloc] initWithFrame:CGRectMake(20.0f, 12.0f, 280.0f, 32.0)];
 	_archiveButton.alpha = 0.0f;
 	[footer addSubview:_archiveButton];
-    //[self removePreviousSavedLists];
+    if (![[CDIAppDelegate sharedAppDelegate].previousUserID isEqualToString:[CDIAppDelegate sharedAppDelegate].currentUserID]) {
+        [self removePreviousSavedLists];
+    }
 
     
 //    if([CDKUser currentUser])

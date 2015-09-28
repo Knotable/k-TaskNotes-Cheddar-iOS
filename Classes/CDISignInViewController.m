@@ -189,6 +189,8 @@
                     currentUser.accessToken = user.user_sessiontoken;
                     currentUser.remoteID = user.user_id;
                     [currentUser save];
+                    [CDIAppDelegate sharedAppDelegate].currentUserID = [[NSUserDefaults standardUserDefaults] objectForKey:@"CDKUserID"];
+                    
                     CDIListsViewController *viewController = [[CDIListsViewController alloc] init];
                     
                     [self.navigationController pushViewController:viewController animated:YES];
