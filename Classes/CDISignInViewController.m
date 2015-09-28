@@ -223,7 +223,7 @@
 //            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
-//            [self _toggleModeAnimated:YES];
+            [self _toggleModeAnimated:YES];
         }
     }];
 }
