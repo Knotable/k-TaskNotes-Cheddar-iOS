@@ -522,8 +522,8 @@ static BOOL __developmentMode = NO;
 //            } else {
 //                str=[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 //            }
-            NSLog(@"json found : %@",jsonToAdd);
-			[task unpackDictionary:responseObject];
+//            NSLog(@"json found : %@",jsonToAdd);
+//			[task unpackDictionary:responseObject];
 			[task save];
             if (success) {
                 //success((AFJSONRequestOperation *)operation, responseObject);

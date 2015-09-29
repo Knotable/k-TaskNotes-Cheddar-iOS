@@ -1788,7 +1788,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "a2339789-7be4-49d2-8258-78fbab1aee51";
+				PROVISIONING_PROFILE = "d6c01933-c6da-4a71-ba54-612f37beead3";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1937,8 +1937,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "a2339789-7be4-49d2-8258-78fbab1aee51";
-				"PROVISIONING_PROFILE[sdk=*]" = "a2339789-7be4-49d2-8258-78fbab1aee51";
+				PROVISIONING_PROFILE = "d6c01933-c6da-4a71-ba54-612f37beead3";
+				"PROVISIONING_PROFILE[sdk=*]" = "d6c01933-c6da-4a71-ba54-612f37beead3";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1984,8 +1984,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "a2339789-7be4-49d2-8258-78fbab1aee51";
-				"PROVISIONING_PROFILE[sdk=*]" = "a2339789-7be4-49d2-8258-78fbab1aee51";
+				PROVISIONING_PROFILE = "d6c01933-c6da-4a71-ba54-612f37beead3";
+				"PROVISIONING_PROFILE[sdk=*]" = "d6c01933-c6da-4a71-ba54-612f37beead3";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
