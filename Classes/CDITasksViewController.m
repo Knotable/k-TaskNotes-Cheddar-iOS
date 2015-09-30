@@ -171,7 +171,7 @@
                                                object:nil];
 }
 
--(void)taskChangedNotification:(NSNotification *) notification{
+- (void)taskChangedNotification:(NSNotification *) notification{
     
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -424,13 +424,13 @@
 	if (!indexPath) {
 		return;
 	}
-
-	CDKTask *task = [self objectForViewIndexPath:indexPath];
+    
+    CDKTask *task = [self.fetchedResultsController fetchedObjects][0];//[self objectForViewIndexPath:indexPath];
 	if (!task) {
 		return;
 	}
-
-	[task toggleCompleted];
+    NSArray *optionOld = task.checkList;
+       [task toggleCompleted];
 }
 
 
@@ -488,7 +488,7 @@
     if ([self.addTaskView.textField isFirstResponder]) {
         return NO;
     }
-    
+ 
     return YES;
 }
 
@@ -504,8 +504,8 @@
 	// Nothing
 	if ([action isEqualToString:kCDITapActionNothingKey]) {
 		return;
-	}	
-	
+	}
+
 	CDKTask *task = [self objectForViewIndexPath:indexPath];
 	
 	// Complete
@@ -546,7 +546,7 @@
         CDKTask *task = [self objectForViewIndexPath:sourceIndexPath];
         [tasks removeObject:task];
         [tasks insertObject:task atIndex:destinationIndexPath.row];
-        
+    
         NSInteger i = 0;
         for (task in tasks) {
             task.position = [NSNumber numberWithInteger:i++];
@@ -590,7 +590,7 @@
 #pragma mark - CDIAddTaskViewDelegate
 
 - (void)addTaskView:(CDIAddTaskView *)addTaskView didReturnWithTitle:(NSString *)title {
-	        CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Inserting Task..." loading:YES];
+//	        CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Inserting Task..." loading:YES];
 //            [hud show];
     
             CDIAddTaskAnimationView *animation = [[CDIAddTaskAnimationView alloc] initWithFrame:self.view.bounds];
@@ -600,13 +600,13 @@
 			self.ignoreChange = YES;
 			
 			NSInteger numberOfRows = [self.tableView numberOfRowsInSection:0];
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:0];
+//			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:0];
 			
 			NSNumber* position = [NSNumber numberWithInteger:self.list.highestPosition + 1];
 			
-            
+
             TNTaskList *taskList = [[TNTaskList alloc]init];
-            
+    
             taskList.title = @"TaskNotes";
             NSDateFormatter * formater = [[NSDateFormatter alloc]init];
             [formater setDateFormat:kDateFormat1];
@@ -620,7 +620,7 @@
                                   @[], @"voters",
                                   nil],@""];
             taskList.from = [TNUserModel currentUser].user_email;
-            
+    
             taskList.topicId = self.list.id;
             taskList.taskType = @"checklist";
             taskList.sectionId = @"";
@@ -645,10 +645,10 @@
                         //self.ignoreChange = NO;
                     } completion:^{
                         [animation removeFromSuperview];
-                        
+         
                         [self hideCoverView];
                     }];
-                    
+                
                 }else{
 //                    [hud completeAndDismissWithTitle:@"Inserted Successfully"];
                     
@@ -656,7 +656,7 @@
                         //self.ignoreChange = NO;
                     } completion:^{
                         [animation removeFromSuperview];
-                        
+           
                         [self hideCoverView];
                     }];
                     
@@ -721,7 +721,7 @@
                                     [self hideCoverView];
                                     
                                 }];
-                                
+                            
                             }
                             NSLog(@"returned data : %@",userDate);
 
@@ -730,11 +730,6 @@
                     }
                 }
             }
-
-    
-    
-    
-
 }
 
 
@@ -772,7 +767,7 @@
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-			[self.splitViewController presentModalViewController:navigationController animated:YES];
+			[self.splitViewController presentViewController:navigationController animated:YES completion:nil];
 		} else {
 			[self.navigationController pushViewController:viewController animated:YES];
 		}
@@ -805,7 +800,7 @@
 	}
 
 	[self setEditing:NO animated:YES];
-	
+
 	if (alertView.tag == 1) {
 		[self.list archiveAllTasks];
 		[self setEditing:NO animated:YES];
@@ -856,7 +851,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [super controllerDidChangeContent:controller];
-    
+  
    }
 
 -(BOOL)hasContent{

@@ -556,33 +556,33 @@ static BOOL __developmentMode = NO;
 //							nil];
 //	
 //	[self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSString * completedAt = task.completedAt?[NSString stringWithFormat:@"\"%@\"",[self stringForiso8601DateTime:task.completedAt]]:@"null";
+//    NSString * completedAt = task.completedAt?[NSString stringWithFormat:@"\"%@\"",[self stringForiso8601DateTime:task.completedAt]]:@"null";
+//    
+//    NSString* archivedAt =task.archivedAt?[NSString stringWithFormat:@"\"%@\"",[self stringForiso8601DateTime:task.archivedAt]]:@"null";
+//    
+//    // Getting Current Date
+//    NSString* dateStr = [self stringForiso8601DateTime:[NSDate date]];
+//    
+//    
+//    NSString* jsonToAdd =[NSString stringWithFormat: @"{\"id\" : %@,\"entities\" : [],\"tags\" : [],\"url\" : \"https://api.cheddarapp.com/v1/tasks/%@\",\"updated_at\" : \"%@\",\"display_text\" : \"%@\",\"created_at\" : \"%@\",\"display_html\" : \"%@\",\"completed_at\" : %@,\"text\" : \"%@\",\"archived_at\" : %@,\"list_id\" : %@,\"position\" : %@}",task.remoteID,task.remoteID,dateStr,task.text,[self stringForiso8601DateTime:task.createdAt],task.text,completedAt,task.text,archivedAt,task.list.remoteID,task.position ];
+//    NSError *jsonError;
+//    NSData *objectData = [jsonToAdd dataUsingEncoding:NSUTF8StringEncoding];
+//    NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:objectData
+//                                                                   options:NSJSONReadingMutableContainers
+//                                                                     error:&jsonError];
+    NSLog(@"updated Task : %@",task);
     
-    NSString* archivedAt =task.archivedAt?[NSString stringWithFormat:@"\"%@\"",[self stringForiso8601DateTime:task.archivedAt]]:@"null";
-    
-    // Getting Current Date
-    NSString* dateStr = [self stringForiso8601DateTime:[NSDate date]];
     
     
-    NSString* jsonToAdd =[NSString stringWithFormat: @"{\"id\" : %@,\"entities\" : [],\"tags\" : [],\"url\" : \"https://api.cheddarapp.com/v1/tasks/%@\",\"updated_at\" : \"%@\",\"display_text\" : \"%@\",\"created_at\" : \"%@\",\"display_html\" : \"%@\",\"completed_at\" : %@,\"text\" : \"%@\",\"archived_at\" : %@,\"list_id\" : %@,\"position\" : %@}",task.remoteID,task.remoteID,dateStr,task.text,[self stringForiso8601DateTime:task.createdAt],task.text,completedAt,task.text,archivedAt,task.list.remoteID,task.position ];
-    NSError *jsonError;
-    NSData *objectData = [jsonToAdd dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:objectData
-                                                                   options:NSJSONReadingMutableContainers
-                                                                     error:&jsonError];
-    NSLog(@"updated Task : %@",responseObject);
-    
-    
-    
-		__weak NSManagedObjectContext *context = [CDKTask mainContext];
-		[context performBlockAndWait:^{
-			[task unpackDictionary:responseObject];
-			[task save];
-		}];
-		
-		if (success) {
-			success(nil, responseObject);
-		}
+//		__weak NSManagedObjectContext *context = [CDKTask mainContext];
+//		[context performBlockAndWait:^{
+//			[task unpackDictionary:responseObject];
+//			[task save];
+//		}];
+//		
+//		if (success) {
+//			success(nil, responseObject);
+//		}
 //	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //		if (failure) {
 //			failure((AFJSONRequestOperation *)operation, error);

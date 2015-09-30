@@ -264,12 +264,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                              selector:@selector(contactsRemoved:)
                                                  name:@"contacts_removed"
                                                object:nil];
-    
+   
  /*
     
-    
+  
     /////////// KNOTES methods
-    
+  
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(knotesAdded:)
@@ -290,7 +290,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //                                             selector:@selector(knotesAdded:)
 //                                                 name:@"allRestKnotesByTopicId_added"
 //                                               object:nil];
-    
+  
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(knotesChanged:)
 //                                                 name:@"allRestKnotesByTopicId_changed"
@@ -328,14 +328,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                                object:nil];
     
 /*
-    
+ 
     // Check ready state
-//    
+//
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(Ready_topic)
 //                                                 name:@"topic_ready"
 //                                               object:nil];
-//    
+//
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(Ready_pinnedKnotes)
 //                                                 name:@"pinnedKnotesForTopic_ready"
@@ -387,7 +387,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         isUpdateFirst = YES;
         numberTopic = 0;
         NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-        
+  
         dispatch_async( myCustomQueue, ^{
  
         BOOL todoExists = false;
@@ -412,8 +412,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         }
         });
         
-  
-    
+ 
+ 
         NSLog(@"model count %d",(int)models.count);
         for (NSString *objectId in models) {
          
@@ -421,10 +421,10 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             NSString* model_id = [model objectForKeyedSubscript:@"_id"];
      
 //            if (/*[[model objectForKey:@"subject"] isEqualToString:@"Tasknotes"] && */![self doesModelAlreadyExist:model]) {
-//                
+//
 //                NSLog(@"current pad 1 = %@",@"");
 //                dispatch_async( myCustomQueue, ^{
-//    
+//
 //                [[self managedObjectContext] performBlock:^{
 //                    CDKList *list = [[CDKList alloc] init];
 //                    int64_t remote_id = [[NSDate date] timeIntervalSince1970];
@@ -467,7 +467,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 - (void)Ready_topic
 {
-    
+  
 }
 
 - (void)Ready_pinnedKnotes
@@ -482,7 +482,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 -(void)knotesAdded:(NSNotification *)note
 {
-    NSLog(@"Knote Added = %@",note.userInfo);
+    NSLog(@"Knote Added = t%@",note.userInfo);
     NSLog(@"done added");
 /*
 {
@@ -548,8 +548,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
  );
  }
  */
-   
- 
+
+
     NSDictionary * knoteAdded = note.userInfo;
     NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
     if(knoteAdded){
@@ -559,7 +559,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             for (NSString *objId in models) {
                 NSDictionary *model = [models objectForKey:objId];
                 if ([[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&&![self doesModelAlreadyExist:model] && [options count] > 0 && [[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"]) {
-                    
+         
                     ////Create Pad
                     CDKList *list = [[CDKList alloc] init];
                     [savedLists addObject:list];
@@ -596,7 +596,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     //[[self managedObjectContext] performBlock:^{
                     
                     [task save];
-                    
+   
                 }
             }
         }
@@ -1568,7 +1568,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[CDISplitViewController sharedSplitViewController].listViewController.managedObject = list;
 		_selectedList = list;
-	} else {		
+	} else {
 		CDITasksViewController *viewController = [[CDITasksViewController alloc] init];
         _selectedList = list;
         viewController.managedObject = list;
@@ -1632,7 +1632,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 			[cell.closeButton addTarget:self action:@selector(_cancelAddingList:) forControlEvents:UIControlEventTouchUpInside];
 		}
 
-        
+     
 		return cell;
 	}
 
@@ -1678,7 +1678,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	for (list in lists) {
 		list.position = [NSNumber numberWithInteger:i++];
 	}
-	
+
 	[self.managedObjectContext save:nil];
 	self.ignoreChange = NO;
 	
@@ -1778,7 +1778,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 				NSIndexPath *selectedIndexPath = [self viewIndexPathForFetchedIndexPath:fIndexPath];
                 //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     [self _selectListAtIndexPath:selectedIndexPath newList:NO];
-                    
+
                 //});
                 return;
                 }
