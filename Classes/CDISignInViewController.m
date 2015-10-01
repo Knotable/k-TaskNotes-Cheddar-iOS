@@ -7,6 +7,7 @@
 //
 
 #import "CDISignInViewController.h"
+#import "CDIListsViewController.h"
 #import "CDIHUDView.h"
 #import "UIColor+CheddariOSAdditions.h"
 #import "UIFont+CheddariOSAdditions.h"
@@ -21,6 +22,7 @@
 @implementation CDISignInViewController {
 	UIButton *_footerButton;
 	BOOL _signUpMode;
+    NSTimer *_timer;
 }
 
 @synthesize usernameTextField = _usernameTextField;
@@ -85,7 +87,7 @@
 
 - (id)init {
 	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {
-		self.title = @"Tasknote";
+		self.title = @"Tasknotes";
 		UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
 		title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
 //		self.navigationItem.titleView = title;
@@ -99,7 +101,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-    	_meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
+   _meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
 
 	UIView *background = [[UIView alloc] initWithFrame:CGRectZero];
 	background.backgroundColor = [UIColor cheddarArchesColor];
@@ -114,9 +116,15 @@
 
 	_signUpMode = NO;
 	[self _toggleModeAnimated:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(switchSignUp) userInfo:nil repeats:NO];
+    
 }
 
-
+-(void)switchSignUp{
+    if (![CDIAppDelegate sharedAppDelegate].isFirstLaunch) {
+        [self _toggleModeAnimated:YES];
+    }
+}
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
@@ -144,15 +152,19 @@
 	}
 
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Signing in..." loading:YES];
-	[hud show];
+//	[hud show];
 
     [[TNAPIClient sharedClient] logonWithUsernameOrEmail:self.usernameTextField.text password:self.passwordTextField.text withBlock:^(NSDictionary *response, NSError *error) {
         if (error) {
-            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+//            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
-            [hud completeAndDismissWithTitle:@"Signed In!"];
+            NSLog(@"signin response: %@",response);
+//            [hud completeAndDismissWithTitle:@"Signed In!"];
+            
             NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
+            NSLog(@"userDict response: %@",userDict);
+            
             NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
 
             NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
@@ -161,16 +173,28 @@
             NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
             [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
             [useInfo setObject:sessiontoken forKey:@"token"];
-
-            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
-            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            TNUserModel * user = [[TNUserModel alloc]initWithDict:useInfo];
+            [TNUserModel setCurrentUser:user];
+            
 
             NSString* username = [CDIAppDelegate sharedAppDelegate].userModel.user_username;
             NSString* password = self.passwordTextField.text;
             [SSKeychain setPassword:password forService:@"Tasknote" account:username];
             NSLog(@"%@",_meteor.collections);
+            
+                CDKUser* currentUser = [[CDKUser alloc]init];
+                [[currentUser managedObjectContext] performBlock:^{
+                    currentUser.username = user.user_username;
+                    currentUser.email = user.user_email;
+                    currentUser.accessToken = user.user_sessiontoken;
+                    currentUser.remoteID = user.user_id;
+                    [currentUser save];
+                    [CDIAppDelegate sharedAppDelegate].currentUserID = [[NSUserDefaults standardUserDefaults] objectForKey:@"CDKUserID"];
+                    
+                    CDIListsViewController *viewController = [[CDIListsViewController alloc] init];
+                    
+                    [self.navigationController pushViewController:viewController animated:YES];
+                }];
         }
     }];
 
@@ -184,7 +208,7 @@
 	}
 
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Signing up..." loading:YES];
-	[hud show];
+//	[hud show];
 
     NSDictionary *registrationInfo = @{
                                        @"username":self.usernameTextField.text,
@@ -197,26 +221,11 @@
 
     [[TNAPIClient sharedClient] sigupWithUsernameAndEmail:@"createAccount" withDict:registrationInfo withBlock:^(NSDictionary *response, NSError *error) {
         if (error) {
-            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+             NSLog(@"signUp error :%@",error.userInfo);
+//            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
-            [hud completeAndDismissWithTitle:@"Signed Up!"];
-            NSDictionary * userDict = _meteor.collections[METEORCOLLECTION_USERS][0];
-            NSString* sessiontoken = [[response objectForKeyedSubscript:@"result"] objectForKeyedSubscript:@"token"];
-
-            NSMutableDictionary *useInfo = [[NSMutableDictionary alloc]init];
-            [useInfo setObject:[userDict objectForKeyedSubscript:@"_id"] forKey:@"userId"];
-            [useInfo setObject: [userDict objectForKeyedSubscript:@"username"] forKey:@"username"];
-            NSMutableArray *emails = [userDict objectForKeyedSubscript:@"emails"];
-            [useInfo setObject:[[emails firstObject] objectForKeyedSubscript:@"address"] forKey:@"email"];
-            [useInfo setObject:sessiontoken forKey:@"token"];
-
-            [CDIAppDelegate sharedAppDelegate].userModel = [[TNUserModel alloc]initWithDict:useInfo];
-            [[NSUserDefaults standardUserDefaults] setObject:useInfo forKey:kTNUserIDKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-
-             
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self _toggleModeAnimated:YES];
         }
     }];
 }

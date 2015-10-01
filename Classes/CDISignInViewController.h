@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nothing Magical. All rights reserved.
 //
 #import "Constant.h"
+#import "CDIAppDelegate.h"
 @class MeteorClient;
 @interface CDISignInViewController : UITableViewController <UITextFieldDelegate>
 

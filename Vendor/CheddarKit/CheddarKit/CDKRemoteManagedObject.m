@@ -9,6 +9,7 @@
 #import "CDKRemoteManagedObject.h"
 
 @implementation CDKRemoteManagedObject
+@dynamic id;
 
 - (void)create {
 	[self createWithSuccess:nil failure:nil];

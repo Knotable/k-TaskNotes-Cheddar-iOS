@@ -3,7 +3,6 @@
 #import "MeteorClient.h"
 #import "MeteorClient+Private.h"
 #import "BSONIdGenerator.h"
-
 NSString * const MeteorClientConnectionReadyNotification = @"bounsj.objectiveddp.ready";
 NSString * const MeteorClientDidConnectNotification = @"boundsj.objectiveddp.connected";
 NSString * const MeteorClientDidDisconnectNotification = @"boundsj.objectiveddp.disconnected";
@@ -243,6 +242,8 @@ double const MeteorClientMaxRetryIncrease = 6;
         responseCallback(response, error);
     }];
 }
+
+
 
 
 // move this to string category

@@ -19,6 +19,7 @@
 - (void)toggleEditMode:(id)sender;
 - (void)endCellTextEditing;
 - (void)editRow:(UIGestureRecognizer *)editingGestureRecognizer;
+- (BOOL)doesModelAlreadyExist:(NSDictionary*)model;
 
 - (void)updateTableViewOffsets;
 - (void)keyboardDidShow:(NSNotification *)notification;

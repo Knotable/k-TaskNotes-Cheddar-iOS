@@ -27,10 +27,19 @@
 @synthesize checkboxButton = _checkboxButton;
 
 
-- (void)setTask:(CDKTask *)task {
+- (void)setTask:(NSDictionary *)task {
 	_task = task;
-	
-	if (_task.isCompleted) {
+	/*
+     {
+        checked = 0;
+        name = pol;
+        num = 3;
+        voters =             (
+     );
+     }
+     */
+    
+	if ([[_task objectForKey:@"checked"]boolValue]) {
 		_attributedLabel.textColor = [UIColor cheddarLightTextColor];
 		_checkmark.hidden = NO;
 		_attributedLabel.linkAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -50,7 +59,7 @@
 
 #pragma mark - Class Methods
 
-+ (CGFloat)cellHeightForTask:(CDKTask *)task width:(CGFloat)width {
++ (CGFloat)cellHeightForTask:(NSDictionary *)task width:(CGFloat)width {
 	static TTTAttributedLabel *label = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
@@ -58,12 +67,27 @@
 		label.numberOfLines = 0;
 	});
 	label.font = [UIFont cheddarFontOfSize:18.0f];
-	label.text = task.attributedDisplayText;
-	CGSize size = [label sizeThatFits:CGSizeMake(width - 54.0f, 2000.0f)];
-	label.text = nil;
+	label.text = [task objectForKey:@"name"] == [NSNull null]?@"-":[task objectForKey:@"name"];
+	CGSize size = CGSizeMake(width - 54.0f, 2000.0f);
+	
+    //Calculate the expected size based on the font and linebreak mode of your label
+    // FLT_MAX here simply means no constraint in height
+    CGSize maximumLabelSize = size;
+    
+    CGSize expectedLabelSize = [label.text sizeWithFont:label.font constrainedToSize:maximumLabelSize lineBreakMode:label.lineBreakMode];
+    
+    //adjust the label the the new height.
+    CGRect newFrame = label.frame;
+    newFrame.size.height = expectedLabelSize.height;
+    
+    label.text = nil;
 
+    
+    
+    
+    
 	CGFloat offset = ([CDISettingsTextSizePickerViewController fontSizeAdjustment] * 2.0f) - 1.0f;
-	return size.height + 27.0f + offset;
+    return newFrame.size.height + 27.0f;// + offset;
 }
 
 
@@ -150,33 +174,33 @@
 #pragma Private
 
 - (void)_updateAttributedText {
-	__weak CDKTask *task = _task;
-	[_attributedLabel setText:_task.displayText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-		[task addEntitiesToAttributedString:mutableAttributedString];
+	__weak NSDictionary *task = _task;
+	[_attributedLabel setText:[task objectForKey:@"name"] afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+		//[task addEntitiesToAttributedString:mutableAttributedString];
 		return mutableAttributedString;
 	}];
 
 	// Add links
-	for (NSDictionary *entity in _task.entities) {
-		NSArray *indices = [entity objectForKey:@"display_indices"];
-		NSRange range = NSMakeRange([[indices objectAtIndex:0] unsignedIntegerValue], 0);
-		range.length = [[indices objectAtIndex:1] unsignedIntegerValue] - range.location;
-		range = [_attributedLabel.text composedRangeWithRange:range];
-
-		NSString *type = [entity objectForKey:@"type"];
-
-		// Tag
-		if ([type isEqualToString:@"tag"]) {
-			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"x-cheddar-tag://%@", [entity objectForKey:@"tag_name"]]];
-			[_attributedLabel addLinkToURL:url withRange:range];
-		}
-
-		// Link
-		else if ([type isEqualToString:@"link"]) {
-			NSURL *url = [NSURL URLWithString:[entity objectForKey:@"url"]];
-			[_attributedLabel addLinkToURL:url withRange:range];
-		}
-	}
+//	for (NSDictionary *entity in _task.entities) {
+//		NSArray *indices = [entity objectForKey:@"display_indices"];
+//		NSRange range = NSMakeRange([[indices objectAtIndex:0] unsignedIntegerValue], 0);
+//		range.length = [[indices objectAtIndex:1] unsignedIntegerValue] - range.location;
+//		range = [_attributedLabel.text composedRangeWithRange:range];
+//
+//		NSString *type = [entity objectForKey:@"type"];
+//
+//		// Tag
+//		if ([type isEqualToString:@"tag"]) {
+//			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"x-cheddar-tag://%@", [entity objectForKey:@"tag_name"]]];
+//			[_attributedLabel addLinkToURL:url withRange:range];
+//		}
+//
+//		// Link
+//		else if ([type isEqualToString:@"link"]) {
+//			NSURL *url = [NSURL URLWithString:[entity objectForKey:@"url"]];
+//			[_attributedLabel addLinkToURL:url withRange:range];
+//		}
+//	}
 }
 
 @end

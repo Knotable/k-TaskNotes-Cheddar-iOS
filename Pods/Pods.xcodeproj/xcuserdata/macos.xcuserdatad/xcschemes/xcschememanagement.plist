@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>M13OrderedDictionary.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
+		<key>ObjectiveDDP.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
+		<key>Pods.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
+		<key>SocketRocket.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>025403D90D790705F9207CA422ECC397</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>24D55CEC1148C773E57D3ADE95A93F12</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26EEDA298A888E11943FD11E8D9FF5DF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7214C1F5B751AA91C75FDA953D8D109E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CA5766AE2C7AE500CF2B3721812B9886</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -24,6 +24,7 @@
 @dynamic user;
 @dynamic list;
 @dynamic tags;
+@dynamic checkList;
 
 - (void)setCompleted:(BOOL)completed {
 	if (completed == [self isCompleted]) {
@@ -56,7 +57,6 @@
 + (NSArray *)defaultSortDescriptors {
 	return [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:YES],
-			[NSSortDescriptor sortDescriptorWithKey:@"remoteID" ascending:YES],
 			nil];
 }
 
@@ -64,6 +64,7 @@
 #pragma mark - SSRemoteManagedObject
 
 - (void)unpackDictionary:(NSDictionary *)dictionary {
+    
 	[super unpackDictionary:dictionary];
 	self.archivedAt = [[self class] parseDate:[dictionary objectForKey:@"archived_at"]];
 	self.completedAt = [[self class] parseDate:[dictionary objectForKey:@"completed_at"]];
@@ -144,8 +145,10 @@
 - (void)toggleCompleted {
 	if (self.isCompleted) {
 		self.completedAt = nil;
+        self.updatedAt = nil;
 	} else {
 		self.completedAt = [NSDate date];
+        self.updatedAt = [NSDate date];
 	}
 	[self save];
 	[self update];

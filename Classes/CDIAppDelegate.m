@@ -9,6 +9,7 @@
 #import "CDIAppDelegate.h"
 #import "CDISplitViewController.h"
 #import "CDIListsViewController.h"
+#import "CDISignInViewController.h"
 #import "CDITransactionObserver.h"
 #import "CDIDefines.h"
 #import "CDISettingsTapPickerViewController.h"
@@ -18,11 +19,10 @@
 #import "LocalyticsUtilities.h"
 #import <Crashlytics/Crashlytics.h>
 #import <StoreKit/StoreKit.h>
-
+#import "CDIFirstLaunchViewController.h"
 @implementation CDIAppDelegate
 
 @synthesize window = _window;
-
 
 + (CDIAppDelegate *)sharedAppDelegate {
 	return (CDIAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -32,6 +32,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Configure analytics
 	// If you don't work at Nothing Magical, you shouldn't turn these on.
+    
 #if CHEDDAR_PRODUCTION_MODE
 	#ifdef CHEDDAR_CRASHLYTICS_KEY
 	[Crashlytics startWithAPIKey:CHEDDAR_CRASHLYTICS_KEY];
@@ -48,7 +49,8 @@
 	[CDKHTTPClient setDevelopmentModeEnabled:YES];
 	[CDKPushController setDevelopmentModeEnabled:YES];
 #endif
-
+    // Set status bar
+    [application setStatusBarStyle:UIStatusBarStyleLightContent];
 	// Default defaults
 	NSDictionary *defaults = @{
 		kCDITapActionDefaultsKey: kCDITapActionCompleteKey,
@@ -56,7 +58,7 @@
 		kCDITextSizeDefaultsKey: kCDITextSizeMediumKey
 	};
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-
+    
 	// Initialize the window
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor blackColor];
@@ -66,12 +68,30 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.window.rootViewController = [[CDISplitViewController alloc] init];
 	} else {
-		UIViewController *viewController = [[CDIListsViewController alloc] init];
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		UIViewController *viewController;
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"FIRST_LAUNCH"]) {
+            viewController = [[CDIFirstLaunchViewController alloc]init];
+            _isFirstLaunch = YES;
+        }else{
+            viewController= [[CDISignInViewController alloc]init];
+            _isFirstLaunch = NO;
+        }
+//        if([CDKUser currentUser]){
+////            viewController = [[CDIListsViewController alloc]           ];
+//            viewController= [[CDISignInViewController alloc]init];
+//            _isFirstLaunch = NO;
+//        }else{
+////            viewController= [[CDISignInViewController alloc]init];
+//            viewController = [[CDIFirstLaunchViewController alloc]init];
+//            _isFirstLaunch = YES;
+//        }
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}
     [self loadServerConfig];
-
+    
+    // Get id previus user.
+    _previousUserID = [[NSUserDefaults standardUserDefaults] objectForKey:@"CDKUserID"];
 //    [MagicalRecord setupCoreDataStack];
 
 	[self.window makeKeyAndVisible];
@@ -222,20 +242,20 @@
         self.ddp = [[ObjectiveDDP alloc]initWithURLString:[model meteorWebsocketURL] delegate:self.meteorClient];
         self.meteorClient.ddp = self.ddp;
         [self.ddp connectWebSocket];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
-        [self.meteorClient addSubscription:METEORCOLLECTION_MESSAGES];
-        [self.meteorClient addSubscription:METEORCOLLECTION_MUTEKNOTES];
-        [self.meteorClient addSubscription:METEORCOLLECTION_NOTIFICATIONS];
-        [self.meteorClient addSubscription:METEORCOLLECTION_PEOPLE];
-        [self.meteorClient addSubscription:METEORCOLLECTION_TOPICS];
-        [self.meteorClient addSubscription:METEORCOLLECTION_USERPRIVATEDATA];
-        [self.meteorClient addSubscription:METEORCOLLECTION_USERS];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_TOPIC];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_REST];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_PINNED];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED];
-        [self.meteorClient addSubscription:METEORCOLLECTION_KEY];
-        [self.meteorClient addSubscription:METEORCOLLECTION_HOTKNOTES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_MESSAGES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_MUTEKNOTES];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_NOTIFICATIONS];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_PEOPLE];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_TOPICS];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_USERPRIVATEDATA];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_USERS];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_TOPIC];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_REST];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_PINNED];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_KEY];
+//        [self.meteorClient addSubscription:METEORCOLLECTION_HOTKNOTES];
 
 //        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
 //        [self.meteorClient addObserver:self

@@ -2,7 +2,7 @@
 //  SSManagedViewController.m
 //  SSDataKit
 //
-//  Created by Sam Soffes on 4/7/12.
+//  Created by Abdul Sami on 4/7/12.
 //  Copyright (c) 2012 Sam Soffes. All rights reserved.
 //
 
@@ -206,24 +206,24 @@
 
 
 - (void)showNoContentView:(BOOL)animated {
-	if (!self.noContentView || self.noContentView.superview) {
-		return;
-	}
-	
-	self.noContentView.alpha = 0.0f;
-	self.noContentView.frame = self.view.bounds;
-	[self.view addSubview:self.noContentView];
-	
-	void (^change)(void) = ^{
-		self.noContentView.alpha = 1.0f;
-	};
-	
-	
-	if (animated) {
-		[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:change completion:nil];
-	} else {
-		change();
-	}
+//	if (!self.noContentView || self.noContentView.superview) {
+//		return;
+//	}
+//	
+//	self.noContentView.alpha = 0.0f;
+//	self.noContentView.frame = self.view.bounds;
+//	[self.view addSubview:self.noContentView];
+//	
+//	void (^change)(void) = ^{
+//		self.noContentView.alpha = 1.0f;
+//	};
+//	
+//	
+//	if (animated) {
+//		[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:change completion:nil];
+//	} else {
+//		change();
+//	}
 }
 
 

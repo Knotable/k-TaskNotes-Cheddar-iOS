@@ -113,6 +113,17 @@
 	return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
 }
 
+#pragma mark - TNModelsMethods
+
+- (BOOL)doesModelAlreadyExist:(NSDictionary*)model{
+    NSMutableArray *topics = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
+        for (CDKRemoteManagedObject *topic in topics) {
+            if([topic.id isEqualToString:[model objectForKey:@"_id"]]){
+                return YES;
+            }
+        }
+    return NO;
+}
 
 #pragma mark - SSManagedViewController
 
@@ -323,6 +334,7 @@
 	if (self.editing && !self.hasContent) {
 		[self setEditing:NO animated:YES];
 	}
+    
 }
 
 @end

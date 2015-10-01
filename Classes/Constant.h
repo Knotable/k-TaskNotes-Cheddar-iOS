@@ -27,18 +27,28 @@
 #define METEORCOLLECTION_ARCHIVEDTOPICS  @"archivedTopics"       // Existing
 
 #define METEORCOLLECTION_KNOTE_TOPIC            @"topic"
+#define METEORCOLLECTION_KNOTE_DATES            @"date_events"
 #define METEORCOLLECTION_KNOTE_PINNED           @"pinnedKnotesForTopic"
 #define METEORCOLLECTION_KNOTE_ARCHIVED         @"archivedKnotesForTopic"
 #define METEORCOLLECTION_KNOTE_REST             @"allRestKnotesByTopicId"
 
-#define kTNUserIDKey @"kCDKUserIDKey"
+#define kTNUserIDKey @"CDKUserID"
+#define kTNUserEmail @"TNUser_Email"
+#define kTNUserName @"CDKUser_Name"
+#define kTNUserSessionToken @"CDKUser_Session_Token"
 #define kCDKKeychainServiceName = @"Tasknote"
 
 
 #define KnotebleShowPopUpMessage            @"KnotebleShowPopUpMessage"
 #define kNeedChangeMongoDbServer            @"kNeedChangeMongoDbServer"
 #define kNeedGoBackToLoginView              @"kNeedGoBackToLoginView"
+#define kTaskChangedNotification            @"TaskChangedNotification"
 
 #define kNeedChangeApplicationHost          @"kNeedChangeApplicationHost"
+
+
+#define kDateFormat @"MMM dd yyyy,hh:mm aa"
+#define kDateFormat1 @"MMM dd yyyy, hh:mm:ss aa"
+#define kDateFormat2 @"EEE MMM dd hh:mm:ss aa yyy"
 
 #endif

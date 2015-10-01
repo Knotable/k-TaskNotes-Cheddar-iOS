@@ -56,10 +56,16 @@ NSString *const kCDITapActionEditKey = @"CDITapActionEdit";
 	footer.backgroundColor = [UIColor clearColor];
 	footer.textColor = [UIColor cheddarLightTextColor];
 	footer.font = [UIFont cheddarInterfaceFontOfSize:14.0f];
-	footer.textAlignment = UITextAlignmentCenter;
+	footer.textAlignment = NSTextAlignmentCenter;
 	footer.numberOfLines = 0;
 	footer.text = @"Change what action tapping a task preforms. Tapping the checkbox will always toggle completion.";
 	self.tableView.tableFooterView = footer;
+    
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar
+     setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor],NSFontAttributeName:[UIFont cheddarInterfaceFontOfSize:17.0f]}];
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 @end
