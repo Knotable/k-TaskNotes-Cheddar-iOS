@@ -68,6 +68,11 @@ NSString *const kCDIFontAvenirKey = @"Avenir";
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.title = @"Font";
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar
+     setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor],NSFontAttributeName:[UIFont cheddarInterfaceFontOfSize:17.0f]}];
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 

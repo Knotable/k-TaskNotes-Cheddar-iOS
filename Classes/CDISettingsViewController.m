@@ -37,7 +37,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		_upgradeLabel = [[SSLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 60.0f)];
 		_upgradeLabel.font = [UIFont cheddarInterfaceFontOfSize:14.0f];
 		_upgradeLabel.backgroundColor = [UIColor clearColor];
-		_upgradeLabel.textAlignment = UITextAlignmentCenter;
+		_upgradeLabel.textAlignment = NSTextAlignmentCenter;
 		_upgradeLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_upgradeLabel.numberOfLines = 2;
 		_upgradeLabel.textEdgeInsets = UIEdgeInsetsMake(4.0f, 10.0f, 0.0f, 10.0f);
@@ -56,7 +56,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		_upgradeButton.frame = CGRectMake(roundf((self.view.frame.size.width - 300.0f) / 2.0f), 6.0f, 300.0f, 42.0f);
 		[_upgradeButton setTitle:@"Upgrade to Plus" forState:UIControlStateNormal];
 		[_upgradeButton addTarget:self action:@selector(upgrade:) forControlEvents:UIControlEventTouchUpInside];
-		[self.upgradeLabel addSubview:_upgradeButton];
+//		[self.upgradeLabel addSubview:_upgradeButton];
 	}
 	return _upgradeButton;
 }
@@ -76,7 +76,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	[super viewDidLoad];
 	self.title = @"Settings";
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(close:)];
-    [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
+    [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = doneButton;
 	
 	SSLabel *footer = [[SSLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 33.0f)];
@@ -105,7 +105,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 #pragma mark - Actions
 
 - (void)close:(id)sender {
-	[self.navigationController dismissModalViewControllerAnimated:YES];
+	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -113,7 +113,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	UIViewController *viewController = [[CDIUpgradeViewController alloc] init];
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-	[self.navigationController presentModalViewController:navigationController animated:YES];
+	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 
@@ -146,7 +146,8 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	// Sign out
     [TNUserModel setCurrentUser:nil];
     [self.meteor logout];
-//	[CDKUser setCurrentUser:nil];
+    [CDIAppDelegate sharedAppDelegate].isFirstLaunch = NO;
+    //	[CDKUser setCurrentUser:nil];
 //	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //	[userDefaults removeObjectForKey:kCDISelectedListKey];
 //	[userDefaults synchronize];
@@ -243,7 +244,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	// About and Support
 	else if (indexPath.section == 3) {
 		if (indexPath.row == 0) {
-			cell.textLabel.text = @"About Cheddar";
+			cell.textLabel.text = @"About";
 			cell.detailTextLabel.text = nil;
 		} else if (indexPath.row == 1) {
 			cell.textLabel.text = @"Get Help";
@@ -275,7 +276,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		return 0.0f;
 	}
 
-	return 60.0f;
+	return 0.0f;//60
 }
 
 
@@ -299,7 +300,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	// Account
 	if (indexPath.section == 0) {
 		CDIWebViewController *viewController = [[CDIWebViewController alloc] init];
-		[viewController loadURL:[NSURL URLWithString:@"https://cheddarapp.com/account"]];
+		[viewController loadURL:[NSURL URLWithString:@"http://beta.knotable.com"]];
 		[self.navigationController pushViewController:viewController animated:YES];
 		return;
 	}
@@ -338,7 +339,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		// Support
 		else if (indexPath.row == 1) {
 			CDIWebViewController *viewController = [[CDIWebViewController alloc] init];
-			[viewController loadURL:[NSURL URLWithString:@"https://cheddarapp.com/support"]];
+			[viewController loadURL:[NSURL URLWithString:@"http://beta.knotable.com"]];
 			[self.navigationController pushViewController:viewController animated:YES];
 			return;
 		}

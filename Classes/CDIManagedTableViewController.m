@@ -122,8 +122,7 @@
                 return YES;
             }
         }
-    
-    
+
     return NO;
 }
 

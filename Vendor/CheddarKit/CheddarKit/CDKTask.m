@@ -163,8 +163,10 @@
 - (void)toggleCompleted {
 	if (self.isCompleted) {
 		self.completedAt = nil;
+        self.updatedAt = nil;
 	} else {
 		self.completedAt = [NSDate date];
+        self.updatedAt = [NSDate date];
 	}
 	[self save];
 	[self update];

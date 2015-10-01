@@ -434,7 +434,6 @@
 	if (!indexPath) {
 		return;
 	}
-
     NSMutableDictionary* checkListItem = [options[indexPath.row] mutableCopy];
     if([[checkListItem objectForKey:@"checked"]intValue] == 0)
         [checkListItem setValue:[NSNumber numberWithInt:1] forKey:@"checked"];
@@ -460,7 +459,6 @@
 //     postNotificationName:kTaskChangedNotification
 //     object:self userInfo: userInfo];
 //    
-
 }
 
 
@@ -518,7 +516,7 @@
     if ([self.addTaskView.textField isFirstResponder]) {
         return NO;
     }
-    
+ 
     return YES;
 }
 
@@ -534,10 +532,9 @@
 	// Nothing
 	if ([action isEqualToString:kCDITapActionNothingKey]) {
 		return;
-	}	
+	}
 	
 	//CDKTask *task = [self objectForViewIndexPath:indexPath];
-
 	// Complete
 	if ([action isEqualToString:kCDITapActionCompleteKey]) {
 		//[task toggleCompleted];
@@ -577,7 +574,7 @@
         CDKTask *task = [self objectForViewIndexPath:sourceIndexPath];
         [tasks removeObject:task];
         [tasks insertObject:task atIndex:destinationIndexPath.row];
-        
+    
         NSInteger i = 0;
         for (task in tasks) {
             task.position = [NSNumber numberWithInteger:i++];
@@ -623,7 +620,6 @@
 - (void)addTaskView:(CDIAddTaskView *)addTaskView didReturnWithTitle:(NSString *)title {
 	        //CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Inserting Task..." loading:YES];
             //[hud show];
-            
             CDIAddTaskAnimationView *animation = [[CDIAddTaskAnimationView alloc] initWithFrame:self.view.bounds];
 			animation.title = title;
 			[self.view addSubview:animation];
@@ -631,13 +627,12 @@
 			self.ignoreChange = YES;
 			
 			NSInteger numberOfRows = [self.tableView numberOfRowsInSection:0];
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:0];
+//			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:0];
 			
 			NSNumber* position = [NSNumber numberWithInteger:self.list.highestPosition + 1];
 			
-            
+
             TNTaskList *taskList = [[TNTaskList alloc]init];
-            
             taskList.title = @"TaskNotes";
             NSDateFormatter * formater = [[NSDateFormatter alloc]init];
             [formater setDateFormat:kDateFormat1];
@@ -651,12 +646,10 @@
                                   @[], @"voters",
                                   nil],@""];
             taskList.from = [TNUserModel currentUser].user_email;
-            
             taskList.topicId = self.list.id;
             taskList.taskType = @"checklist";
             taskList.sectionId = @"";
             taskList.order = [NSString stringWithFormat:@"%@", position];
-            
             
 			CGPoint point = CGPointZero;
 			if (numberOfRows > 0) {
@@ -803,11 +796,10 @@
                         else{
                             options = oldOptions;
                         }
-                        
                         [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
                             if (error) {
                           //      [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
-                                
+             
                                 [self setEditing:NO animated:NO];
                                 [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
                                     //self.ignoreChange = NO;
@@ -818,7 +810,6 @@
                                 }];
 
                             }else{
-                       //         [hud completeAndDismissWithTitle:@"Inserted Successfully"];
                                 [self setEditing:NO animated:NO];
                                 [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
                                     //self.ignoreChange = NO;
@@ -827,7 +818,6 @@
                                     [self hideCoverView];
                                     
                                 }];
-                                
                             }
                             NSLog(@"returned data : %@",userDate);
 
@@ -873,7 +863,7 @@
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-			[self.splitViewController presentModalViewController:navigationController animated:YES];
+			[self.splitViewController presentViewController:navigationController animated:YES completion:nil];
 		} else {
 			[self.navigationController pushViewController:viewController animated:YES];
 		}
@@ -906,7 +896,7 @@
 	}
 
 	[self setEditing:NO animated:YES];
-	
+
 	if (alertView.tag == 1) {
 		[self.list archiveAllTasks];
 		[self setEditing:NO animated:YES];
@@ -952,14 +942,10 @@
 	}
 }
 
-
-
-
 #pragma mark - NSFetchedResultsController
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [super controllerDidChangeContent:controller];
-    
    }
 
 -(BOOL)hasContent{

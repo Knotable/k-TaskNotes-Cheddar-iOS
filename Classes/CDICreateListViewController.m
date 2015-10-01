@@ -109,7 +109,7 @@
 
 	// Create list
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating..." loading:YES];
-	[hud show];
+//	[hud show];
 	
 	CDKList *list = [[CDKList alloc] init];
 	list.title = title;
@@ -124,7 +124,7 @@
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.titleTextField.enabled = YES;
 			
-			NSDictionary *responseObject = remoteOperation.responseJSON;		
+			NSDictionary *responseObject = remoteOperation.responseJSON;
 			if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"error"] isEqualToString:@"plus_required"]) {
 				[hud dismiss];
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Plus Required" message:@"You need Cheddar Plus to create more than 2 lists. Please upgrade to continue." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Upgrade", nil];

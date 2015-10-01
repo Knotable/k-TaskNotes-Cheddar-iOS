@@ -19,11 +19,10 @@
 #import "LocalyticsUtilities.h"
 #import <Crashlytics/Crashlytics.h>
 #import <StoreKit/StoreKit.h>
-
+#import "CDIFirstLaunchViewController.h"
 @implementation CDIAppDelegate
 
 @synthesize window = _window;
-
 
 + (CDIAppDelegate *)sharedAppDelegate {
 	return (CDIAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -33,6 +32,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Configure analytics
 	// If you don't work at Nothing Magical, you shouldn't turn these on.
+    
 #if CHEDDAR_PRODUCTION_MODE
 	#ifdef CHEDDAR_CRASHLYTICS_KEY
 	[Crashlytics startWithAPIKey:CHEDDAR_CRASHLYTICS_KEY];
@@ -49,9 +49,6 @@
 	[CDKHTTPClient setDevelopmentModeEnabled:YES];
 	[CDKPushController setDevelopmentModeEnabled:YES];
 #endif
-
-    
-    
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
 	// Default defaults
 	NSDictionary *defaults = @{
@@ -60,7 +57,7 @@
 		kCDITextSizeDefaultsKey: kCDITextSizeMediumKey
 	};
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-
+    
 	// Initialize the window
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor blackColor];
@@ -71,16 +68,29 @@
 		self.window.rootViewController = [[CDISplitViewController alloc] init];
 	} else {
 		UIViewController *viewController;
-        if([CDKUser currentUser]){
-            viewController = [[CDIListsViewController alloc] init];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"FIRST_LAUNCH"]) {
+            viewController = [[CDIFirstLaunchViewController alloc]init];
+            _isFirstLaunch = YES;
         }else{
             viewController= [[CDISignInViewController alloc]init];
+            _isFirstLaunch = NO;
         }
+//        if([CDKUser currentUser]){
+////            viewController = [[CDIListsViewController alloc]           ];
+//            viewController= [[CDISignInViewController alloc]init];
+//            _isFirstLaunch = NO;
+//        }else{
+////            viewController= [[CDISignInViewController alloc]init];
+//            viewController = [[CDIFirstLaunchViewController alloc]init];
+//            _isFirstLaunch = YES;
+//        }
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}
     [self loadServerConfig];
-
+    
+    // Get id previus user.
+    _previousUserID = [[NSUserDefaults standardUserDefaults] objectForKey:@"CDKUserID"];
 //    [MagicalRecord setupCoreDataStack];
 
 	[self.window makeKeyAndVisible];

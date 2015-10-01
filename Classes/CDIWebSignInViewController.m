@@ -25,7 +25,7 @@
 
 - (id)init {
 	if ((self = [super init])) {
-		self.title = @"Tasknote";
+		self.title = @"Tasknotes";
 		UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
 		title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
 //		self.navigationItem.titleView = title;
@@ -72,7 +72,7 @@
 	} completion:nil];
 	
 	[[CDKHTTPClient sharedClient] signInWithAuthorizationCode:code success:^(AFJSONRequestOperation *operation, id responseObject) {
-		[self.navigationController dismissModalViewControllerAnimated:YES];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
 		NSLog(@"Failed to sign in: %@", error);
 		[_webView loadURLString:[NSString stringWithFormat:@"https://api.cheddarapp.com/oauth/authorize?client_id=%@", kCDIAPIClientID]];
