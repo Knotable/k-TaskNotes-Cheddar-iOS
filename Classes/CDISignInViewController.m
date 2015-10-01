@@ -100,7 +100,8 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+    self.navigationController.navigationBarHidden=false;
+    
    _meteor = [CDIAppDelegate sharedAppDelegate].meteorClient;
 
 	UIView *background = [[UIView alloc] initWithFrame:CGRectZero];
@@ -117,7 +118,7 @@
 	_signUpMode = NO;
 	[self _toggleModeAnimated:NO];
     _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(switchSignUp) userInfo:nil repeats:NO];
-    
+
 }
 
 -(void)switchSignUp{
@@ -190,7 +191,8 @@
                     currentUser.accessToken = user.user_sessiontoken;
                     currentUser.remoteID = user.user_id;
                     [currentUser save];
-                    [CDIAppDelegate sharedAppDelegate].currentUserID = [[NSUserDefaults standardUserDefaults] objectForKey:@"CDKUserID"];
+                    
+                    [CDIAppDelegate sharedAppDelegate].currentUserID = user.user_id;
                     
                     CDIListsViewController *viewController = [[CDIListsViewController alloc] init];
                     

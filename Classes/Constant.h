@@ -39,7 +39,7 @@
 #define kCDKKeychainServiceName = @"Tasknote"
 
 
-#define kDefaultPadName @"TaskNotes"
+#define kDefaultPadName @"Tasknotes"
 
 
 //Update Types

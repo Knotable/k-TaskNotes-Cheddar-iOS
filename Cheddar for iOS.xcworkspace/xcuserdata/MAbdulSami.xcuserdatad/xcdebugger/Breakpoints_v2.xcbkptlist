@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Classes/CDISignInViewController.m"
-            timestampString = "464003235.068845"
+            filePath = "Classes/CDIListsViewController.m"
+            timestampString = "465422121.846316"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "-signUp:"
+            startingLineNumber = "398"
+            endingLineNumber = "398"
+            landmarkName = "-topicsUpdated:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,47 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/CDIListsViewController.m"
-<<<<<<< HEAD
-            timestampString = "465348736.037647"
+            timestampString = "465423947.532191"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1827"
-            endingLineNumber = "1827"
-            landmarkName = "-checkForUpdatesAndPush"
-=======
-            timestampString = "464082227.073139"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1036"
-            endingLineNumber = "1036"
-            landmarkName = "-topicsRemoved:"
->>>>>>> origin/Bon_new
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-<<<<<<< HEAD
-            filePath = "Classes/CDIListsViewController.m"
-            timestampString = "465348736.037647"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1823"
-            endingLineNumber = "1823"
-            landmarkName = "-checkForUpdatesAndPush"
-=======
-            filePath = "Classes/CDITasksViewController.m"
-            timestampString = "464076517.406129"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "-taskChangedNotification:"
->>>>>>> origin/Bon_new
+            startingLineNumber = "391"
+            endingLineNumber = "391"
+            landmarkName = "-topicsUpdated:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -77,14 +42,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/CDIListsViewController.m"
-<<<<<<< HEAD
-            timestampString = "465348731.632488"
+            timestampString = "465423956.889021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1807"
-            endingLineNumber = "1807"
-            landmarkName = "-checkForUpdatesAndPush"
+            startingLineNumber = "389"
+            endingLineNumber = "389"
+            landmarkName = "-topicsUpdated:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__40-[CDIListsViewController topicsUpdated:]_block_invoke"
+                  moduleName = "Cheddar"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
+                  timestampString = "465427832.846852"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "390"
+                  endingLineNumber = "390"
+                  offsetFromSymbolStart = "462">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__40-[CDIListsViewController topicsUpdated:]_block_invoke_2"
+                  moduleName = "Cheddar"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
+                  timestampString = "465427832.847382"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "390"
+                  endingLineNumber = "390"
+                  offsetFromSymbolStart = "67">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -93,21 +89,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Classes/CDITasksViewController.m"
-            timestampString = "465351048.327625"
+            filePath = "Classes/CDIListsViewController.m"
+            timestampString = "465424749.085678"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "550"
-            endingLineNumber = "550"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-=======
-            timestampString = "464082076.332497"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "626"
-            endingLineNumber = "626"
+            startingLineNumber = "572"
+            endingLineNumber = "572"
             landmarkName = "-knotesAdded:"
->>>>>>> origin/Bon_new
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Classes/CDIListsViewController.m"
+            timestampString = "465426240.608231"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1232"
+            endingLineNumber = "1232"
+            landmarkName = "-predicate"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -72,18 +72,16 @@
             viewController = [[CDIFirstLaunchViewController alloc]init];
             _isFirstLaunch = YES;
         }else{
-            viewController= [[CDISignInViewController alloc]init];
-            _isFirstLaunch = NO;
+            if([CDKUser currentUser]){
+                viewController = [[CDIListsViewController alloc] init];
+                _isFirstLaunch = NO;
+            }else{
+                viewController= [[CDISignInViewController alloc]init];
+                
+                _isFirstLaunch = NO;
+            }
         }
-//        if([CDKUser currentUser]){
-////            viewController = [[CDIListsViewController alloc]           ];
-//            viewController= [[CDISignInViewController alloc]init];
-//            _isFirstLaunch = NO;
-//        }else{
-////            viewController= [[CDISignInViewController alloc]init];
-//            viewController = [[CDIFirstLaunchViewController alloc]init];
-//            _isFirstLaunch = YES;
-//        }
+
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 	}

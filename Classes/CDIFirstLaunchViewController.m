@@ -7,7 +7,7 @@
 //
 
 #import "CDIFirstLaunchViewController.h"
-#import "CDIListsViewController.h"
+#import "CDISignInViewController.h"
 @interface CDIFirstLaunchViewController ()<UIGestureRecognizerDelegate>{
     BOOL isLandscape;
 }
@@ -75,9 +75,10 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"FIRST_LAUNCH"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    CDIListsViewController *controller = [[CDIListsViewController alloc]init];
-    [self.navigationController pushViewController:controller animated:YES];
-    
+    CDISignInViewController *controller = [[CDISignInViewController alloc]init];
+    //[self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:YES];
+
     
 }
 @end

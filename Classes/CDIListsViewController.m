@@ -85,7 +85,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     title.accessibilityLabel = @"Tasknotes";
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
     self.title = @"Tasknotes";
-
+    self.navigationController.navigationBarHidden=false; 
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Lists " style:UIBarButtonItemStyleBordered target:nil action:nil];
     
     [backButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
@@ -394,7 +394,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 if (response) {
                     NSLog(@"response = %@",response);
       //              [hud completeAndDismissWithTitle:@"Done !"];
-                    
+                 
+                    NSLog(@"done posting");
                 }
         
             }];
@@ -402,6 +403,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         });
         
         
+        NSLog(@"Got All Pads");
         
         for (NSString *objectId in models) {
             
@@ -546,7 +548,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     
     
     NSDictionary * knoteAdded = note.userInfo;
-    
     if(knoteAdded ){
         NSString* knoteType = [knoteAdded objectForKey:@"type"];
         if([knoteType isEqualToString:@"checklist"]){
@@ -573,7 +574,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     }
                         NSLog(@"current pad = %@",model);
                     list = [[CDKList alloc] init];
-                    [savedLists addObject:list];
                  //   [[CDKList mainContext] performBlock:^{
                         int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                         list.id = [model objectForKey:@"_id"];
@@ -586,7 +586,10 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         list.user = [CDKUser currentUser];
                         list.createdAt  = [NSDate date];
                         list.remoteID = [NSNumber numberWithInt:remote_id];
-                        
+                    
+                        [list save];
+                        [savedLists addObject:list];
+                    
                    // }];
                     
                 }
@@ -619,6 +622,11 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                             }
                         }
                         
+                    }
+                    
+                    if(!list){
+                        [[self managedObjectContext] save:nil];
+                        return;
                     }
 
                     NSManagedObjectContext *moc = [self managedObjectContext];
@@ -1219,8 +1227,10 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (NSPredicate *)predicate {
-	return [NSPredicate predicateWithFormat:@"archivedAt = nil && user = %@", [CDKUser currentUser]];
-    NSLog(@"current User is = %@",[CDKUser currentUser]);
+    NSLog(@"current User is = %@  %@  %@",[CDKUser currentUser].firstName ,[CDKUser currentUser].username, [CDKUser currentUser].remoteID);
+    
+    return [NSPredicate predicateWithFormat:@"archivedAt = nil && user = %@", [CDKUser currentUser]];
+    
 }
 
 

@@ -9,7 +9,7 @@
 		<string>Dev</string>
 		<key>application_host1</key>
 		<array>
-			<string>n1.dev.knotable.com</string>
+			<string>a1.staging.knotable.com</string>
 		</array>
 		<key>mongodb_host1</key>
 		<array>
