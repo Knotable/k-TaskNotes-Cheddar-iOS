@@ -18,6 +18,7 @@
 #import "CDIAddListTableViewCell.h"
 #import "CDIHUDView.h"
 #import "CDIViewArchiveButton.h"
+#import "Update.h"
 
 #import <SSToolkit/UIScrollView+SSToolkitAdditions.h>
 #import "SMTEDelegateController.h"
@@ -37,8 +38,10 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     NSString* savingKnoteId;
     BOOL isUpdateFirst;
     BOOL isListeningToUpdates;
+    BOOL isUpdateNeeded;
     dispatch_queue_t myCustomQueue;
     NSMutableArray* savedLists;
+    
 }
 @property (nonatomic, strong) CDKList *selectedList;
 @property (nonatomic, assign) BOOL adding;
@@ -126,6 +129,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
     
 //    if([CDKUser currentUser])
+    isUpdateNeeded = [[Update getAllUpdates] count]>0;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(meteorConnectedNotification:) name:MeteorClientConnectionReadyNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(doUpdateNotification:)
+                                                 name:kDoUpdateNotification
+                                               object:nil];
         [self turnOnBackground];
     
 }
@@ -389,7 +400,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             
         BOOL todoExists = false;
         for(int t=0 ; t< [_meteor.collections[METEORCOLLECTION_TOPICS] count];t++){
-            if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"]){
+            if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:kDefaultPadName]){
                 todoExists = true;
                 break;
             }
@@ -400,7 +411,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
             [hud show];
             
-            [[TNAPIClient sharedClient] sendInsertPadWithName:@"Tasks from IOS" withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
+            [[TNAPIClient sharedClient] sendInsertPadWithName:kDefaultPadName withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
                 if (error) {
                     [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
                 }
@@ -423,7 +434,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             
             NSString* model_id = [model objectForKeyedSubscript:@"_id"];
             
-            if ([[model objectForKey:@"subject"] isEqualToString:@"Tasks from IOS"] && ![self doesModelAlreadyExist:model]) {
+            if ([[model objectForKey:@"subject"] isEqualToString:kDefaultPadName] && ![self doesModelAlreadyExist:model]) {
                 
                 NSDictionary* taskFromIOS = [model copy];
                 NSLog(@"current pad = %@",model);
@@ -695,7 +706,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     
                         //}];
                     }
-                    if([list.title isEqualToString:@"Tasks from IOS"]){
+                    if([list.title isEqualToString:kDefaultPadName]){
 //                        NSNumber *selectedList = [[NSUserDefaults standardUserDefaults] objectForKey:kCDISelectedListKey];
 //                        //if (!selectedList) {
 //                            
@@ -990,7 +1001,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         }
                         if(_selectedList)
                             if([list.id isEqualToString:_selectedList.id]){
-                                NSDictionary *userInfo = [NSDictionary dictionaryWithObject:options forKey:@"options"];
+                                NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[options mutableCopy] forKey:@"options"];
                                 NSLog(@"options are : %@",options);
                                 [[NSNotificationCenter defaultCenter]
                                  postNotificationName:kTaskChangedNotification
@@ -1757,7 +1768,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         
                         for(int t=0; t<[self.fetchedResultsController fetchedObjects].count;t++){
                             CDKList* list = [self objectForViewIndexPath:[NSIndexPath indexPathForRow:t inSection:0]];
-                            if([list.title isEqualToString:@"Tasks from IOS"]){
+                            if([list.title isEqualToString:kDefaultPadName]){
                                 [self _selectListAtIndexPath:[NSIndexPath indexPathForRow:t inSection:0] newList:NO];
                                 break;
                             }
@@ -1773,11 +1784,102 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 }
 
 
--(BOOL)checkForUpdatesAndPush{
+-(void)meteorConnectedNotification:(NSNotification *) notification{
+    if(isUpdateNeeded)[self checkForUpdatesAndPush];
     
+}
+
+
+-(void)doUpdateNotification:(NSNotification *) notification{
+    [self checkForUpdatesAndPush];
     
+}
+
+
+-(void)checkForUpdatesAndPush{
     
-    return false;
+    NSArray* updates = [Update getAllUpdates];
+    
+    BOOL connected = [self.meteor connected];
+    
+    if(!connected){
+        isUpdateNeeded = true;
+        return;
+    }
+    if(updates && [updates count])
+    dispatch_async( myCustomQueue, ^{
+        
+    for(Update* update in updates){
+        //Updating Tasks here in background
+        if([update.updated_entity intValue] == kCDKUpdateTask)
+        {
+            if([update.type intValue] == kCDKUpdatedItemTypeUpdated ){
+                NSLog(@"updated Task %@",update.updated_ID);
+                CDKTask* toUpdateTask= [CDKTask findObjectWithID:update.updated_ID];
+                
+                [[TNAPIClient sharedClient] sendRequestUpdateTaskList:update.updated_ID withOptionArray:toUpdateTask.checkList withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
+                    if (error) {
+                        NSLog(@"Error in update Task : %@",error);
+                        NSLog(@"Error Posting update");
+                        
+                    }else{
+                        NSLog(@"Received Data from update Task: %@",userDate);
+                        NSLog(@"Done Posting update");
+                        if(connected)
+                        [update delete];
+                    }
+                }];
+
+            }
+            else if([update.type intValue] == kCDKUpdatedItemTypeAdded){
+                NSLog(@"Added Task %@",update.updated_ID);
+                CDKTask* toUpdateTask= [CDKTask findObjectWithID:update.updated_ID];
+                TNTaskList *taskList = [[TNTaskList alloc]init];
+                taskList.title = @"TaskNotes";
+                NSDateFormatter * formater = [[NSDateFormatter alloc]init];
+                [formater setDateFormat:kDateFormat1];
+                taskList.date = [formater stringFromDate:[NSDate date]];
+                taskList.subject = @"subject";
+                taskList.name = [TNUserModel currentUser].user_username;
+                taskList.options = toUpdateTask.checkList;
+                taskList.from = [TNUserModel currentUser].user_email;
+                
+                taskList.topicId = toUpdateTask.list.id;
+                taskList.taskType = @"checklist";
+                taskList.sectionId = @"";
+                taskList.order = [NSString stringWithFormat:@"%@", toUpdateTask.position];
+                
+                [[TNAPIClient sharedClient] sendInsertTaskList:taskList withUserId:[TNUserModel currentUser].user_id withUseData:nil withCompleteBlock:^(WM_NetworkStatus success, NSError* error, id userDate){
+                    if (error) {
+                   
+                        NSLog(@"Error in Add Task : %@",error);
+                        NSLog(@"Error Posting Add task");
+                        
+                    }else{
+                        //    [hud completeAndDismissWithTitle:@"Inserted Successfully"];
+                        /*
+                         received data = {
+                         id = 46;
+                         msg = result;
+                         result = hcLKL7FgfEfRMAf2H;
+                         }
+
+                         */
+                        toUpdateTask.id = [userDate objectForKey:@"result"];
+                        [toUpdateTask save];
+                        NSLog(@"received data = %@",userDate);
+                        if(connected)
+                        [update delete];
+                    }
+                    NSLog(@"done posting");
+                }];
+            }
+        }
+        
+    }
+        isUpdateNeeded = false;
+    });
+    
 }
 
 @end

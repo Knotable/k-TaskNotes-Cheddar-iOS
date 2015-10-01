@@ -21,6 +21,7 @@
 #import "CDIKeyboardBar.h"
 #import "UIColor+CheddariOSAdditions.h"
 #import "UIFont+CheddariOSAdditions.h"
+#import "Update.h"
 
 @interface CDITasksViewController () <CDIAddTaskViewDelegate, TTTAttributedLabelDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 @property (nonatomic, strong) CDIAddTaskView *addTaskView;
@@ -36,7 +37,7 @@
 @implementation CDITasksViewController {
 	NSIndexPath *_textEditingIndexPath;
 	dispatch_semaphore_t _createTaskSemaphore;
-    NSArray* options;
+    NSMutableArray* options;
     dispatch_queue_t myCustomQueue;
 }
 
@@ -191,7 +192,7 @@
 
         NSLog(@"Im on the main thread");
         NSDictionary* userInfo = notification.userInfo;
-        options = [userInfo objectForKey:@"options"];
+        //options = [userInfo objectForKey:@"options"];
         
         //[self.tableView endUpdates];
     
@@ -434,12 +435,32 @@
 		return;
 	}
 
-	CDKTask *task = [self objectForViewIndexPath:indexPath];
-	if (!task) {
-		return;
-	}
+    NSMutableDictionary* checkListItem = [options[indexPath.row] mutableCopy];
+    if([[checkListItem objectForKey:@"checked"]intValue] == 0)
+        [checkListItem setValue:[NSNumber numberWithInt:1] forKey:@"checked"];
+    else
+        [checkListItem setValue:[NSNumber numberWithInt:0] forKey:@"checked"];
+    options[indexPath.row]=checkListItem;
+    CDKTask* task=[[self fetchedResultsController]fetchedObjects][0];
+    task.checkList = options;
+    [task save];
+    
+    Update* update = [[Update alloc] init];
+    update.updated_entity = [NSNumber numberWithInt:kCDKUpdateTask];
+    update.updated_ID = task.id;
+    update.type=[NSNumber numberWithInt:kCDKUpdatedItemTypeUpdated];
+    [update save];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:kDoUpdateNotification
+     object:self userInfo: nil];
+    [self.tableView reloadData];
+//    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:task.checkList forKey:@"options"];
+//    NSLog(@"options are : %@",task.checkList);
+//    [[NSNotificationCenter defaultCenter]
+//     postNotificationName:kTaskChangedNotification
+//     object:self userInfo: userInfo];
+//    
 
-	[task toggleCompleted];
 }
 
 
@@ -464,8 +485,8 @@
     if(tasks.count >0)
     {
         task= tasks[0];
-        
-        if(options == nil)options=[task.checkList mutableCopy];
+        //if(options == nil)
+        options=[task.checkList mutableCopy];
         
     }
     return [options count];
@@ -515,18 +536,19 @@
 		return;
 	}	
 	
-	CDKTask *task = [self objectForViewIndexPath:indexPath];
-	
+	//CDKTask *task = [self objectForViewIndexPath:indexPath];
+
 	// Complete
 	if ([action isEqualToString:kCDITapActionCompleteKey]) {
-		[task toggleCompleted];
-		return;
+		//[task toggleCompleted];
+                return;
 	}
 	
 	// Edit
 	if ([action isEqualToString:kCDITapActionEditKey]) {
-		[self _editTask:task];
-	}
+		//[self _editTask:task];
+        return;
+    }
 }
 
 
@@ -599,8 +621,8 @@
 #pragma mark - CDIAddTaskViewDelegate
 
 - (void)addTaskView:(CDIAddTaskView *)addTaskView didReturnWithTitle:(NSString *)title {
-	        CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Inserting Task..." loading:YES];
-            [hud show];
+	        //CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Inserting Task..." loading:YES];
+            //[hud show];
             
             CDIAddTaskAnimationView *animation = [[CDIAddTaskAnimationView alloc] initWithFrame:self.view.bounds];
 			animation.title = title;
@@ -647,33 +669,108 @@
     
     
             if([self.fetchedResultsController fetchedObjects].count == 0){
-            [[TNAPIClient sharedClient] sendInsertTaskList:taskList withUserId:[TNUserModel currentUser].user_id withUseData:nil withCompleteBlock:^(WM_NetworkStatus success, NSError* error, id userDate){
-                if (error) {
-                    [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
-                    [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
-                        //self.ignoreChange = NO;
-                    } completion:^{
-                        [animation removeFromSuperview];
-                        
-                        [self hideCoverView];
-                    }];
+                CDKTask* task = [[CDKTask alloc] init];
+                int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+                task.id = [NSString stringWithFormat:@"%@%lli",kCDKUpdatedItemOfflineIDPrefix,remote_id];
+                task.remoteID = [NSNumber numberWithInt:remote_id];
+                task.displayText = @"TaskNotes";
+                task.text =title;
+                task.position = [NSNumber numberWithInt:0];
+                task.list = self.list;
+                [task setCheckList: @[[NSDictionary dictionaryWithObjectsAndKeys:
+                                       [NSNumber numberWithBool:false], @"checked",
+                                       title, @"name",
+                                       [NSNumber numberWithInteger:self.list.highestPosition + 1], @"num",
+                                       @[], @"voters",
+                                       nil],[NSDictionary dictionaryWithObjectsAndKeys:
+                                             [NSNumber numberWithBool:false], @"checked",
+                                             [NSNull null], @"name",
+                                             [NSNumber numberWithInteger:0], @"num",
+                                             @[], @"voters",
+                                             nil]]];
+                [task save];
+                
+                Update* update = [[Update alloc] init];
+                
+                update.updated_entity = [NSNumber numberWithInt: kCDKUpdateTask];
+                update.updated_ID = task.id;
+                update.type= [NSNumber numberWithInt: kCDKUpdatedItemTypeAdded];
+                [update save];
+                
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:kDoUpdateNotification
+                 object:self userInfo: nil];
+                
+                [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
+                    //self.ignoreChange = NO;
+                } completion:^{
+                    [animation removeFromSuperview];
                     
-                }else{
-                    [hud completeAndDismissWithTitle:@"Inserted Successfully"];
+                    [self hideCoverView];
+                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:task.checkList forKey:@"options"];
+                    NSLog(@"options are : %@",task.checkList);
+                    [[NSNotificationCenter defaultCenter]
+                     postNotificationName:kTaskChangedNotification
+                     object:self userInfo: userInfo];
                     
-                    [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
-                        //self.ignoreChange = NO;
-                    } completion:^{
-                        [animation removeFromSuperview];
-                        
-                        [self hideCoverView];
-                    }];
-                    
+                }];
+            }
+            else{
+                NSMutableArray* oldOptions = [options mutableCopy];
+                Boolean alreadyAdded = false;
+                if(oldOptions){
+                    oldOptions = [oldOptions mutableCopy];
+                    for(int k=0; k < oldOptions.count ; k++){
+                        NSDictionary* option = oldOptions[k];
+                        if([option objectForKey:@"name"] == [NSNull null]){
+                            alreadyAdded = true;
+                            oldOptions[k] = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             [NSNumber numberWithBool:false], @"checked", title, @"name",position, @"num",@[], @"voters",nil];
+                            break;
+                        }
+                    }
                 }
-                NSLog(@"received data = %@",userDate);
-
-            }];
-            }else{
+                NSArray* options=nil;
+                if(!alreadyAdded){
+                    if(oldOptions){
+                        options = [oldOptions arrayByAddingObjectsFromArray:@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",position, @"num",@[], @"voters",nil]]];
+                    }else{
+                        options =@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked" ,title, @"name",position, @"num",@[], @"voters",nil],@{}];
+                                
+                    }
+                }
+                else{
+                    options = oldOptions;
+                }
+                CDKTask * task = [[self fetchedResultsController]fetchedObjects][0];
+                task.checkList = [options copy];
+                [task save];
+                
+                Update* update = [[Update alloc] init];
+                update.updated_entity = [NSNumber numberWithInt:kCDKUpdateTask];
+                update.updated_ID = task.id;
+                update.type=[NSNumber numberWithInt:kCDKUpdatedItemTypeUpdated];
+                [update save];
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:kDoUpdateNotification
+                 object:self userInfo: nil];
+                
+                [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
+                    //self.ignoreChange = NO;
+                } completion:^{
+                    [animation removeFromSuperview];
+                    [self hideCoverView];
+                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:task.checkList forKey:@"options"];
+                    NSLog(@"options are : %@",task.checkList);
+                    [[NSNotificationCenter defaultCenter]
+                     postNotificationName:kTaskChangedNotification
+                     object:self userInfo: userInfo];
+                    
+                }];
+                
+            }
+    
+            /*else{
                 MeteorClient* meteor = [TNAPIClient sharedClient].meteor;
                 NSDictionary * kNotes = meteor.collections[METEORCOLLECTION_KNOTES];
                 NSDictionary* kNote=nil;
@@ -709,7 +806,7 @@
                         
                         [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
                             if (error) {
-                                [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+                          //      [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
                                 
                                 [self setEditing:NO animated:NO];
                                 [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
@@ -721,7 +818,7 @@
                                 }];
 
                             }else{
-                                [hud completeAndDismissWithTitle:@"Inserted Successfully"];
+                       //         [hud completeAndDismissWithTitle:@"Inserted Successfully"];
                                 [self setEditing:NO animated:NO];
                                 [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
                                     //self.ignoreChange = NO;
@@ -738,12 +835,7 @@
                         break;
                     }
                 }
-            }
-
-    
-    
-    
-
+            }*/
 }
 
 
@@ -859,6 +951,8 @@
 		}
 	}
 }
+
+
 
 
 #pragma mark - NSFetchedResultsController

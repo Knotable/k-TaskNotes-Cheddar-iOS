@@ -139,6 +139,24 @@
 	}];
 }
 
++(CDKTask*)findObjectWithID:(NSString*)ID{
+    // Create the fetch request for the ID
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = [self entityWithContext:[self mainContext]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"id = %@", ID];
+    fetchRequest.fetchLimit = 1;
+    
+    // Execute the fetch request
+    NSArray *results = [[self mainContext] executeFetchRequest:fetchRequest error:nil];
+    
+    // If the object is not found, return nil
+    if (results.count == 0) {
+        return nil;
+    }
+    
+    // Return the object
+    return [results objectAtIndex:0];
+}
 
 #pragma mark - Task
 
@@ -189,5 +207,7 @@
 		});
 	}];
 }
+
+
 
 @end

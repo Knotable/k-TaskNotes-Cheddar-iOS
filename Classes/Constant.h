@@ -39,11 +39,27 @@
 #define kCDKKeychainServiceName = @"Tasknote"
 
 
+#define kDefaultPadName @"TaskNotes"
+
+
+//Update Types
+#define kCDKUpdatedItemTypeUpdated  1 //updated
+#define kCDKUpdatedItemTypeAdded  2 //added
+
+#define kCDKUpdatedItemOfflineIDPrefix  @"OTN"
+
+#define kCDKUpdateTask  1
+#define kCDKUpdateList  2
+#define kCDKUpdateTag   3
+
+
+
 
 #define KnotebleShowPopUpMessage            @"KnotebleShowPopUpMessage"
 #define kNeedChangeMongoDbServer            @"kNeedChangeMongoDbServer"
 #define kNeedGoBackToLoginView              @"kNeedGoBackToLoginView"
 #define kTaskChangedNotification            @"TaskChangedNotification"
+#define kDoUpdateNotification               @"DoUpdateNotification"
 
 #define kNeedChangeApplicationHost          @"kNeedChangeApplicationHost"
 

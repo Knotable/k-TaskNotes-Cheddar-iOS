@@ -32,6 +32,7 @@
 - (BOOL)hasTag:(CDKTag *)tag;
 - (BOOL)hasTags:(NSArray *)tags;
 - (void)moveToList:(CDKList *)list;
++(CDKTask*)findObjectWithID:(NSString*)ID;
 
 @end
 

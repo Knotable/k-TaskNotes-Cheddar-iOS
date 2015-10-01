@@ -169,7 +169,7 @@ static NSString *const kURIRepresentationKey = @"URIRepresentation";
 
 
 #pragma mark - Reflection
-
+    
 - (NSArray *)attributeKeys {
 	return [[[[self class] entityWithContext:[self managedObjectContext]] attributesByName] allKeys];
 }
