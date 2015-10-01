@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Vendor/CheddarKit/CheddarKit/Update.h">
+   </FileRef>
+   <FileRef
+      location = "group:Vendor/CheddarKit/CheddarKit/Update.m">
+   </FileRef>
+   <FileRef
       location = "group:Cheddar for iOS.xcodeproj">
    </FileRef>
    <FileRef
