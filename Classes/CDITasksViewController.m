@@ -22,10 +22,12 @@
 #import "UIColor+CheddariOSAdditions.h"
 #import "UIFont+CheddariOSAdditions.h"
 #import "Update.h"
+#import "CDIWebPadButton.h"
 
 @interface CDITasksViewController () <CDIAddTaskViewDelegate, TTTAttributedLabelDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 @property (nonatomic, strong) CDIAddTaskView *addTaskView;
 @property (nonatomic, strong) NSMutableArray *currentTags;
+@property (nonatomic,strong) CDIWebPadButton* webPadButton;
 - (void)_renameList:(id)sender;
 - (void)_archiveTasks:(id)sender;
 - (void)_archiveAllTasks:(id)sender;
@@ -140,6 +142,26 @@
 
 	self.noContentView = [[CDITasksPlaceholderView alloc] initWithFrame:CGRectZero];
     
+    
+    
+    UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 100.0f)];
+    footer.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    UIView *shadow = self.tableView.tableFooterView;
+    self.tableView.tableFooterView = footer;
+    shadow.frame = CGRectMake(0.0f, 0.0f, 320.0f, 3.0f);
+    [footer addSubview:shadow];
+    
+    _webPadButton = [[CDIWebPadButton alloc] initWithFrame:CGRectMake(20.0f, 62.0f  , 280.0f, 32.0)];
+    _webPadButton.alpha = 1.0f;
+    [_webPadButton setTitle:@"View this Pad on Knotable.com" forState:UIControlStateNormal];
+    [_webPadButton addTarget:self action:@selector(webPadButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [footer addSubview:_webPadButton];
+    
+    
+    
+    
     self.fetchedResultsController.fetchRequest.predicate = self.predicate;
     [self.fetchedResultsController performFetch:nil];
     
@@ -147,7 +169,27 @@
     [self.tableView beginUpdates];
     [self.tableView reloadData];
     [self.tableView endUpdates];
+    
+    
 }
+
+
+-(void)webPadButtonClick:(UIButton *) sender {
+    
+    NSString* text = [NSString stringWithFormat: @"http://staging.knotable.com/p/%@",self.list.id];
+    NSURL*    url  = [[NSURL alloc] initWithString:text];
+    
+    if (url.scheme.length == 0)
+    {
+        text = [@"http://" stringByAppendingString:text];
+        url  = [[NSURL alloc] initWithString:text];
+    }
+    
+    [[UIApplication sharedApplication] openURL:url];
+    
+}
+
+
 
 -(void)viewDidDisappear:(BOOL)animated{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -483,10 +525,25 @@
     if(tasks.count >0)
     {
         task= tasks[0];
-        //if(options == nil)
+        //if(options != nil)
         options=[task.checkList mutableCopy];
         
     }
+
+    CGRect rect = _webPadButton.frame;
+    
+    if([options count]>0){
+        if(rect.origin.y > 50){
+            rect.origin.y-=50;
+        }
+    }else{
+        
+        if(rect.origin.y < 50){
+            rect.origin.y+=50;
+        }
+    }
+    [_webPadButton setFrame:rect];
+    
     return [options count];
 }
 
@@ -559,31 +616,66 @@
 		return;
 	}
 	
-	CDKTask *task = [self objectForViewIndexPath:indexPath];
-	task.archivedAt = [NSDate date];
-	[task save];
-	[task update];
+
+    [options removeObjectAtIndex:indexPath.row];
+    CDKTask* task=[[self fetchedResultsController]fetchedObjects][0];
+    task.checkList = options;
+    [task save];
     
+    Update* update = [[Update alloc] init];
+    update.updated_entity = [NSNumber numberWithInt:kCDKUpdateTask];
+    update.updated_ID = task.id;
+    update.type=[NSNumber numberWithInt:kCDKUpdatedItemTypeUpdated];
+    [update save];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:kDoUpdateNotification
+     object:self userInfo: nil];
+//    [self.tableView reloadData];
+
 }
 
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 	if (sourceIndexPath.row != destinationIndexPath.row) {
         self.ignoreChange = YES;
-        NSMutableArray *tasks = [self.fetchedResultsController.fetchedObjects mutableCopy];
-        CDKTask *task = [self objectForViewIndexPath:sourceIndexPath];
-        [tasks removeObject:task];
-        [tasks insertObject:task atIndex:destinationIndexPath.row];
-    
-        NSInteger i = 0;
-        for (task in tasks) {
-            task.position = [NSNumber numberWithInteger:i++];
-        }
+        NSMutableDictionary* sourceCheckListItem = [options[sourceIndexPath.row] mutableCopy];
+        NSMutableDictionary* destinationCheckListItem = [options[destinationIndexPath.row] mutableCopy];
+//        if([[checkListItem objectForKey:@"checked"]intValue] == 0)
+//            [checkListItem setValue:[NSNumber numberWithInt:1] forKey:@"checked"];
+//        else
+//            [checkListItem setValue:[NSNumber numberWithInt:0] forKey:@"checked"];
         
-        [self.managedObjectContext save:nil];
+        NSNumber* temp = [sourceCheckListItem objectForKey:@"num"];
+        [sourceCheckListItem setValue:[destinationCheckListItem objectForKey:@"num"] forKey:@"num"];
+        [destinationCheckListItem setValue:temp forKey:@"num"];
+        options[destinationIndexPath.row]=sourceCheckListItem;
+        options[sourceIndexPath.row]=destinationCheckListItem;
+        CDKTask* task=[[self fetchedResultsController]fetchedObjects][0];
+//        NSArray* newOptions = [options sortedArrayUsingComparator:^NSComparisonResult(NSDictionary* a, NSDictionary* b) {
+//            NSNumber* positionA = [a objectForKey:@"num"]==[NSNull null]? [NSNumber numberWithInt:0]:[a objectForKey:@"num"];
+//            NSNumber* positionB = [b objectForKey:@"num"]==[NSNull null]? [NSNumber numberWithInt:0]:[b objectForKey:@"num"];
+//            if(positionA.integerValue < positionB.integerValue)
+//                return NSOrderedAscending;
+//            else if(positionA.integerValue > positionB.integerValue)
+//                return NSOrderedDescending;
+//            
+//            return NSOrderedSame;
+//        }];
+//        options = [newOptions mutableCopy];
+        task.checkList = options;
+        [task save];
+        
         self.ignoreChange = NO;
         
-        [CDKTask sortWithObjects:tasks];
+        Update* update = [[Update alloc] init];
+        update.updated_entity = [NSNumber numberWithInt:kCDKUpdateTask];
+        update.updated_ID = task.id;
+        update.type=[NSNumber numberWithInt:kCDKUpdatedItemTypeUpdated];
+        [update save];
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:kDoUpdateNotification
+         object:self userInfo: nil];
+        
     }
 
     [self.tableView reloadData];

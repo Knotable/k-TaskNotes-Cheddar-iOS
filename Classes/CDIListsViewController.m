@@ -394,7 +394,32 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 if (response) {
                     NSLog(@"response = %@",response);
       //              [hud completeAndDismissWithTitle:@"Done !"];
-                 
+                 /*
+                  response = {
+                  id = 15;
+                  msg = result;
+                  result = 6tumHt2jrgBxkrbW9;
+                  }
+                  */
+                    [self.managedObjectContext performBlockAndWait:^(){
+                       
+                    CDKList * list = [[CDKList alloc] init];
+                    //   [[CDKList mainContext] performBlock:^{
+                    int64_t remote_id = [[NSDate date] timeIntervalSince1970];
+                    list.id = [response objectForKey:@"result"];
+                    list.title = @"";
+                    list.position = [NSNumber numberWithInt:0];
+                    list.slug = @"";
+                    list.archivedAt = nil;
+                    list.updatedAt = nil;
+                    list.isArchived = NO;
+                    list.user = [CDKUser currentUser];
+                    list.createdAt  = [NSDate date];
+                    list.remoteID = [NSNumber numberWithInt:remote_id];
+                    
+                    [list save];
+                    [savedLists addObject:list];
+                    }];
                     NSLog(@"done posting");
                 }
         
@@ -1227,6 +1252,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 - (NSPredicate *)predicate {
+    
     NSLog(@"current User is = %@  %@  %@",[CDKUser currentUser].firstName ,[CDKUser currentUser].username, [CDKUser currentUser].remoteID);
     
     return [NSPredicate predicateWithFormat:@"archivedAt = nil && user = %@", [CDKUser currentUser]];
