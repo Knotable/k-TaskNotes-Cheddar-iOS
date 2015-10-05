@@ -1,6 +1,6 @@
 //
 //  CDISettingsViewController.m
-//  Cheddar for iOS
+//  Tasknotes for iOS
 //
 //  Created by Sam Soffes on 4/20/12.
 //  Copyright (c) 2012 Nothing Magical. All rights reserved.
@@ -118,7 +118,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 
 
 - (void)signOut:(id)sender {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out of Cheddar?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Sign Out", nil];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out of Tasknotes?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Sign Out", nil];
 	[alert show];
 }
 
@@ -128,7 +128,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 - (void)_updateUI {
 	CDKUser *user = [CDKUser currentUser];
 	if (user.hasPlus.boolValue) {
-		self.upgradeLabel.text = @"You have Cheddar Plus and we really love you for that.";
+		self.upgradeLabel.text = @"You have Tasknotes Plus and we really love you for that.";
 		_upgradeButton.alpha = 0.0f;
 	} else {
 		self.upgradeLabel.text = @"";
@@ -175,25 +175,27 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		return 1;
 	}
 
+    // Sign out
+    else if (section == 1) {
+        return 1;
+    }
+    
+    
 	// Display
-	else if (section == 1) {
+	else if (section == 2) {
 		return 2;
 	}
 
 	// Tasks
-	else if (section == 2) {
+	else if (section == 3) {
 		return 1;
 	}
 
 	// About and Support
-	else if (section == 3) {
+	else if (section == 4) {
 		return 2;
 	}
 
-	// Sign out
-	else if (section == 4) {
-		return 1;
-	}
 	
 	return 0;
 }
@@ -221,9 +223,15 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		cell.textLabel.text = @"Manage Account";
 		cell.detailTextLabel.text = nil;
 	}
-
+    
+    // Sign out
+    else if (indexPath.section == 1) {
+        cell.textLabel.text = @"Sign Out";
+        cell.detailTextLabel.text = nil;
+    }
+    
 	// Display
-	else if (indexPath.section == 1) {
+	else if (indexPath.section == 2) {
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"Text Size";
 			cell.detailTextLabel.text = [CDISettingsTextSizePickerViewController textForSelectedKey];
@@ -234,7 +242,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	}
 	
 	// Tasks
-	else if (indexPath.section == 2) {
+	else if (indexPath.section == 3) {
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"Tap Action";
 			cell.detailTextLabel.text = [CDISettingsTapPickerViewController textForSelectedKey];
@@ -242,7 +250,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	}
 	
 	// About and Support
-	else if (indexPath.section == 3) {
+	else if (indexPath.section == 4) {
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"About";
 			cell.detailTextLabel.text = nil;
@@ -252,11 +260,6 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		}
 	}
 
-	// Sign out
-	else if (indexPath.section == 4) {
-		cell.textLabel.text = @"Sign Out";
-		cell.detailTextLabel.text = nil;
-	}
 
 	return cell;
 }
@@ -285,9 +288,9 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0) {
 		return @"Account";
-	} else if (section == 1) {
-		return @"Display";
 	} else if (section == 2) {
+		return @"Display";
+	} else if (section == 3) {
 		return @"Tasks";
 	}
 	return nil;
@@ -304,9 +307,18 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		[self.navigationController pushViewController:viewController animated:YES];
 		return;
 	}
+    
+    
+    // Sign out
+    else if (indexPath.section == 1) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self signOut:nil];
+        return;
+    }
+    
 
 	// Display
-	else if (indexPath.section == 1) {
+	else if (indexPath.section == 2) {
 		// Text Size
 		if (indexPath.row == 0) {
 			viewController = [[CDISettingsTextSizePickerViewController alloc] init];
@@ -319,7 +331,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	}
 	
 	// Tasks
-	else if (indexPath.section == 2) {
+	else if (indexPath.section == 3) {
 		// Tap Action
 		if (indexPath.row == 0) {
 			viewController = [[CDISettingsTapPickerViewController alloc] init];
@@ -327,7 +339,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	}
 	
 	// Support and About
-	else if (indexPath.section == 3) {
+	else if (indexPath.section == 4) {
 		// About
 		if (indexPath.row == 0) {
 			CDIWebViewController *viewController = [[CDIWebViewController alloc] init];
@@ -345,12 +357,7 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		}
 	}
 
-	// Sign out
-	else if (indexPath.section == 4) {
-		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-		[self signOut:nil];
-		return;
-	}
+	
 
 	if (viewController) {
 		[self.navigationController pushViewController:viewController animated:YES];

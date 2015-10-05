@@ -1204,8 +1204,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         [editButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
         self.navigationItem.leftBarButtonItem = editButton;
 
-        UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithTitle:@" ＋ " style:UIBarButtonItemStyleBordered target:self action:@selector(createList:)];
-        [createButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+        UIBarButtonItem *settingButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(showSettings:)];
+        [settingButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+        self.navigationItem.rightBarButtonItem = settingButton;
+        
+        /*UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithTitle:@" ＋ " style:UIBarButtonItemStyleBordered target:self action:@selector(createList:)];
+        [createButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];*/
 //        self.navigationItem.rightBarButtonItem = createButton;
 
 	}
