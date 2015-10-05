@@ -31,8 +31,6 @@
 		21396B6717728AF70040FCA2 /* SSPullToRefreshSimpleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6317728AE50040FCA2 /* SSPullToRefreshSimpleContentView.m */; };
 		21396B6817728AF70040FCA2 /* SSPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21396B6517728AE50040FCA2 /* SSPullToRefreshView.m */; };
 		21E0A67A16AAE0BA002479F9 /* CDIViewArchiveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E0A67916AAE0BA002479F9 /* CDIViewArchiveButton.m */; };
-		57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E2FBF11B8A03440076981B /* TNTaskList.m */; };
-		57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */; };
 		22AFD5E51BB4DDE000E99320 /* iTunesArtwork@2x_(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5E41BB4DDE000E99320 /* iTunesArtwork@2x_(1).png */; };
 		22AFD5E71BB4E06C00E99320 /* firstlauch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5E61BB4E06C00E99320 /* firstlauch@2x.png */; };
 		22AFD5E91BB4E0C900E99320 /* firstlauch.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5E81BB4E0C900E99320 /* firstlauch.png */; };
@@ -47,7 +45,9 @@
 		22AFD5FC1BB52CBF00E99320 /* Default-Portrait@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F61BB52CBF00E99320 /* Default-Portrait@3x.png */; };
 		22AFD5FD1BB52CBF00E99320 /* Default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22AFD5F71BB52CBF00E99320 /* Default@3x.png */; };
 		22EDC8D81BB6389B007C97F6 /* CDIFirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22EDC8D71BB6389B007C97F6 /* CDIFirstLaunchViewController.m */; };
-
+		57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E2FBF11B8A03440076981B /* TNTaskList.m */; };
+		57E55FBC1BC1A8D80024DF32 /* CDIWebPadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E55FBB1BC1A8D80024DF32 /* CDIWebPadButton.m */; };
+		57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */; };
 		B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */; };
 		B208BC2A15BF63A80080705D /* CDIAddTaskAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9515BF63A80080705D /* CDIAddTaskAnimationView.m */; };
 		B208BC2B15BF63A80080705D /* CDIAddTaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9715BF63A80080705D /* CDIAddTaskView.m */; };
@@ -350,7 +350,6 @@
 		21396B6517728AE50040FCA2 /* SSPullToRefreshView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSPullToRefreshView.m; sourceTree = "<group>"; };
 		21E0A67816AAE0BA002479F9 /* CDIViewArchiveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIViewArchiveButton.h; sourceTree = "<group>"; };
 		21E0A67916AAE0BA002479F9 /* CDIViewArchiveButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIViewArchiveButton.m; sourceTree = "<group>"; };
-		22AFD5DE1BB4D91700E99320 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		22AFD5E41BB4DDE000E99320 /* iTunesArtwork@2x_(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x_(1).png"; sourceTree = "<group>"; };
 		22AFD5E61BB4E06C00E99320 /* firstlauch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firstlauch@2x.png"; sourceTree = "<group>"; };
 		22AFD5E81BB4E0C900E99320 /* firstlauch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firstlauch.png; sourceTree = "<group>"; };
@@ -369,6 +368,8 @@
 		35BC470360D304F7DFF584A3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		57E2FBF01B8A03440076981B /* TNTaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNTaskList.h; sourceTree = "<group>"; };
 		57E2FBF11B8A03440076981B /* TNTaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNTaskList.m; sourceTree = "<group>"; };
+		57E55FBB1BC1A8D80024DF32 /* CDIWebPadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIWebPadButton.m; sourceTree = "<group>"; };
+		57E55FBF1BC1A8F30024DF32 /* CDIWebPadButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDIWebPadButton.h; sourceTree = "<group>"; };
 		57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		AFA60E65018E6ADEF158EAA5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B208BB9215BF63A80080705D /* CDIAddListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIAddListTableViewCell.h; sourceTree = "<group>"; };
@@ -1243,6 +1244,8 @@
 				B2746E611618EAC8007A750B /* CDIMoveTaskView.m */,
 				21E0A67816AAE0BA002479F9 /* CDIViewArchiveButton.h */,
 				21E0A67916AAE0BA002479F9 /* CDIViewArchiveButton.m */,
+				57E55FBB1BC1A8D80024DF32 /* CDIWebPadButton.m */,
+				57E55FBF1BC1A8F30024DF32 /* CDIWebPadButton.h */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1316,7 +1319,6 @@
 				TargetAttributes = {
 					B23FA754151FE0710069A0D1 = {
 						DevelopmentTeam = FC4X4M76ST;
-
 					};
 				};
 			};
@@ -1663,6 +1665,7 @@
 				B208C1A515BF63E20080705D /* TTTAttributedLabel.m in Sources */,
 				B28FD2E215BF755600365CD6 /* Cheddar.xcdatamodeld in Sources */,
 				B28FD2E815BF774D00365CD6 /* CDIDefines.m in Sources */,
+				57E55FBC1BC1A8D80024DF32 /* CDIWebPadButton.m in Sources */,
 				B2A2B07B15C0BE7300772CF6 /* CDKTask+CheddariOSAdditions.m in Sources */,
 				B23261AA15C207FF00D455EF /* CDIWebSignInViewController.m in Sources */,
 				B2AD032115C493C200D9B909 /* CDIWebViewController.m in Sources */,
