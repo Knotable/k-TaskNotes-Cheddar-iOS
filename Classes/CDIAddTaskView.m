@@ -78,11 +78,12 @@
 		SSGradientView *backgroundView = [[SSGradientView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width, [[self class] height])];
 		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		backgroundView.colors = [NSArray arrayWithObjects:
-								  [UIColor colorWithRed:0.941f green:0.941f blue:0.941f alpha:1.0f],
-								  [UIColor colorWithRed:0.890f green:0.890f blue:0.890f alpha:1.0f],
+								  //[UIColor colorWithRed:0.941f green:0.941f blue:0.941f alpha:1.0f],
+								 [UIColor colorWithRed:0.890f green:0.890f blue:0.890f alpha:1.0f],
+                                 [UIColor colorWithRed:0.890f green:0.890f blue:0.890f alpha:1.0f],
 								  nil];
-		backgroundView.bottomInsetColor = [UIColor colorWithWhite:0.914f alpha:1.0f];
-		backgroundView.bottomBorderColor = [UIColor colorWithWhite:0.706f alpha:1.0f];
+		backgroundView.bottomInsetColor = [UIColor colorWithWhite:0.914f alpha:0.0f];
+		backgroundView.bottomBorderColor = [UIColor colorWithWhite:0.706f alpha:0.0f];
 		[self addSubview:backgroundView];
 		
 		_renameListButton = [UIButton cheddarBigButton];
@@ -108,7 +109,7 @@
 		_textField = [[SSTextField alloc] initWithFrame:CGRectZero];
 		_textField.delegate = self;
 		_textField.background = [[UIImage imageNamed:@"textfield"] stretchableImageWithLeftCapWidth:8 topCapHeight:0];
-		_textField.textEdgeInsets = UIEdgeInsetsMake(5.0f, 13.0f, 0.0f, 13.0f);
+		_textField.textEdgeInsets = UIEdgeInsetsMake(5.0f, 13.0f, 5.0f, 13.0f);
 		_textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
 		_textField.autocorrectionType = UITextAutocorrectionTypeYes;
 		_textField.textColor = [UIColor cheddarTextColor];
@@ -123,7 +124,7 @@
 		_textField.inputAccessoryView = keyboardBar;
 		[self addSubview:_textField];
 		
-		_shadowView = [[SSGradientView alloc] initWithFrame:CGRectMake(0.0f, [[self class] height], size.width, 3.0f)];
+		/*_shadowView = [[SSGradientView alloc] initWithFrame:CGRectMake(0.0f, [[self class] height], size.width, 3.0f)];
 		_shadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_shadowView.backgroundColor = [UIColor clearColor];
 		_shadowView.colors = [NSArray arrayWithObjects:
@@ -131,7 +132,7 @@
 							  [UIColor colorWithWhite:0.0f alpha:0.0f],
 							  nil];
 		_shadowView.alpha = 0.0f;
-		[self addSubview:_shadowView];
+		[self addSubview:_shadowView];*/
 		
 		if ([SMTEDelegateController isTextExpanderTouchInstalled]) {
 			self.textExpander = [[SMTEDelegateController alloc] init];
@@ -147,7 +148,7 @@
 - (void)layoutSubviews {
 	CGFloat margin = [[self class] margin];
 	CGSize size = self.bounds.size;
-	_textField.frame = CGRectMake(margin - 3.0f, 2.0f, size.width - margin - margin + 6.0f, 46.0f);
+	_textField.frame = CGRectMake(margin - 3.0f, margin + 1.0f, size.width - margin - margin + 6.0f, 40.0f);
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		CGFloat spacing = 6.0f;

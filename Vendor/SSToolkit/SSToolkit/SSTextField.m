@@ -81,16 +81,18 @@
     
     NSLog(@"%@", self.placeholder);
     
-    if (customRect.size.height == 49)
-    {
-        customRect.origin.y = 11;
-    }
-    else if (customRect.size.height == 41)
-    {
-        customRect.origin.y = 9;
-    }
+//    if (customRect.size.height > self.placeholder)
+//    {
+//        customRect.origin.y = 11;
+//    }
+//    else if (customRect.size.height == 41)
+//    {
+//        customRect.origin.y = 9;
+//    }
+
+    customRect.origin.y = rect.origin.y + ((rect.size.height - self.font.pointSize) / 2) ;
     
-    
+    NSLog(@"%f",self.font.pointSize);
     
     [self.placeholder drawInRect:customRect withFont:self.font lineBreakMode:UILineBreakModeTailTruncation alignment:self.textAlignment];
 }

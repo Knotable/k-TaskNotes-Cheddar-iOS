@@ -39,9 +39,10 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     BOOL isUpdateFirst;
     BOOL isListeningToUpdates;
     BOOL isUpdateNeeded;
-    dispatch_queue_t myCustomQueue;
     NSMutableArray* savedLists;
 }
+@property (nonatomic, strong) dispatch_queue_t myCustomQueue;
+
 @property (nonatomic, strong) CDKList *selectedList;
 @property (nonatomic, assign) BOOL adding;
 @property (nonatomic, assign) BOOL checkForOneList;
@@ -73,6 +74,13 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 #pragma mark - UIViewController
+
+-(dispatch_queue_t)myCustomQueue{
+    if(!_myCustomQueue){
+        _myCustomQueue = dispatch_queue_create("com.kNotables.taskNotes", DISPATCH_QUEUE_SERIAL);
+    }
+    return _myCustomQueue;
+}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -161,8 +169,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 		[self _checkUser];
 	}
 //    [self registerNotification];
-    myCustomQueue = dispatch_queue_create("com.kNotables.taskNotes", DISPATCH_QUEUE_SERIAL);
-
+    
 
 }
 
@@ -373,8 +380,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         isUpdateFirst = YES;
         numberTopic = 0;
         NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-        dispatch_async( myCustomQueue, ^{
-            
         BOOL todoExists = false;
         for(int t=0 ; t< [_meteor.collections[METEORCOLLECTION_TOPICS] count];t++){
             if([[_meteor.collections[METEORCOLLECTION_TOPICS][t] objectForKey:@"subject"] isEqualToString:kDefaultPadName]){
@@ -382,18 +387,17 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 break;
             }
         }
-        
         if(!todoExists){
-//            CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Creating To Do List..." loading:YES];
-  //          [hud show];
+            
+        dispatch_async( [self myCustomQueue], ^{
+            
+            
             
             [[TNAPIClient sharedClient] sendInsertPadWithName:kDefaultPadName withUserId:[CDKUser currentUser].remoteID withBlock:^(NSDictionary *response, NSError *error){
                 if (error) {
-    //                [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
                 }
                 if (response) {
                     NSLog(@"response = %@",response);
-      //              [hud completeAndDismissWithTitle:@"Done !"];
                  /*
                   response = {
                   id = 15;
@@ -401,7 +405,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                   result = 6tumHt2jrgBxkrbW9;
                   }
                   */
-                    [self.managedObjectContext performBlockAndWait:^(){
+                    //[self.managedObjectContext performBlockAndWait:^(){
                        
                     CDKList * list = [[CDKList alloc] init];
                     //   [[CDKList mainContext] performBlock:^{
@@ -419,14 +423,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     
                     [list save];
                     [savedLists addObject:list];
-                    }];
+                    //}];
                     NSLog(@"done posting");
                 }
         
             }];
-        }
-        });
         
+        });
+        }
         
         NSLog(@"Got All Pads");
         
@@ -449,7 +453,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     }
                 }
                 if(!alreadyAdded)
-                dispatch_async( myCustomQueue, ^{
+                dispatch_async( [self myCustomQueue], ^{
                     CDKList *list = [[CDKList alloc] init];
                     int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                     list.id = [taskFromIOS objectForKey:@"_id"];
@@ -580,7 +584,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             
             
             NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
-            dispatch_async( myCustomQueue, ^{
+            dispatch_async( [self myCustomQueue], ^{
                 
                 if([[knoteAdded objectForKey:@"archived"] intValue]!=0){
                     return ;
@@ -631,7 +635,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     return NSOrderedSame;
                 }];
                 
-                if([[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"] && [[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&& [options count]>0 )
+                if([[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&& [options count]>0 )/*[[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"] && */
                 {
                     // && ([self doesModelAlreadyExist:model]|| list)
 
@@ -667,9 +671,16 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     NSArray *results = [moc executeFetchRequest:request error:&error];
                     
                     
+                    CDKTask* task = nil;
+                    for(CDKTask* fetchedTask in results){
+                        if([fetchedTask.id isEqualToString:kNoteId])
+                        {
+                            task = fetchedTask;
+                            break;
+                        }
+                    }
                     
-                    if(results.count > 0){
-                        CDKTask* task = results[0];
+                    if(results.count > 0 && task){
                         int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                         task.id = kNoteId;
                         task.remoteID = [NSNumber numberWithInt:remote_id];
@@ -689,7 +700,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         //}];
                             
                     }else{
-                        CDKTask* task = [[CDKTask alloc] init];
+                        task = [[CDKTask alloc] init];
                         int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                         task.id = kNoteId;
                         task.remoteID = [NSNumber numberWithInt:remote_id];
@@ -903,7 +914,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             if(knoteType == nil)return;
             
             if([knoteType isEqualToString:@"checklist"]){
-                dispatch_async( myCustomQueue, ^{
+                dispatch_async( [self myCustomQueue], ^{
                     savingKnoteId=[knoteAdded objectForKey:@"_id"];
                 NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
                 for (NSString *objectId in models) {
@@ -944,7 +955,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     }];
                     
                     
-                    if([[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"] && [[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&& [options count]>0 && [self doesModelAlreadyExist:model] )
+                    if( [[model objectForKey:@"_id"] isEqualToString:[knoteAdded objectForKey:@"topic_id"]]&& [options count]>0 && [self doesModelAlreadyExist:model] )/*[[knoteAdded objectForKey:@"title"] isEqualToString:@"TaskNotes"] &&*/
                     {
                         
                         if(!list){
@@ -964,9 +975,15 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         NSArray *results = [moc executeFetchRequest:request error:&error];
                         
                         
-                        
-                        if(results.count > 0){
-                            CDKTask* task = results[0];
+                        CDKTask* task = nil;
+                        for(CDKTask* fetchedTask in results){
+                            if([fetchedTask.id isEqualToString:kNoteId])
+                            {
+                                task = fetchedTask;
+                                break;
+                            }
+                        }
+                        if(results.count > 0 && task){
                             int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                             task.id = kNoteId;
                             task.remoteID = [NSNumber numberWithInt:remote_id];
@@ -984,7 +1001,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                 [task save];
                             }];
                         }else{
-                            CDKTask* task = [[CDKTask alloc] init];
+                            task = [[CDKTask alloc] init];
                             int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                             task.id = kNoteId;
                             task.remoteID = [NSNumber numberWithInt:remote_id];
@@ -1005,6 +1022,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         if(_selectedList)
                             if([list.id isEqualToString:_selectedList.id]){
                                 NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[options mutableCopy] forKey:@"options"];
+                                //NSDictionary dictionaryWithObjectsAndKeys:<#(id), ...#>, nil
                                 NSLog(@"options are : %@",options);
                                 [[NSNotificationCenter defaultCenter]
                                  postNotificationName:kTaskChangedNotification
@@ -1124,7 +1142,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     
     NSMutableArray *topics = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController fetchedObjects]];
     NSString* _id = [model objectForKey:@"_id"];
-    dispatch_async( myCustomQueue, ^{
+    dispatch_async( [self myCustomQueue], ^{
         BOOL alreadyExists = false;
     for (CDKList *list in topics) {
         if([list.id isEqualToString:_id]){
@@ -1150,7 +1168,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     NSLog(@"Topic Count %@",[[note userInfo] objectForKey:@"count"]);
     numberTopic = [[[note userInfo] objectForKey:@"count"] integerValue];
     if(numberTopic == 0){
-        dispatch_async( myCustomQueue, ^{
+        dispatch_async( [self myCustomQueue], ^{
             [self removePreviousSavedLists];
         });
     }
@@ -1816,17 +1834,18 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 -(void)checkForUpdatesAndPush{
     
-    NSArray* updates = [Update getAllUpdates];
-    
-    BOOL connected = [self.meteor connected];
-    
-    if(!connected){
-        isUpdateNeeded = true;
-        return;
-    }
-    if(updates && [updates count])
-    dispatch_async( myCustomQueue, ^{
+   
+    dispatch_async( [self myCustomQueue], ^{
+        NSArray* updates = [Update getAllUpdates];
         
+        BOOL connected = [self.meteor connected];
+        
+        if(!connected){
+            isUpdateNeeded = true;
+            return;
+        }
+        if(!updates && [updates count]==0)
+            return;
     for(Update* update in updates){
         //Updating Tasks here in background
         if([update.updated_entity intValue] == kCDKUpdateTask)

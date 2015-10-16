@@ -1,3 +1,4 @@
+
 //
 //  CDITasksViewController.m
 //  Cheddar for iOS
@@ -39,8 +40,9 @@
 @implementation CDITasksViewController {
 	NSIndexPath *_textEditingIndexPath;
 	dispatch_semaphore_t _createTaskSemaphore;
-    NSMutableArray* options;
+    //NSMutableArray* options;
     dispatch_queue_t myCustomQueue;
+    NSInteger selectedSection;
 }
 
 @synthesize addTaskView = _addTaskView;
@@ -133,7 +135,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+    selectedSection = 0;
 	[self setEditing:NO animated:NO];
 	self.view.backgroundColor = [UIColor cheddarArchesColor];
 	self.tableView.hidden = self.list == nil;
@@ -148,6 +150,7 @@
     footer.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     UIView *shadow = self.tableView.tableFooterView;
+    
     self.tableView.tableFooterView = footer;
     shadow.frame = CGRectMake(0.0f, 0.0f, 320.0f, 3.0f);
     [footer addSubview:shadow];
@@ -251,7 +254,7 @@
         [self updatePlaceholderViews:YES];
         [self.addTaskView.textField resignFirstResponder];
         //[self.tableView reloadData];
-        [self.tableView endUpdates];
+        //[self.tableView endUpdates];
         [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
     
         self.ignoreChange=NO;
@@ -284,17 +287,30 @@
     
 }
 
+- (void)addTaskButtonPressed:(id)sender {
+    //[self setEditing:!self.editing animated:YES];
+    selectedSection = [sender tag];
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
+    [self.addTaskView.textField becomeFirstResponder];
+    [self addTaskViewDidBeginEditing:_addTaskView];
+}
+
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-	[super setEditing:editing animated:animated];
+	
+    [super setEditing:editing animated:animated];
+    //[self.tableView setEditing:editing animated:animated];
     //self.navigationItem.hidesBackButton=YES;
     if (!self.navigationItem.rightBarButtonItem) {
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleEditMode:)];
         [editButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],  NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
         self.navigationItem.rightBarButtonItem = editButton;
 	}
+    
 	self.navigationItem.rightBarButtonItem.title = editing ? @"Done" : @"Edit";
 	self.navigationItem.rightBarButtonItem.enabled = self.currentTags.count == 0 && self.list;
-	[self.addTaskView setEditing:editing animated:animated];
+	//[self.addTaskView setEditing:editing animated:animated];
 }
 
 
@@ -329,6 +345,9 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 	CDITaskTableViewCell *taskCell = (CDITaskTableViewCell *)cell;
 	//taskCell.task = [self objectForViewIndexPath:indexPath];
+    CDKTask* currentTask=[[self fetchedResultsController]fetchedObjects][indexPath.section];
+    
+    NSArray* options= currentTask.checkList;
     if(indexPath.row >= [options count]) return;
     NSDictionary* task =options[indexPath.row];
     NSMutableDictionary* muTask = [task mutableCopy];
@@ -381,6 +400,17 @@
 //			self.loading = NO;
 //		});
 //	}];
+    //if(!self.tableView.tableHeaderView){
+    UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, [CDITableViewCell cellHeight])];
+    
+        [headerView addSubview:self.addTaskView];
+        self.tableView.tableHeaderView = headerView;
+    //}
+    if (_addTaskView.frame.size.width < self.tableView.frame.size.width) {
+        self.addTaskView.frame=CGRectMake(0, 0, self.tableView.frame.size.width, [CDITableViewCell cellHeight]) ;
+    }
+    NSLog(@"size of add task view (%f,%f)",self.addTaskView.frame.size.width,self.addTaskView.frame.size.height);
+    NSLog(@"Done");
 }
 
 
@@ -476,13 +506,17 @@
 	if (!indexPath) {
 		return;
 	}
+    CDKTask* task=[[self fetchedResultsController]fetchedObjects][indexPath.section];
+    
+    NSMutableArray* options= [task.checkList mutableCopy];
+    
     NSMutableDictionary* checkListItem = [options[indexPath.row] mutableCopy];
     if([[checkListItem objectForKey:@"checked"]intValue] == 0)
         [checkListItem setValue:[NSNumber numberWithInt:1] forKey:@"checked"];
     else
         [checkListItem setValue:[NSNumber numberWithInt:0] forKey:@"checked"];
     options[indexPath.row]=checkListItem;
-    CDKTask* task=[[self fetchedResultsController]fetchedObjects][0];
+    //CDKTask* task=[[self fetchedResultsController]fetchedObjects][0];
     task.checkList = options;
     [task save];
     
@@ -515,20 +549,23 @@
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    //return [self.fetchedResultsController fetchedObjects].count;
+    if([self.fetchedResultsController fetchedObjects]){
+        return [[self.fetchedResultsController fetchedObjects] count];
+    }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSArray* tasks= [self.fetchedResultsController fetchedObjects];
     CDKTask* task=nil;
+    NSArray* options = nil;
     if(tasks.count >0)
     {
-        task= tasks[0];
+        task= tasks[section];
         //if(options != nil)
-        options=[task.checkList mutableCopy];
+        options=task.checkList;
         
-    }
+    }else return 0;
 
     CGRect rect = _webPadButton.frame;
     
@@ -566,7 +603,31 @@
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	return self.addTaskView;
+    CDKTask* task = [self.fetchedResultsController fetchedObjects][section];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 24)];
+    [view setBackgroundColor:[UIColor colorWithRed:0.890f green:0.890f blue:0.890f alpha:1.0f]];
+    
+    /* Create custom view to display section header... */
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, tableView.frame.size.width, 18)];
+    [label setFont:[UIFont boldCheddarFontOfSize:16]];
+    [label setTextColor:[UIColor cheddarTextColor]];
+    NSString *string =task.text;
+    /* Section header Label*/
+    [label setText:string];
+    
+    /*Section Header Add task Button*/
+    UIButton* addButton = [[UIButton alloc]initWithFrame:CGRectMake(tableView.frame.size.width-38, 3, 30, 18)];
+    [addButton setTag:section];
+    [addButton setTitle:@"+" forState:UIControlStateNormal];
+    [addButton setBackgroundColor:[UIColor whiteColor]];
+    [addButton setTitleColor:[UIColor cheddarLightTextColor] forState:UIControlStateNormal];
+    addButton.layer.cornerRadius = 8;
+    addButton.clipsToBounds = YES;
+    [addButton addTarget:self action:@selector(addTaskButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:addButton];
+    [view addSubview:label];
+    return view;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -616,9 +677,10 @@
 		return;
 	}
 	
-
+    CDKTask* task=[[self fetchedResultsController]fetchedObjects][indexPath.section];
+    NSMutableArray* options=[task.checkList mutableCopy];
+    
     [options removeObjectAtIndex:indexPath.row];
-    CDKTask* task=[[self fetchedResultsController]fetchedObjects][0];
     task.checkList = options;
     [task save];
     
@@ -636,8 +698,11 @@
 
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-	if (sourceIndexPath.row != destinationIndexPath.row) {
+	if (sourceIndexPath.row != destinationIndexPath.row && sourceIndexPath.section == destinationIndexPath.section ) {
         self.ignoreChange = YES;
+        CDKTask* task=[[self fetchedResultsController]fetchedObjects][destinationIndexPath.section];
+        NSMutableArray* options = [task.checkList mutableCopy];
+        
         NSMutableDictionary* sourceCheckListItem = [options[sourceIndexPath.row] mutableCopy];
         NSMutableDictionary* destinationCheckListItem = [options[destinationIndexPath.row] mutableCopy];
 //        if([[checkListItem objectForKey:@"checked"]intValue] == 0)
@@ -650,7 +715,6 @@
         [destinationCheckListItem setValue:temp forKey:@"num"];
         options[destinationIndexPath.row]=sourceCheckListItem;
         options[sourceIndexPath.row]=destinationCheckListItem;
-        CDKTask* task=[[self fetchedResultsController]fetchedObjects][0];
 //        NSArray* newOptions = [options sortedArrayUsingComparator:^NSComparisonResult(NSDictionary* a, NSDictionary* b) {
 //            NSNumber* positionA = [a objectForKey:@"num"]==[NSNull null]? [NSNumber numberWithInt:0]:[a objectForKey:@"num"];
 //            NSNumber* positionB = [b objectForKey:@"num"]==[NSNull null]? [NSNumber numberWithInt:0]:[b objectForKey:@"num"];
@@ -683,11 +747,14 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return [CDIAddTaskView height];
+    return 24;//[CDIAddTaskView height];
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CDKTask* currentTask=[[self fetchedResultsController]fetchedObjects][indexPath.section];
+    NSArray* options = currentTask.checkList;
+    
     NSDictionary *task = options[indexPath.row];//[self objectForViewIndexPath:indexPath];
     NSMutableDictionary* muTask = [task mutableCopy];
     NSString* name=[task objectForKey:@"name"] == [NSNull null]?@"-":[task objectForKey:@"name"];
@@ -718,8 +785,8 @@
 			
 			self.ignoreChange = YES;
 			
-			NSInteger numberOfRows = [self.tableView numberOfRowsInSection:0];
-//			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:0];
+			NSInteger numberOfRows = [self.tableView numberOfRowsInSection:selectedSection];
+			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:selectedSection];
 			
 			NSNumber* position = [NSNumber numberWithInteger:self.list.highestPosition + 1];
 			
@@ -752,14 +819,16 @@
 				point.y = [CDIAddTaskView height];
 			}
     
-    
-            if([self.fetchedResultsController fetchedObjects].count == 0){
+    NSArray* tasks =[self.fetchedResultsController fetchedObjects];
+    NSArray* options = nil;
+    if([tasks count] == 0){
+        
                 CDKTask* task = [[CDKTask alloc] init];
                 int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                 task.id = [NSString stringWithFormat:@"%@%lli",kCDKUpdatedItemOfflineIDPrefix,remote_id];
                 task.remoteID = [NSNumber numberWithInt:remote_id];
                 task.displayText = @"TaskNotes";
-                task.text =title;
+                task.text =@"TaskNotes";
                 task.position = [NSNumber numberWithInt:0];
                 task.list = self.list;
                 [task setCheckList: @[[NSDictionary dictionaryWithObjectsAndKeys:
@@ -801,10 +870,20 @@
                 }];
             }
             else{
+                CDKTask * task = [[self fetchedResultsController]fetchedObjects][selectedSection];
+                
+                options = [task checkList];
+                NSDictionary* lastOption = [options lastObject];
+                
+                if(lastOption){
+                    position = [lastOption objectForKey:@"num"];
+                    position = [NSNumber numberWithInt:position.intValue + 1];
+                }
+                
                 NSMutableArray* oldOptions = [options mutableCopy];
                 Boolean alreadyAdded = false;
                 if(oldOptions){
-                    oldOptions = [oldOptions mutableCopy];
+                    //oldOptions = [oldOptions mutableCopy];
                     for(int k=0; k < oldOptions.count ; k++){
                         NSDictionary* option = oldOptions[k];
                         if([option objectForKey:@"name"] == [NSNull null]){
@@ -827,7 +906,6 @@
                 else{
                     options = oldOptions;
                 }
-                CDKTask * task = [[self fetchedResultsController]fetchedObjects][0];
                 task.checkList = [options copy];
                 [task save];
                 
@@ -855,69 +933,6 @@
                 
             }
     
-            /*else{
-                MeteorClient* meteor = [TNAPIClient sharedClient].meteor;
-                NSDictionary * kNotes = meteor.collections[METEORCOLLECTION_KNOTES];
-                NSDictionary* kNote=nil;
-                for(NSString* kNoteId in kNotes){
-                    kNote = [kNotes objectForKey:kNoteId];
-                    if([[kNote objectForKey:@"title"]isEqualToString:@"TaskNotes"] &&[[kNote objectForKey:@"topic_id"]isEqualToString:self.list.id] && [[kNote objectForKey:@"archived"] boolValue] == false){
-                        NSMutableArray* oldOptions = [kNote objectForKey:@"options"];
-                        Boolean alreadyAdded = false;
-                        if(oldOptions){
-                            oldOptions = [oldOptions mutableCopy];
-                            for(int k=0; k < oldOptions.count ; k++){
-                                NSDictionary* option = oldOptions[k];
-                                if([option objectForKey:@"name"] == [NSNull null]){
-                                    alreadyAdded = true;
-                                    oldOptions[k] = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",position, @"num",@[], @"voters",nil];
-                                    break;
-                                }
-                            }
-                        }
-                        NSArray* options=nil;
-                        
-                        if(!alreadyAdded){
-                            if(oldOptions){
-                                options = [oldOptions arrayByAddingObjectsFromArray:@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked", title, @"name",position, @"num",@[], @"voters",nil]]];
-                            }else{
-                                options =@[[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:false], @"checked" ,title, @"name",position, @"num",@[], @"voters",nil],@{}];
-                                
-                            }
-                        }
-                        else{
-                            options = oldOptions;
-                        }
-                        [[TNAPIClient sharedClient] sendRequestUpdateTaskList:kNoteId withOptionArray:options withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
-                            if (error) {
-                          //      [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
-             
-                                [self setEditing:NO animated:NO];
-                                [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
-                                    //self.ignoreChange = NO;
-                                } completion:^{
-                                    [animation removeFromSuperview];
-                                    //[self hideCoverView];
-                                    
-                                }];
-
-                            }else{
-                                [self setEditing:NO animated:NO];
-                                [animation animationToPoint:point height:self.tableView.bounds.size.height insertTask:^{
-                                    //self.ignoreChange = NO;
-                                } completion:^{
-                                    [animation removeFromSuperview];
-                                    [self hideCoverView];
-                                    
-                                }];
-                            }
-                            NSLog(@"returned data : %@",userDate);
-
-                        }];
-                        break;
-                    }
-                }
-            }*/
 }
 
 
@@ -929,7 +944,18 @@
 
 
 - (void)addTaskViewDidEndEditing:(CDIAddTaskView *)addTaskView {
-	[self hideCoverView];
+    
+    [self hideCoverView];
+    if(selectedSection != 0){
+        NSInteger numberOfRows = [self.tableView numberOfRowsInSection:selectedSection] - 1;
+        if(numberOfRows <0)numberOfRows = 0;
+        
+        NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:numberOfRows inSection:selectedSection];
+    
+        [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        selectedSection = 0;
+    }
+
 }
 
 
@@ -1041,7 +1067,8 @@
    }
 
 -(BOOL)hasContent{
-    return [super hasContent] ? true : [options count];
+    NSArray* tasks = [self.fetchedResultsController fetchedObjects];
+    return [super hasContent] ? true : [tasks count];
 }
 
 @end
