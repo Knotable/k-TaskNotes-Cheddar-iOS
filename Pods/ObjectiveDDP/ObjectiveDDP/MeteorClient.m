@@ -3,6 +3,7 @@
 #import "MeteorClient.h"
 #import "MeteorClient+Private.h"
 #import "BSONIdGenerator.h"
+
 NSString * const MeteorClientConnectionReadyNotification = @"bounsj.objectiveddp.ready";
 NSString * const MeteorClientDidConnectNotification = @"boundsj.objectiveddp.connected";
 NSString * const MeteorClientDidDisconnectNotification = @"boundsj.objectiveddp.disconnected";
@@ -18,11 +19,6 @@ double const MeteorClientMaxRetryIncrease = 6;
 @end
 
 @implementation MeteorClient
-
-- (id)init {
-    [self doesNotRecognizeSelector:_cmd];
-    return nil;
-}
 
 - (id)initWithDDPVersion:(NSString *)ddpVersion {
     self = [super init];
@@ -153,8 +149,12 @@ double const MeteorClientMaxRetryIncrease = 6;
  * If an sdk only allows login returns long-lived token, modify your accounts-x package,
  * and add your package to the if(serviceName.compare("facebook")) in _buildOAuthRequestStringWithAccessToken
  */
-
 - (void)logonWithOAuthAccessToken:(NSString *)accessToken serviceName:(NSString *)serviceName responseCallback:(MeteorClientMethodCallback)responseCallback {
+    [self logonWithOAuthAccessToken:accessToken serviceName:serviceName optionsKey:@"oauth" responseCallback:responseCallback];
+}
+
+// some meteor servers provide a custom login handler with a custom options key. Allow client to configure the key instead of always using "oauth"
+- (void)logonWithOAuthAccessToken:(NSString *)accessToken serviceName:(NSString *)serviceName optionsKey:(NSString *)key responseCallback:(MeteorClientMethodCallback)responseCallback {
     //generates random secret (credentialToken)
     NSString *url = [self _buildOAuthRequestStringWithAccessToken:accessToken serviceName: serviceName];
     NSLog(@"%@", url);
@@ -162,11 +162,19 @@ double const MeteorClientMaxRetryIncrease = 6;
     NSString *callback = [self _makeHTTPRequestAtUrl:url];
     
     NSDictionary *jsonData = [self handleOAuthCallback:callback];
-    
-    NSDictionary* options = @{@"oauth": @{@"credentialToken": [jsonData objectForKey: @"credentialToken"], @"credentialSecret": [jsonData objectForKey:@"credentialSecret"]}};
 
-    [self logonWithUserParameters:options responseCallback:responseCallback];
+    // setCredentialToken gets set to false if the call fails
+    if (jsonData == nil || ![jsonData[@"setCredentialToken"] boolValue]) {
+        NSError *logonError = [NSError errorWithDomain:MeteorClientTransportErrorDomain code:MeteorClientErrorLogonRejected userInfo:@{NSLocalizedDescriptionKey: @"Unable to authenticate"}];
+        if (responseCallback) {
+            responseCallback(nil, logonError);
+        }
+        return;
+    }
     
+    NSDictionary* options = @{key: @{@"credentialToken": [jsonData objectForKey: @"credentialToken"], @"credentialSecret": [jsonData objectForKey:@"credentialSecret"]}};
+    
+    [self logonWithUserParameters:options responseCallback:responseCallback];
 }
 
 - (void)logonWithUserParameters:(NSDictionary *)userParameters responseCallback:(MeteorClientMethodCallback)responseCallback {
@@ -186,7 +194,9 @@ double const MeteorClientMaxRetryIncrease = 6;
     [self _setAuthStateToLoggingIn];
     NSMutableDictionary *mutableUserParameters = [userParameters mutableCopy];
     
+    
     [self callMethodName:@"login" parameters:@[mutableUserParameters] responseCallback:^(NSDictionary *response, NSError *error) {
+
         if (error) {
             [self _setAuthStatetoLoggedOut];
             [self.authDelegate authenticationFailedWithError:error];
@@ -242,8 +252,6 @@ double const MeteorClientMaxRetryIncrease = 6;
         responseCallback(response, error);
     }];
 }
-
-
 
 
 // move this to string category
@@ -417,7 +425,9 @@ double const MeteorClientMaxRetryIncrease = 6;
 - (void)_invalidateUnresolvedMethods {
     for (NSString *methodId in _methodIds) {
         MeteorClientMethodCallback callback = _responseCallbacks[methodId];
-        callback(nil, [NSError errorWithDomain:MeteorClientTransportErrorDomain code:MeteorClientErrorDisconnectedBeforeCallbackComplete userInfo:@{NSLocalizedDescriptionKey: @"You were disconnected"}]);
+        if (callback) {
+            callback(nil, [NSError errorWithDomain:MeteorClientTransportErrorDomain code:MeteorClientErrorDisconnectedBeforeCallbackComplete userInfo:@{NSLocalizedDescriptionKey: @"You were disconnected"}]);
+         }
     }
     [_methodIds removeAllObjects];
     [_responseCallbacks removeAllObjects];
@@ -572,6 +582,10 @@ double const MeteorClientMaxRetryIncrease = 6;
 }
 
 - (NSDictionary*)handleOAuthCallback: (NSString *)callback {
+    // it's possible callback is nil
+    if (callback == nil) {
+        return nil;
+    }
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"<div id=\"config\" style=\"display:none;\">(.*?)</div>" options:0 error:nil];
     callback = [callback substringWithRange:[[regex firstMatchInString:callback options:0 range:NSMakeRange(0, [callback length])] rangeAtIndex: 1]];
     

@@ -48,6 +48,8 @@
 		57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E2FBF11B8A03440076981B /* TNTaskList.m */; };
 		57E55FBC1BC1A8D80024DF32 /* CDIWebPadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E55FBB1BC1A8D80024DF32 /* CDIWebPadButton.m */; };
 		57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */; };
+		9B0EF85A1BD9395E00351DA4 /* servers_beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B0EF8591BD9395E00351DA4 /* servers_beta.plist */; };
+		9B0EF85E1BD9396800351DA4 /* servers_staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B0EF85D1BD9396800351DA4 /* servers_staging.plist */; };
 		B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */; };
 		B208BC2A15BF63A80080705D /* CDIAddTaskAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9515BF63A80080705D /* CDIAddTaskAnimationView.m */; };
 		B208BC2B15BF63A80080705D /* CDIAddTaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9715BF63A80080705D /* CDIAddTaskView.m */; };
@@ -371,6 +373,8 @@
 		57E55FBB1BC1A8D80024DF32 /* CDIWebPadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIWebPadButton.m; sourceTree = "<group>"; };
 		57E55FBF1BC1A8F30024DF32 /* CDIWebPadButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDIWebPadButton.h; sourceTree = "<group>"; };
 		57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		9B0EF8591BD9395E00351DA4 /* servers_beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = servers_beta.plist; sourceTree = "<group>"; };
+		9B0EF85D1BD9396800351DA4 /* servers_staging.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = servers_staging.plist; sourceTree = "<group>"; };
 		AFA60E65018E6ADEF158EAA5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B208BB9215BF63A80080705D /* CDIAddListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDIAddListTableViewCell.h; sourceTree = "<group>"; };
 		B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIAddListTableViewCell.m; sourceTree = "<group>"; };
@@ -763,6 +767,8 @@
 		B208BBD315BF63A80080705D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9B0EF85D1BD9396800351DA4 /* servers_staging.plist */,
+				9B0EF8591BD9395E00351DA4 /* servers_beta.plist */,
 				1B837D7A1A9EF199003B81A5 /* Images.xcassets */,
 				B2B25FDD161651F900ACFD3E /* About.html */,
 				B28FD2D315BF742D00365CD6 /* Fonts */,
@@ -1292,8 +1298,9 @@
 				B23FA751151FE0710069A0D1 /* Sources */,
 				B23FA752151FE0710069A0D1 /* Frameworks */,
 				B23FA753151FE0710069A0D1 /* Resources */,
-				B2A2D00F154799020098B28F /* ShellScript */,
 				018462C9E8B8B796868A0C71 /* Copy Pods Resources */,
+				1226A3862FF246989019E70E /* Embed Pods Frameworks */,
+				9B0EF8621BD93DAC00351DA4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1318,7 +1325,7 @@
 				ORGANIZATIONNAME = "Nothing Magical";
 				TargetAttributes = {
 					B23FA754151FE0710069A0D1 = {
-						DevelopmentTeam = FC4X4M76ST;
+						DevelopmentTeam = RUQ49565ML;
 					};
 				};
 			};
@@ -1484,6 +1491,7 @@
 				B208BC9215BF63A80080705D /* tag-x@2x.png in Resources */,
 				B208BC9315BF63A80080705D /* tag.png in Resources */,
 				B208BC9415BF63A80080705D /* tag@2x.png in Resources */,
+				9B0EF85E1BD9396800351DA4 /* servers_staging.plist in Resources */,
 				B208BC9515BF63A80080705D /* task-icon.png in Resources */,
 				B208BC9615BF63A80080705D /* task-icon@2x.png in Resources */,
 				B208BC9715BF63A80080705D /* textfield-focused.png in Resources */,
@@ -1552,6 +1560,7 @@
 				B2B25FDE161651F900ACFD3E /* About.html in Resources */,
 				B2746E7B1618EE4A007A750B /* move_task.png in Resources */,
 				B2746E7C1618EE4A007A750B /* move_task@2x.png in Resources */,
+				9B0EF85A1BD9395E00351DA4 /* servers_beta.plist in Resources */,
 				22AFD5F81BB52CBF00E99320 /* Default-568h@3x.png in Resources */,
 				1BB318A31A9F00200095F49D /* Icon-180.png in Resources */,
 				DAA8ED5C161C7ABB0024C172 /* DevIcon-29.png in Resources */,
@@ -1587,6 +1596,34 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		1226A3862FF246989019E70E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B0EF8621BD93DAC00351DA4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" 78bf5c82937758a95198b2e87f393e217600f36a 7885aa19d2814b9ac505580b2e7b46007c9b145f98d077c037772ffcee861c22";
+		};
 		AF03A3066C4D42E16E6121C8 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1601,19 +1638,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		B2A2D00F154799020098B28F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/usr/bin/env ruby";
-			shellScript = "if ENV[\"CONFIGURATION\"] == \"Release\" || ENV[\"CONFIGURATION\"] == \"Beta\"\n    system \"./Vendor/Crashlytics.framework/run d719996ce2f7809259d6b116a1e5b1cf5d0f316d\"\nend";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1723,8 +1747,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1760,10 +1784,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Muhammad Abdul Sami (FC4X4M76ST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = NO;
 				COMPRESS_PNG_FILES = NO;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor\"",
@@ -1793,8 +1818,9 @@
 					"$(inherited)",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.knotable.Tasknotes;
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "05122d49-c64f-4a5d-af11-2731814363e1";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1814,7 +1840,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -1863,8 +1889,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1900,10 +1926,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = NO;
 				COMPRESS_PNG_FILES = NO;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor\"",
@@ -1942,9 +1969,10 @@
 					"$(FRANK_LDFLAGS)",
 					"$(inherited)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.knotable.Tasknotes;
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=*]" = "e71ddbe3-f58b-4365-88c1-8551ba26cd63";
+				"PROVISIONING_PROFILE[sdk=*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1958,10 +1986,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Muhammad Abdul Sami (FC4X4M76ST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Muhammad Abdul Sami (FC4X4M76ST)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = NO;
 				COMPRESS_PNG_FILES = NO;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor\"",
@@ -1989,9 +2018,10 @@
 					"-ObjC",
 					"$(inherited)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.knotable.Tasknotes;
 				PRODUCT_NAME = Cheddar;
-				PROVISIONING_PROFILE = "05122d49-c64f-4a5d-af11-2731814363e1";
-				"PROVISIONING_PROFILE[sdk=*]" = "05122d49-c64f-4a5d-af11-2731814363e1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;

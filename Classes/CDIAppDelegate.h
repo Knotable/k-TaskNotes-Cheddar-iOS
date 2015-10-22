@@ -22,6 +22,6 @@
 - (NSString*)idRandom;
 @end
 
-#define K_SERVER_BETA       0
+#define K_SERVER_BETA       1
 #define K_SERVER_STAGING    0
-#define K_SERVER_DEV        1
+#define K_SERVER_DEV        0

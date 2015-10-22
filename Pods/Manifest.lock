@@ -1,14 +1,20 @@
 PODS:
-  - M13OrderedDictionary (1.0.6)
-  - ObjectiveDDP (0.1.9):
+  - Crashlytics (3.3.4)
+  - Fabric (1.5.5):
+    - Fabric/Base (= 1.5.5)
+  - Fabric/Base (1.5.5)
+  - M13OrderedDictionary (1.1.0)
+  - ObjectiveDDP (0.2.0):
     - M13OrderedDictionary
-    - SocketRocket (= 0.3.1-beta2)
+    - SocketRocket (= 0.4.1)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - SocketRocket (0.3.1-beta2)
+  - SocketRocket (0.4.1)
 
 DEPENDENCIES:
+  - Crashlytics
+  - Fabric
   - ObjectiveDDP (from `https://github.com/boundsj/ObjectiveDDP.git`)
   - SDWebImage (~> 3.7.1)
 
@@ -18,13 +24,15 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   ObjectiveDDP:
-    :commit: ccd6a64d1ca6f6774f05a969be25c0e30333e487
+    :commit: 93d1477110102b7fe5fc61335a6ccfa53055a013
     :git: https://github.com/boundsj/ObjectiveDDP.git
 
 SPEC CHECKSUMS:
-  M13OrderedDictionary: ca1bb2d743fd64500ffabee811d4bf2d0a65c908
-  ObjectiveDDP: 078339123eee4087614a61c3cac623a61eaf021d
+  Crashlytics: 41c082440d2e14da444186fff65e79c0b4b35d4c
+  Fabric: 190bf1a6eb65f7500de1347d027d2e59a7e53db1
+  M13OrderedDictionary: 6e157fe9c82aa6b3cd7198f5c5c30c7a6834c4a6
+  ObjectiveDDP: c2225f6896d671977b7046afc0530967cd141f90
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  SocketRocket: 7284ab9370a06c99aba92b2fe3a32aedd0f9a6fa
+  SocketRocket: ee0b5c34182d37bb4f1f8d628bbe737718126daa
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

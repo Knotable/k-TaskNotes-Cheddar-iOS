@@ -20,6 +20,8 @@
 #import <Crashlytics/Crashlytics.h>
 #import <StoreKit/StoreKit.h>
 #import "CDIFirstLaunchViewController.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 @implementation CDIAppDelegate
 
 @synthesize window = _window;
@@ -32,6 +34,8 @@
 	// Configure analytics
 	// If you don't work at Nothing Magical, you shouldn't turn these on.
 
+    [Fabric with:@[[Crashlytics class]]];
+    
 #if CHEDDAR_PRODUCTION_MODE
 	#ifdef CHEDDAR_CRASHLYTICS_KEY
 	[Crashlytics startWithAPIKey:CHEDDAR_CRASHLYTICS_KEY];
@@ -224,13 +228,13 @@
 }
 
 - (void)loadServerConfig{
-		#if K_SERVER_DEV
-			NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"servers_dev" ofType:@"plist"];
-		#elif K_SERVER_STAGING
-			NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"servers_staging" ofType:@"plist"];
-		#elif K_SERVER_BETA
-			NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"servers_beta" ofType:@"plist"];
-		#endif
+    #if K_SERVER_DEV
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"servers_dev" ofType:@"plist"];
+    #elif K_SERVER_STAGING
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"servers_staging" ofType:@"plist"];
+    #elif K_SERVER_BETA
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"servers_beta" ofType:@"plist"];
+    #endif
     NSArray *serverDicts = [NSArray arrayWithContentsOfFile:plistPath];
     if ([serverDicts isKindOfClass:[NSArray class]]) {
         ServerConfigModel *model = [[ServerConfigModel alloc]initWithDictionary:[serverDicts firstObject]];

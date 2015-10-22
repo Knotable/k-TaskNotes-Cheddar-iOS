@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <SocketRocket/SRWebSocket.h>
-#import <M13OrderedDictionary.h>
+#import <M13OrderedDictionary/M13OrderedDictionary.h>
 
 @protocol ObjectiveDDPDelegate;
 
@@ -12,6 +12,10 @@
 
 - (void)ping:(NSString *)id;
 - (void)pong:(NSString *)id;
+
+// Prevent user from start with this methods
+- (id)init __attribute__((unavailable("Must use initWithURLString:delegate: instead.")));
++ (instancetype)new __attribute__((unavailable("Must use initWithURLString:delegate: instead.")));
 
 - (id)initWithURLString:(NSString *)urlString delegate:(id <ObjectiveDDPDelegate>)delegate;
 - (void)connectWebSocket;
