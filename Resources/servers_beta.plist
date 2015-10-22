@@ -4,21 +4,21 @@
 <array>
 	<dict>
 		<key>name</key>
-		<string>Dev</string>
+		<string>Beta</string>
 		<key>id</key>
-		<string>Dev</string>
+		<string>Beta</string>
 		<key>application_host1</key>
 		<array>
-			<string>dev.knotable.com</string>
+			<string>i1.beta.knotable.com</string>
 		</array>
 		<key>application_host_index</key>
 		<integer>0</integer>
 		<key>s3_bucket</key>
-		<string>knotable-assets-dev</string>
+		<string>knotable-assets-alpha</string>
 		<key>s3_access_key</key>
-		<string>AKIAIFD5LIVPA7FBPQ2Q</string>
+		<string>AKIAJMNEFA3F7BS2EOWA</string>
 		<key>s3_secret_key</key>
-		<string>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</string>
+		<string>nqSFzkz1RNwfk80dL1JFQCRSz+hxP72tifTlQqWr</string>
 		<key>google_client_id</key>
 		<string>878886050904-vencjlr2jvmark8v0r8fi1g9785g42hu.apps.googleusercontent.com</string>
 		<key>google_client_secret</key>

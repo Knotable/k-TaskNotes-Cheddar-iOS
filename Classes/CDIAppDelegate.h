@@ -5,7 +5,7 @@
 //  Created by Sam Soffes on 3/25/12.
 //  Copyright (c) 2012 Nothing Magical. All rights reserved.
 //
- 
+
 @class MeteorClient,ObjectiveDDP,TNUserModel;
 @interface CDIAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -21,3 +21,7 @@
 - (void)applyStylesheet;
 - (NSString*)idRandom;
 @end
+
+#define K_SERVER_BETA       0
+#define K_SERVER_STAGING    0
+#define K_SERVER_DEV        1
