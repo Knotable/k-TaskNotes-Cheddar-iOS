@@ -11,6 +11,7 @@
 #import "CDIKeyboardBar.h"
 #import "UIColor+CheddariOSAdditions.h"
 #import "UIFont+CheddariOSAdditions.h"
+#import "Update.h"
 
 @interface CDIEditTaskViewController () <UITextViewDelegate>
 - (void)_keyboardDidShow:(NSNotification *)notification;
@@ -23,6 +24,7 @@
 	CDIMoveTaskView *_moveTaskView;
 }
 
+@synthesize optionIndex = _optionIndex;
 @synthesize task = _task;
 @synthesize textView = _textView;
 
@@ -57,7 +59,7 @@
 	_textView.placeholder = @"What do you have to do?";
 	_textView.returnKeyType = UIReturnKeyGo;
 	_textView.font = [UIFont cheddarFontOfSize:18.0f];
-	_textView.text = self.task.text;
+	_textView.text = [self.task.checkList[self.optionIndex] objectForKey:@"name"];
 	
 	CDIKeyboardBar *keyboardBar = [[CDIKeyboardBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 54.0f : 36.0f)];
 	keyboardBar.keyInputView = _textView;
@@ -106,10 +108,23 @@
 #pragma mark - Actions
 
 - (void)save:(id)sender {
-	self.task.text = self.textView.text;
+    NSMutableArray* options=[self.task.checkList mutableCopy];
+	NSMutableDictionary* updatedOption = [options[self.optionIndex] mutableCopy]  ;
+    [updatedOption setValue:self.textView.text forKey:@"name"];
+    
+    options[self.optionIndex]=updatedOption;
+    self.task.checkList = options;
 	[self.task save];
-	[self.task update];
-	[self.navigationController dismissModalViewControllerAnimated:YES];
+    Update* update = [[Update alloc] init];
+    update.updated_entity = [NSNumber numberWithInt:kCDKUpdateTask];
+    update.updated_ID = self.task.id;
+    update.type=[NSNumber numberWithInt:kCDKUpdatedItemTypeUpdated];
+    [update save];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:kDoUpdateNotification
+     object:self userInfo: nil];
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+
 }
 
 

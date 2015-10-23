@@ -90,7 +90,7 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466724709.475847"
+                  timestampString = "466881198.429517"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
@@ -105,7 +105,7 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466724709.476212"
+                  timestampString = "466881198.429833"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
@@ -138,7 +138,7 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466724709.47829"
+                  timestampString = "466881198.431326"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
@@ -153,7 +153,7 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466724709.478638"
+                  timestampString = "466881198.431621"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
@@ -176,6 +176,38 @@
             startingLineNumber = "458"
             endingLineNumber = "458"
             landmarkName = "-topicsUpdated:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Classes/CDITasksViewController.m"
+            timestampString = "466881197.990746"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "656"
+            endingLineNumber = "656"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Classes/CDITasksViewController.m"
+            timestampString = "466881197.990746"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "663"
+            endingLineNumber = "663"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

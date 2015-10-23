@@ -34,7 +34,7 @@
 - (void)_archiveAllTasks:(id)sender;
 - (void)_archiveCompletedTasks:(id)sender;
 - (void)_toggleCompletion:(CDICheckboxButton *)sender;
-- (void)_editTask:(CDKTask *)task;
+- (void)_editTask:(CDKTask *)task optionIndex:(NSInteger)index;
 @end
 
 @implementation CDITasksViewController {
@@ -500,12 +500,10 @@
 	[alert show];
 }
 
-
-- (void)_toggleCompletion:(CDICheckboxButton *)sender {
-	NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)sender.tableViewCell];
-	if (!indexPath) {
-		return;
-	}
+- (void) _toggleCompletionAtIndex:(NSIndexPath *)indexPath{
+    if (!indexPath) {
+        return;
+    }
     CDKTask* task=[[self fetchedResultsController]fetchedObjects][indexPath.section];
     
     NSMutableArray* options= [task.checkList mutableCopy];
@@ -529,21 +527,22 @@
      postNotificationName:kDoUpdateNotification
      object:self userInfo: nil];
     [self.tableView reloadData];
-//    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:task.checkList forKey:@"options"];
-//    NSLog(@"options are : %@",task.checkList);
-//    [[NSNotificationCenter defaultCenter]
-//     postNotificationName:kTaskChangedNotification
-//     object:self userInfo: userInfo];
-//    
 }
 
 
-- (void)_editTask:(CDKTask *)task {
-//	CDIEditTaskViewController *viewController = [[CDIEditTaskViewController alloc] init];
-//	viewController.task = task;
-//	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-//	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-//	[self.navigationController presentModalViewController:navigationController animated:YES];
+- (void)_toggleCompletion:(CDICheckboxButton *)sender {
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)sender.tableViewCell];
+    [self _toggleCompletionAtIndex:indexPath];
+}
+
+
+- (void)_editTask:(CDKTask *)task  optionIndex:(NSInteger)index{
+	CDIEditTaskViewController *viewController = [[CDIEditTaskViewController alloc] init];
+	viewController.task = task;
+    viewController.optionIndex = index;
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+	[self.navigationController presentModalViewController:navigationController animated:YES];
 }
 
 
@@ -644,7 +643,7 @@
 	NSString *action = [CDISettingsTapPickerViewController selectedKey];
     
     //For now return without doing anything
-    return;
+    //return;
     
     
 	// Nothing
@@ -652,16 +651,16 @@
 		return;
 	}
 	
-	//CDKTask *task = [self objectForViewIndexPath:indexPath];
 	// Complete
 	if ([action isEqualToString:kCDITapActionCompleteKey]) {
-		//[task toggleCompleted];
+        [self _toggleCompletionAtIndex:indexPath];
                 return;
 	}
 	
 	// Edit
 	if ([action isEqualToString:kCDITapActionEditKey]) {
-		//[self _editTask:task];
+        CDKTask *task = [self.fetchedResultsController fetchedObjects ][indexPath.section];
+		[self _editTask:task optionIndex:indexPath.row];
         return;
     }
 }

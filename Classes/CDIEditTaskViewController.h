@@ -9,7 +9,7 @@
 @class CDKTask;
 
 @interface CDIEditTaskViewController : UIViewController
-
+@property (nonatomic, assign) NSInteger optionIndex;
 @property (nonatomic, strong) CDKTask *task;
 @property (nonatomic, strong, readonly) SSTextView *textView;
 
