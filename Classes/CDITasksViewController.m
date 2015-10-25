@@ -179,7 +179,14 @@
 
 -(void)webPadButtonClick:(UIButton *) sender {
     
+#if K_SERVER_DEV
+    NSString* text = [NSString stringWithFormat: @"http://dev.knotable.com/p/%@",self.list.id];
+#elif K_SERVER_STAGING
     NSString* text = [NSString stringWithFormat: @"http://staging.knotable.com/p/%@",self.list.id];
+#elif K_SERVER_BETA
+    NSString* text = [NSString stringWithFormat: @"http://beta.knotable.com/p/%@",self.list.id];
+#endif
+
     NSURL*    url  = [[NSURL alloc] initWithString:text];
     
     if (url.scheme.length == 0)

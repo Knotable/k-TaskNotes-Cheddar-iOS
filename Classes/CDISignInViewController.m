@@ -211,7 +211,7 @@
 	}
 
 	CDIHUDView *hud = [[CDIHUDView alloc] initWithTitle:@"Signing up..." loading:YES];
-//	[hud show];
+	[hud show];
 
     NSDictionary *registrationInfo = @{
                                        @"username":self.usernameTextField.text,
@@ -225,10 +225,15 @@
     [[TNAPIClient sharedClient] sigupWithUsernameAndEmail:@"createAccount" withDict:registrationInfo withBlock:^(NSDictionary *response, NSError *error) {
         if (error) {
              NSLog(@"signUp error :%@",error.userInfo);
-//            [hud completeAndDismissWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
+            [hud failWithTitle:[error.userInfo objectForKeyedSubscript:@"NSLocalizedDescription"]];
         }
         if (response) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                
             [self _toggleModeAnimated:YES];
+            [hud completeAndDismissWithTitle: @"Signed Up ."];
+            
+            });
         }
     }];
 }
