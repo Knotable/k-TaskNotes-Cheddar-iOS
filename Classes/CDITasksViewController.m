@@ -765,6 +765,7 @@
     NSMutableDictionary* muTask = [task mutableCopy];
     NSString* name=[task objectForKey:@"name"] == [NSNull null]?@"-":[task objectForKey:@"name"];
     [muTask setValue:name forKey:@"name"];
+    
 	return [CDITaskTableViewCell cellHeightForTask:muTask width:tableView.frame.size.width];
 }
 

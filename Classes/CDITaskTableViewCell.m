@@ -68,26 +68,50 @@
 	});
 	label.font = [UIFont cheddarFontOfSize:18.0f];
 	label.text = [task objectForKey:@"name"] == [NSNull null]?@"-":[task objectForKey:@"name"];
-	CGSize size = CGSizeMake(width - 54.0f, 2000.0f);
 	
-    //Calculate the expected size based on the font and linebreak mode of your label
-    // FLT_MAX here simply means no constraint in height
+    
+    
+    CGSize size = CGSizeMake(width - 60.0f, 2000.0f);
+	
+//    if (self.editing){
+//        size = CGSizeMake(width - 60.0f, 2000.0f);
+//        
+//    }else{
+//        size = CGSizeMake(width - 60.0f, 2000.0f);
+//        
+//    }
     CGSize maximumLabelSize = size;
+    if (SYSTEM_VERSION_LESS_THAN(iOS7_0)) {
+        //version < 7.0
+        
+        maximumLabelSize= [label.text sizeWithFont:label.font
+                            constrainedToSize:CGSizeMake(size.width, MAXFLOAT)
+                                lineBreakMode:NSLineBreakByWordWrapping];
+    }
+    else if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        //version >= 7.0
+        
+        //Return the calculated size of the Label
+        maximumLabelSize= [label.text boundingRectWithSize:CGSizeMake(size.width, MAXFLOAT)
+                                              options:NSStringDrawingUsesLineFragmentOrigin
+                                           attributes:@{
+                                                        NSFontAttributeName : label.font
+                                                        }
+                                              context:nil].size;
+        
+    }
+    else{
+        maximumLabelSize= [label bounds].size;
+    }
     
-    CGSize expectedLabelSize = [label.text sizeWithFont:label.font constrainedToSize:maximumLabelSize lineBreakMode:label.lineBreakMode];
     
-    //adjust the label the the new height.
-    CGRect newFrame = label.frame;
-    newFrame.size.height = expectedLabelSize.height;
     
-    label.text = nil;
-
     
     
     
     
 	CGFloat offset = ([CDISettingsTextSizePickerViewController fontSizeAdjustment] * 2.0f) - 1.0f;
-    return newFrame.size.height + 27.0f;// + offset;
+    return (maximumLabelSize.height + 27.0f );//- offset);
 }
 
 
@@ -127,13 +151,13 @@
 	CGFloat textYOffset = roundf(offset / 2.0f);
 
 	if (self.editing) { // TODO: Only match reordering and not swipe to delete
-		_checkboxButton.frame = CGRectMake(-34.0f, 13.0f + offset, 24.0f, 24.0f);
-		_checkmark.frame = CGRectMake(-30.0f, 16.0f + offset, 22.0f, 18.0f);
-		_attributedLabel.frame = CGRectMake(12.0f, 13.0f + textYOffset, size.width - 20.0f, size.height - 27.0f - offset);
+		_checkboxButton.frame = CGRectMake(-34.0f, (size.height/2 - 24/2)/* 13.0f + offset*/, 24.0f, 24.0f);
+		_checkmark.frame = CGRectMake(-30.0f,(size.height/2 - 18/2)/* 16.0f + offset*/, 22.0f, 18.0f);
+		_attributedLabel.frame = CGRectMake(12.0f,(size.height/2 - (size.height  -24 )/2)/* 13.0f + textYOffset*/, size.width - 20.0f, size.height  -20 );
 	} else {
-		_checkboxButton.frame = CGRectMake(10.0f, 13.0f + offset, 24.0f, 24.0f);
-		_checkmark.frame = CGRectMake(12.0f, 16.0f + offset, 22.0f, 18.0f);
-		_attributedLabel.frame = CGRectMake(44.0f, 13.0f + textYOffset, size.width - 54.0f, size.height - 27.0f - offset);
+		_checkboxButton.frame = CGRectMake(10.0f, (size.height/2 - 24/2)/* 13.0f + offset*/, 24.0f, 24.0f);
+		_checkmark.frame = CGRectMake(12.0f, (size.height/2 - 18/2)/* 16.0f + offset*/, 22.0f, 18.0f);
+		_attributedLabel.frame = CGRectMake(44.0f, (size.height/2 - (size.height  -24)/2)/* 13.0f + textYOffset*/, size.width - 54.0f, size.height  -20);
 	}
 }
 

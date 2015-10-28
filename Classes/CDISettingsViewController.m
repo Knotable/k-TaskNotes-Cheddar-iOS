@@ -303,7 +303,17 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	// Account
 	if (indexPath.section == 0) {
 		CDIWebViewController *viewController = [[CDIWebViewController alloc] init];
-		[viewController loadURL:[NSURL URLWithString:@"http://beta.knotable.com"]];
+#if K_SERVER_DEV
+        [viewController loadURL:[NSURL URLWithString:@"http://dev.knotable.com"]];
+#elif K_SERVER_STAGING
+
+        [viewController loadURL:[NSURL URLWithString:@"http://staging.knotable.com"]];
+
+#elif K_SERVER_BETA
+        [viewController loadURL:[NSURL URLWithString:@"http://beta.knotable.com"]];
+
+#endif
+
 		[self.navigationController pushViewController:viewController animated:YES];
 		return;
 	}
@@ -351,8 +361,16 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 		// Support
 		else if (indexPath.row == 1) {
 			CDIWebViewController *viewController = [[CDIWebViewController alloc] init];
-			[viewController loadURL:[NSURL URLWithString:@"http://beta.knotable.com"]];
-			[self.navigationController pushViewController:viewController animated:YES];
+#if K_SERVER_DEV
+            [viewController loadURL:[NSURL URLWithString:@"http://dev.knotable.com"]];
+#elif K_SERVER_STAGING
+            [viewController loadURL:[NSURL URLWithString:@"http://staging.knotable.com"]];
+            
+#elif K_SERVER_BETA
+            [viewController loadURL:[NSURL URLWithString:@"http://beta.knotable.com"]];
+            
+#endif
+      		[self.navigationController pushViewController:viewController animated:YES];
 			return;
 		}
 	}
