@@ -799,7 +799,7 @@
 			
 
             TNTaskList *taskList = [[TNTaskList alloc]init];
-            taskList.title = @"TaskNotes";
+            taskList.title = @"Tasknotes";
             NSDateFormatter * formater = [[NSDateFormatter alloc]init];
             [formater setDateFormat:kDateFormat1];
             taskList.date = [formater stringFromDate:[NSDate date]];
@@ -834,8 +834,8 @@
                 int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                 task.id = [NSString stringWithFormat:@"%@%lli",kCDKUpdatedItemOfflineIDPrefix,remote_id];
                 task.remoteID = [NSNumber numberWithInt:remote_id];
-                task.displayText = @"TaskNotes";
-                task.text =@"TaskNotes";
+                task.displayText = @"Tasknotes";
+                task.text =@"Tasknotes";
                 task.position = [NSNumber numberWithInt:0];
                 task.list = self.list;
                 [task setCheckList: @[[NSDictionary dictionaryWithObjectsAndKeys:

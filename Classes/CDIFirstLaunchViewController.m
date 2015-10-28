@@ -13,6 +13,8 @@
 }
 @property (nonatomic, strong) UILabel* wellcome,*signUpGo;
 @property (nonatomic, strong) UIImageView *k_image;
+@property (nonatomic, strong) UIImageView *bg_image;
+
 @end
 
 @implementation CDIFirstLaunchViewController
@@ -20,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"firstlauch"]]];
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"firstlauch"]]];
     [self initUI];
    
 }
@@ -41,6 +43,7 @@
         isLandscape = NO;
         
     }
+    [_bg_image removeFromSuperview];
     [_k_image removeFromSuperview];
     [_wellcome removeFromSuperview];
     [_signUpGo removeFromSuperview];
@@ -48,6 +51,10 @@
 }
 
 -(void)initUI{
+    _bg_image = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
+    _bg_image.image = [UIImage imageNamed:@"firstlauch"];
+    [self.view addSubview:_bg_image];
+    
     _k_image = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100, isLandscape?30:50, 200, 200)];
     _k_image.image = [UIImage imageNamed:@"k_image"];
     [self.view addSubview:_k_image];

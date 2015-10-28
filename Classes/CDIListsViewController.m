@@ -1872,7 +1872,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 NSLog(@"Added Task %@",update.updated_ID);
                 CDKTask* toUpdateTask= [CDKTask findObjectWithID:update.updated_ID];
                 TNTaskList *taskList = [[TNTaskList alloc]init];
-                taskList.title = @"TaskNotes";
+                taskList.title = @"Tasknotes";
                 NSDateFormatter * formater = [[NSDateFormatter alloc]init];
                 [formater setDateFormat:kDateFormat1];
                 taskList.date = [formater stringFromDate:[NSDate date]];

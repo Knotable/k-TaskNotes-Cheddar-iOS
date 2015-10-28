@@ -304,13 +304,13 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	if (indexPath.section == 0) {
 		CDIWebViewController *viewController = [[CDIWebViewController alloc] init];
 #if K_SERVER_DEV
-        [viewController loadURL:[NSURL URLWithString:@"http://dev.knotable.com"]];
+        [viewController loadURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://dev.knotable.com/profile/%@",[CDKUser currentUser].remoteID ]]];
 #elif K_SERVER_STAGING
 
-        [viewController loadURL:[NSURL URLWithString:@"http://staging.knotable.com"]];
+        [viewController loadURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://staging.knotable.com/profile/%@",[CDKUser currentUser].remoteID ]]];
 
 #elif K_SERVER_BETA
-        [viewController loadURL:[NSURL URLWithString:@"http://beta.knotable.com"]];
+        [viewController loadURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://beta.knotable.com/profile/%@",[CDKUser currentUser].remoteID ]]];
 
 #endif
 
