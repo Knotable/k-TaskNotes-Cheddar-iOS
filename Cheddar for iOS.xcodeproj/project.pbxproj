@@ -1300,6 +1300,7 @@
 				B23FA753151FE0710069A0D1 /* Resources */,
 				018462C9E8B8B796868A0C71 /* Copy Pods Resources */,
 				9B0EF8621BD93DAC00351DA4 /* ShellScript */,
+				5AB724DB70407ACBEC0E16A5 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1324,7 +1325,7 @@
 				ORGANIZATIONNAME = "Nothing Magical";
 				TargetAttributes = {
 					B23FA754151FE0710069A0D1 = {
-						DevelopmentTeam = JJA9H4J8BC;
+						DevelopmentTeam = RUQ49565ML;
 					};
 				};
 			};
@@ -1595,6 +1596,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		5AB724DB70407ACBEC0E16A5 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9B0EF8621BD93DAC00351DA4 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1731,7 +1747,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
@@ -1803,7 +1819,7 @@
 					"$(inherited)",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.abdul-sami.knote";
+				PRODUCT_BUNDLE_IDENTIFIER = com.knotable.tasknotes;
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1826,7 +1842,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -1875,7 +1891,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
@@ -1952,7 +1968,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.abdul-sami.knote";
+				PRODUCT_BUNDLE_IDENTIFIER = com.knotable.tasknotes;
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
@@ -2003,7 +2019,7 @@
 					"-ObjC",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.abdul-sami.knote";
+				PRODUCT_BUNDLE_IDENTIFIER = com.knotable.tasknotes;
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
