@@ -90,12 +90,12 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466881198.429517"
+                  timestampString = "467734392.958192"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
                   endingLineNumber = "396"
-                  offsetFromSymbolStart = "23">
+                  offsetFromSymbolStart = "44">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -105,12 +105,12 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466881198.429833"
+                  timestampString = "467734392.958612"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
                   endingLineNumber = "396"
-                  offsetFromSymbolStart = "70">
+                  offsetFromSymbolStart = "72">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -138,12 +138,12 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466881198.431326"
+                  timestampString = "467734392.960653"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
                   endingLineNumber = "396"
-                  offsetFromSymbolStart = "23">
+                  offsetFromSymbolStart = "44">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -153,12 +153,12 @@
                   moduleName = "Cheddar"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MAbdulSami/k-TaskNotes-Cheddar-iOS/Classes/CDIListsViewController.m"
-                  timestampString = "466881198.431621"
+                  timestampString = "467734392.961037"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "396"
                   endingLineNumber = "396"
-                  offsetFromSymbolStart = "70">
+                  offsetFromSymbolStart = "72">
                </Location>
             </Locations>
          </BreakpointContent>

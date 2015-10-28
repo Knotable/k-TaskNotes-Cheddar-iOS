@@ -24,7 +24,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   ObjectiveDDP:
-    :commit: 93d1477110102b7fe5fc61335a6ccfa53055a013
+    :commit: 49bb893cc9c0d7e9ab17b527c5483bb8c19dc6af
     :git: https://github.com/boundsj/ObjectiveDDP.git
 
 SPEC CHECKSUMS:

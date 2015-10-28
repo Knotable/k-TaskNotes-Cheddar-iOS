@@ -11,6 +11,7 @@
 #define METEOR_DDP_URL_FORMAT @"ws://%@/websocket"
 #define     UseStaticGoogleClient       NO
 
+
 #define METEORCOLLECTION_USERS           @"users"                // Existing
 #define METEORCOLLECTION_PEOPLE          @"contacts"             // Existing
 #define METEORCOLLECTION_KEY             @"key_notes"            // Not Existing

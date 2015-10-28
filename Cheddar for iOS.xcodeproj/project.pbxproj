@@ -1324,7 +1324,7 @@
 				ORGANIZATIONNAME = "Nothing Magical";
 				TargetAttributes = {
 					B23FA754151FE0710069A0D1 = {
-						DevelopmentTeam = FC4X4M76ST;
+						DevelopmentTeam = JJA9H4J8BC;
 					};
 				};
 			};
@@ -1765,6 +1765,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1B2993BC202EBDDC58596003 /* Pods.adhoc.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1789,7 +1790,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1802,7 +1803,7 @@
 					"$(inherited)",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdul.knote;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abdul-sami.knote";
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1908,6 +1909,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AFA60E65018E6ADEF158EAA5 /* Pods.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1932,7 +1934,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1950,7 +1952,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdul.knote;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abdul-sami.knote";
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
@@ -1965,6 +1967,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35BC470360D304F7DFF584A3 /* Pods.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1988,7 +1991,7 @@
 					"\"${PODS_ROOT}/Headers/Public/M13OrderedDictionary\"",
 				);
 				INFOPLIST_FILE = "Resources/Cheddar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -2000,7 +2003,7 @@
 					"-ObjC",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdul.knote;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abdul-sami.knote";
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
