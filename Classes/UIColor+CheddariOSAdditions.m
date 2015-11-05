@@ -11,7 +11,7 @@
 @implementation UIColor (CheddariOSAdditions)
 
 + (UIColor *)cheddarArchesColor {
-	return [self colorWithPatternImage:[UIImage imageNamed:@"arches"]];
+	return [self colorWithPatternImage:[UIImage imageNamed:@"main-bg"]];
 }
 
 

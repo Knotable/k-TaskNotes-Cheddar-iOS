@@ -1172,10 +1172,13 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             [self removePreviousSavedLists];
         });
     }
+    [self removeRemovedTopics];
+    
 }
 
 - (void)gotArchivedTopicCount:(NSNotification *)note{
-// NSLog(@"333333 %@",note);
+ NSLog(@"333333 %@",note);
+    NSLog(@"got archieved topics");
 }
 
 - (void)contactsCountAdded:(NSNotification *)note{
@@ -1827,14 +1830,53 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 
 
 -(void)doUpdateNotification:(NSNotification *) notification{
+    
     [self checkForUpdatesAndPush];
     
+}
+
+-(void)removeRemovedTopics{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+       NSDictionary *models = self.meteor.collections[METEORCOLLECTION_TOPICS];
+        if(models){
+            dispatch_async( [self myCustomQueue], ^{
+               for(CDKList* savedList in [self.fetchedResultsController fetchedObjects]){
+                        BOOL exists = false;
+                        
+                        for (NSString *objectId in models){
+                            NSDictionary *model = [models objectForKey:objectId];
+                            
+                            if([[model objectForKey:@"_id"] isEqualToString:savedList.id])
+                                exists = true;
+                        }
+                        if(!exists){
+                            [savedList delete];
+                        }
+                            
+                    }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.managedObjectContext save:nil];
+                });
+            });
+                
+        }
+        else
+        {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 8 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self removeRemovedTopics];
+            });
+                
+        }
+        
+        
+        
+        
+    });
 }
 
 
 -(void)checkForUpdatesAndPush{
     
-   
     dispatch_async( [self myCustomQueue], ^{
         NSArray* updates = [Update getAllUpdates];
         
@@ -1918,5 +1960,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     });
     
 }
+
 
 @end

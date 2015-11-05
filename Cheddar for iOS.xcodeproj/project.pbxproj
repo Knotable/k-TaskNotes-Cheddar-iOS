@@ -48,6 +48,8 @@
 		57E2FBF21B8A03440076981B /* TNTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E2FBF11B8A03440076981B /* TNTaskList.m */; };
 		57E55FBC1BC1A8D80024DF32 /* CDIWebPadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E55FBB1BC1A8D80024DF32 /* CDIWebPadButton.m */; };
 		57E8376F1B7A49180026BE96 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */; };
+		57F916981BEAB1CE00029485 /* main-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F916971BEAB1CE00029485 /* main-bg.png */; };
+		57F9169C1BEABCAD00029485 /* main-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F9169B1BEABCAD00029485 /* main-bg@2x.png */; };
 		9B0EF85A1BD9395E00351DA4 /* servers_beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B0EF8591BD9395E00351DA4 /* servers_beta.plist */; };
 		9B0EF85E1BD9396800351DA4 /* servers_staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B0EF85D1BD9396800351DA4 /* servers_staging.plist */; };
 		B208BC2915BF63A80080705D /* CDIAddListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B208BB9315BF63A80080705D /* CDIAddListTableViewCell.m */; };
@@ -373,6 +375,8 @@
 		57E55FBB1BC1A8D80024DF32 /* CDIWebPadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDIWebPadButton.m; sourceTree = "<group>"; };
 		57E55FBF1BC1A8F30024DF32 /* CDIWebPadButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDIWebPadButton.h; sourceTree = "<group>"; };
 		57E8376E1B7A49180026BE96 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		57F916971BEAB1CE00029485 /* main-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-bg.png"; sourceTree = "<group>"; };
+		57F9169B1BEABCAD00029485 /* main-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-bg@2x.png"; sourceTree = "<group>"; };
 		9B0EF8591BD9395E00351DA4 /* servers_beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = servers_beta.plist; sourceTree = "<group>"; };
 		9B0EF85D1BD9396800351DA4 /* servers_staging.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = servers_staging.plist; sourceTree = "<group>"; };
 		AFA60E65018E6ADEF158EAA5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -782,6 +786,8 @@
 		B208BBD615BF63A80080705D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				57F9169B1BEABCAD00029485 /* main-bg@2x.png */,
+				57F916971BEAB1CE00029485 /* main-bg.png */,
 				22AFD5F21BB52CBF00E99320 /* Default-568h@3x.png */,
 				22AFD5F31BB52CBF00E99320 /* Default-Landscape_IO7@3x.png */,
 				22AFD5F41BB52CBF00E99320 /* Default-Landscape@3x.png */,
@@ -1325,7 +1331,7 @@
 				ORGANIZATIONNAME = "Nothing Magical";
 				TargetAttributes = {
 					B23FA754151FE0710069A0D1 = {
-						DevelopmentTeam = RUQ49565ML;
+						DevelopmentTeam = FC4X4M76ST;
 					};
 				};
 			};
@@ -1492,6 +1498,7 @@
 				B208BC9315BF63A80080705D /* tag.png in Resources */,
 				B208BC9415BF63A80080705D /* tag@2x.png in Resources */,
 				9B0EF85E1BD9396800351DA4 /* servers_staging.plist in Resources */,
+				57F9169C1BEABCAD00029485 /* main-bg@2x.png in Resources */,
 				B208BC9515BF63A80080705D /* task-icon.png in Resources */,
 				B208BC9615BF63A80080705D /* task-icon@2x.png in Resources */,
 				B208BC9715BF63A80080705D /* textfield-focused.png in Resources */,
@@ -1524,6 +1531,7 @@
 				B290118D15C49B07008FC626 /* toolbar-background@2x.png in Resources */,
 				B290119A15C4A9EC008FC626 /* action-button.png in Resources */,
 				B290119B15C4A9EC008FC626 /* action-button@2x.png in Resources */,
+				57F916981BEAB1CE00029485 /* main-bg.png in Resources */,
 				B290119C15C4A9EC008FC626 /* back-button.png in Resources */,
 				1B2312D41A9EC9E30048A86B /* Icon-76.png in Resources */,
 				B290119D15C4A9EC008FC626 /* back-button@2x.png in Resources */,

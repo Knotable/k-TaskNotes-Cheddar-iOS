@@ -102,6 +102,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[self refresh:nil];
 	[super viewWillAppear:animated];
+    self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 
