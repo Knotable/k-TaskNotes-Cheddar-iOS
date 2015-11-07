@@ -1148,7 +1148,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
         if([list.id isEqualToString:_id]){
             
             list.title = [model objectForKey:@"changed_subject"]?[model objectForKey:@"changed_subject"]:[model objectForKey:@"subject"];
-            list.position = [model objectForKey:@"uniqueNumber"];
+            //list.position = [model objectForKey:@"uniqueNumber"];
             list.slug = @"";
             list.archivedAt = [[model objectForKey:@"archived"] count]>0?[NSDate date]:nil;
             //list.updatedAt = [NSDate date];
@@ -1672,6 +1672,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     return YES;
 }
 
+- (BOOL)tableView:(UITableView *)tableview shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleNone;
+}
+
 
 #pragma mark - UITableViewDelegate
 
@@ -1707,7 +1715,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	return @"Archive";
 }
 
-
+/*
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle != UITableViewCellEditingStyleDelete) {
 		return;
@@ -1725,7 +1733,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 	list.archivedAt = [NSDate date];
 	[list save];
 	[list update];
-}
+}*/
 
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -1909,10 +1917,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                             [update delete];
                         
                     }
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kSafeToUpdateUINotification object:nil];
                 }];
                     
                 }else{
                     [update delete];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kSafeToUpdateUINotification object:nil];
                 }
 
             }
@@ -1955,7 +1965,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         NSLog(@"received data = %@",userDate);
                         if(connected)
                         [update delete];
+                        
                     }
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kSafeToUpdateUINotification object:nil];
                     NSLog(@"done posting");
                 }];
             }

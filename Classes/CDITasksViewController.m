@@ -222,8 +222,17 @@
                                              selector:@selector(taskChangedNotification:)
                                                  name:kTaskChangedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(safeToUpdateUINotification:)
+                                                 name:kSafeToUpdateUINotification
+                                               object:nil];
+
 }
 
+
+-(void)safeToUpdateUINotification:(NSNotification *) notification{
+    [self setIgnoreChange:NO];
+}
 -(void)taskChangedNotification:(NSNotification *) notification{
     
     
@@ -674,7 +683,7 @@
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return @"Archive";
+	return @"Delete";
 }
 
 
@@ -695,9 +704,11 @@
     update.updated_ID = task.id;
     update.type=[NSNumber numberWithInt:kCDKUpdatedItemTypeUpdated];
     [update save];
+    [self setIgnoreChange:YES];
     [[NSNotificationCenter defaultCenter]
      postNotificationName:kDoUpdateNotification
      object:self userInfo: nil];
+    
 //    [self.tableView reloadData];
 
 }

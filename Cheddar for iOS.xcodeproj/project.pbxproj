@@ -1331,7 +1331,7 @@
 				ORGANIZATIONNAME = "Nothing Magical";
 				TargetAttributes = {
 					B23FA754151FE0710069A0D1 = {
-						DevelopmentTeam = JJA9H4J8BC;
+						DevelopmentTeam = FC4X4M76ST;
 					};
 				};
 			};
@@ -1830,7 +1830,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.knotable.tasknotes;
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/\"/**";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1980,7 +1980,7 @@
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/\"/**";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -2031,7 +2031,7 @@
 				PRODUCT_NAME = Cheddar;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/\"/**";
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
