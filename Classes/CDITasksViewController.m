@@ -611,19 +611,19 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     CDKTask* task = [self.fetchedResultsController fetchedObjects][section];
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 24)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 36)];
     [view setBackgroundColor:[UIColor colorWithRed:0.890f green:0.890f blue:0.890f alpha:1.0f]];
     
     /* Create custom view to display section header... */
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont boldCheddarFontOfSize:16]];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width, 24)];
+    [label setFont:[UIFont cheddarFontOfSize:16.0f]];
     [label setTextColor:[UIColor cheddarTextColor]];
     NSString *string =task.text;
     /* Section header Label*/
     [label setText:string];
     
     /*Section Header Add task Button*/
-    UIButton* addButton = [[UIButton alloc]initWithFrame:CGRectMake(tableView.frame.size.width-38, 3, 30, 18)];
+    UIButton* addButton = [[UIButton alloc]initWithFrame:CGRectMake(tableView.frame.size.width-38, 0, 34, 18)];
     [addButton setTag:section];
     [addButton setTitle:@"+" forState:UIControlStateNormal];
     [addButton setBackgroundColor:[UIColor whiteColor]];
@@ -753,7 +753,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 24;//[CDIAddTaskView height];
+    return 26;//[CDIAddTaskView height];
 }
 
 

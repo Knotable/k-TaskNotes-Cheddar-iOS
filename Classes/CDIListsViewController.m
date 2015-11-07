@@ -1895,8 +1895,9 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
             if([update.type intValue] == kCDKUpdatedItemTypeUpdated ){
                 NSLog(@"updated Task %@",update.updated_ID);
                 CDKTask* toUpdateTask= [CDKTask findObjectWithID:update.updated_ID];
+                if(toUpdateTask){
                 
-                [[TNAPIClient sharedClient] sendRequestUpdateTaskList:update.updated_ID withOptionArray:toUpdateTask.checkList withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
+                    [[TNAPIClient sharedClient] sendRequestUpdateTaskList:update.updated_ID withOptionArray:toUpdateTask.checkList withCompleteBlock:^(WM_NetworkStatus success,NSError* error, id userDate){
                     if (error) {
                         NSLog(@"Error in update Task : %@",error);
                         NSLog(@"Error Posting update");
@@ -1905,9 +1906,14 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                         NSLog(@"Received Data from update Task: %@",userDate);
                         NSLog(@"Done Posting update");
                         if(connected)
-                        [update delete];
+                            [update delete];
+                        
                     }
                 }];
+                    
+                }else{
+                    [update delete];
+                }
 
             }
             else if([update.type intValue] == kCDKUpdatedItemTypeAdded){

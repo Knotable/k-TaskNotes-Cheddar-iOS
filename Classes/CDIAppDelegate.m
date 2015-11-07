@@ -223,8 +223,9 @@
 	// Toolbar mini
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-background-mini"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsLandscapePhone];
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar-background-mini"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsLandscapePhone];
-
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    navigationBar.translucent = NO;
+    toolbar.translucent = NO;
+    //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)loadServerConfig{
