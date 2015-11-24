@@ -61,6 +61,7 @@
 #define kNeedGoBackToLoginView              @"kNeedGoBackToLoginView"
 #define kTaskChangedNotification            @"TaskChangedNotification"
 #define kDoUpdateNotification               @"DoUpdateNotification"
+#define kDidSignOutNotification             @"DidSignOutNotification"
 #define kSafeToUpdateUINotification               @"SafeToUpdateUINotification"
 
 #define kNeedChangeApplicationHost          @"kNeedChangeApplicationHost"

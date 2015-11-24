@@ -50,16 +50,21 @@ static CDKUser *__currentUser = nil;
 //			return nil;
 //		}
 
+        NSLog(@"here user ID is :%@",userID);
 		__currentUser = [self existingObjectWithRemoteID:userID];
         if(!__currentUser){
             __currentUser = [[CDKUser alloc]init];
             __currentUser.remoteID = userID;
+            NSLog(@"user is %@",__currentUser);
             
             [[CDKUser mainContext] performBlock:^{
                 [__currentUser save];
             }];
-        }
-        
+            }else{
+                NSLog(@"user is %@",__currentUser);
+                NSLog(@"not nul");
+                
+            }
         /*{\"url\" : \"https://api.cheddarapp.com/v1/users/12345678\",\"has_plus\" : true,\"first_name\" : \"abdul\",\"id\" : 12345678,\"socket\" : {\"channel\" : \"private-user-12345678\",\"auth_url\" : \"https://api.cheddarapp.com/pusher/auth\",\"app_id\" : \"15197\",\"api_key\" : \"675f10a650f18b4eb0a8\"},\"last_name\" : \"sami\",\"created_at\" : \"2015-07-14T16:39:09Z\",\"updated_at\" : \"2015-07-14T16:39:09Z\",\"username\" : \"sami_bahtti\"}
           */
             
@@ -87,7 +92,7 @@ static CDKUser *__currentUser = nil;
 //			NSLog(@"[CheddarKit] Failed to save access token: %@", error);
 //		}
 //		
-//		__currentUser = user;
+		__currentUser = user;
 //		[userDefaults setObject:user.remoteID forKey:kCDKUserIDKey];
 //	}
 //	

@@ -64,6 +64,7 @@
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kTNUserIDKey];
         }else{
             [[NSUserDefaults standardUserDefaults] setObject:user.user_id forKey:kTNUserIDKey];
+            NSLog(@"user ID is :%@",user.user_id);
             [[NSUserDefaults standardUserDefaults] setObject:user.user_email forKey:kTNUserEmail];
             [[NSUserDefaults standardUserDefaults] setObject:user.user_sessiontoken forKey:kTNUserSessionToken];
             [[NSUserDefaults standardUserDefaults] setObject:user.user_username forKey:kTNUserName];

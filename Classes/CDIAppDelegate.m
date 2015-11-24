@@ -249,44 +249,28 @@
         self.ddp = [[ObjectiveDDP alloc]initWithURLString:[model meteorWebsocketURL] delegate:self.meteorClient];
         self.meteorClient.ddp = self.ddp;
         [self.ddp connectWebSocket];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_MESSAGES];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_MUTEKNOTES];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_NOTIFICATIONS];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_PEOPLE];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_TOPICS];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_USERPRIVATEDATA];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_USERS];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_TOPIC];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_REST];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_PINNED];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTE_ARCHIVED];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_KEY];
-//        [self.meteorClient addSubscription:METEORCOLLECTION_HOTKNOTES];
-
-//        [self.meteorClient addSubscription:METEORCOLLECTION_KNOTES];
 //        [self.meteorClient addObserver:self
-//                      forKeyPath:@"connected"
-//                         options:NSKeyValueObservingOptionNew
-//                         context:nil];
+//                            forKeyPath:@"connected"
+//                               options:NSKeyValueObservingOptionNew
+//                               context:nil];
 //        [self.meteorClient addObserver:self
-//                      forKeyPath:@"sessionToken"
-//                         options:NSKeyValueObservingOptionNew
-//                         context:nil];
+//                            forKeyPath:@"sessionToken"
+//                               options:NSKeyValueObservingOptionNew
+//                               context:nil];
     }else if (![self.meteorClient.ddp.urlString isEqualToString:[model meteorWebsocketURL]]){
         [self closePreMeteor];
         self.meteorClient = [[MeteorClient alloc]initWithDDPVersion:@"pre2"];
         self.ddp = [[ObjectiveDDP alloc]initWithURLString:[model meteorWebsocketURL] delegate:self.meteorClient];
         self.meteorClient.ddp = self.ddp;
         [self.ddp connectWebSocket];
-        [self.meteorClient addObserver:self
-                            forKeyPath:@"connected"
-                               options:NSKeyValueObservingOptionNew
-                               context:nil];
-        [self.meteorClient addObserver:self
-                            forKeyPath:@"sessionToken"
-                               options:NSKeyValueObservingOptionNew
-                               context:nil];
+//        [self.meteorClient addObserver:self
+//                            forKeyPath:@"connected"
+//                               options:NSKeyValueObservingOptionNew
+//                               context:nil];
+//        [self.meteorClient addObserver:self
+//                            forKeyPath:@"sessionToken"
+//                               options:NSKeyValueObservingOptionNew
+//                               context:nil];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportConnection) name:MeteorClientDidConnectNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportDisconnection) name:MeteorClientDidDisconnectNotification object:nil];
@@ -294,8 +278,8 @@
 
 -(void)closePreMeteor{
     self.meteorClientOld = self.meteorClient;
-    [self.meteorClient removeObserver:self forKeyPath:@"connected"];
-    [self.meteorClient removeObserver:self forKeyPath:@"sessionToken"];
+//    [self.meteorClient removeObserver:self forKeyPath:@"connected"];
+//    [self.meteorClient removeObserver:self forKeyPath:@"sessionToken"];
     [self.meteorClient disconnect];
     self.meteorClient = nil;
 }

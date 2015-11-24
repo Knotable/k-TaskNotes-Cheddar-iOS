@@ -142,7 +142,12 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                                              selector:@selector(doUpdateNotification:)
                                                  name:kDoUpdateNotification
                                                object:nil];
-        [self turnOnBackground];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(signedOut:)
+                                                 name:kDidSignOutNotification
+                                               object:nil];
+    
+    [self turnOnBackground];
 }
 
 -(void)removePreviousSavedLists{
@@ -204,6 +209,7 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
     
 //    if(isListeningToUpdates)return;
 //    isListeningToUpdates=true;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(gotTopicCount:)
                                                  name:@"TopicsCount_added"
@@ -343,7 +349,18 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 //    
 //    
 //
+    
     [self.meteor addSubscription:METEORCOLLECTION_TOPICS];
+    
+}
+
+
+
+
+-(void)signedOut:(NSNotification *)note{
+    [self.meteor removeSubscription:METEORCOLLECTION_TOPICS];
+
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
     
 }
 
@@ -446,14 +463,20 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                 NSLog(@"current pad = %@",model);
                 NSString* knoteAddedId =[taskFromIOS objectForKey:@"_id"];
                 BOOL alreadyAdded = false;
+                CDKList *Oldlist=nil;
+                
                 for(CDKList* savedList in savedLists){
                     if([knoteAddedId isEqualToString: savedList.id] ){
                         alreadyAdded=true;
                         _checkForOneList = NO;
                     }
                 }
-                if(!alreadyAdded)
-                dispatch_async( [self myCustomQueue], ^{
+                
+                
+                if(!alreadyAdded){
+                
+                    dispatch_async( [self myCustomQueue], ^{
+                    
                     CDKList *list = [[CDKList alloc] init];
                     int64_t remote_id = [[NSDate date] timeIntervalSince1970];
                     list.id = [taskFromIOS objectForKey:@"_id"];
@@ -470,7 +493,8 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
                     [list save];
                     [savedLists addObject:list];
 
-            });
+                    });
+                }
             }
 
             [self.meteor addSubscription:METEORCOLLECTION_KNOTES withParameters:@[model_id]];
@@ -1279,7 +1303,6 @@ NSString *const kCDISelectedListKey = @"CDISelectedListKey";
 - (NSPredicate *)predicate {
     
     NSLog(@"current User is = %@  %@  %@",[CDKUser currentUser].firstName ,[CDKUser currentUser].username, [CDKUser currentUser].remoteID);
-    
     return [NSPredicate predicateWithFormat:@"archivedAt = nil && user = %@", [CDKUser currentUser]];
     
 }

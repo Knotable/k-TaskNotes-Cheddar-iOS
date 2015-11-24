@@ -15,7 +15,7 @@
 #import "UIFont+CheddariOSAdditions.h"
 #import "CDIAppDelegate.h"
 #import "CDISplitViewController.h"
-#import "CDIListsViewController.h"
+#import "CDISignInViewController.h"
 #import "CDISettingsTextSizePickerViewController.h"
 #import "CDISettingsFontPickerViewController.h"
 #import "CDISettingsTapPickerViewController.h"
@@ -146,17 +146,21 @@ NSString *const kCDIFontDidChangeNotificationName = @"CDIFontDidChangeNotificati
 	// Sign out
     [TNUserModel setCurrentUser:nil];
     [self.meteor logout];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:kDidSignOutNotification
+     object:self userInfo: nil];
     [CDIAppDelegate sharedAppDelegate].isFirstLaunch = NO;
-    //	[CDKUser setCurrentUser:nil];
+    	[CDKUser setCurrentUser:nil];
 //	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //	[userDefaults removeObjectForKey:kCDISelectedListKey];
 //	[userDefaults synchronize];
 	CDIAppDelegate *appDelegate = [CDIAppDelegate sharedAppDelegate];
-
+    [appDelegate loadServerConfig];
+    
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		appDelegate.window.rootViewController = [[CDISplitViewController alloc] init];
 	} else {
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[CDIListsViewController alloc] init]];
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[CDISignInViewController alloc] init]];
 		appDelegate.window.rootViewController = navigationController;
 	}
 }

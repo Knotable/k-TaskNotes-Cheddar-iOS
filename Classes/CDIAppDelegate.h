@@ -20,6 +20,8 @@
 + (CDIAppDelegate *)sharedAppDelegate;
 - (void)applyStylesheet;
 - (NSString*)idRandom;
+- (void)closePreMeteor;
+-(void)loadServerConfig;
 @end
 
 #define K_SERVER_BETA       1

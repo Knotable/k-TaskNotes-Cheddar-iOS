@@ -184,8 +184,13 @@
             [SSKeychain setPassword:password forService:@"Tasknote" account:username];
             NSLog(@"%@",_meteor.collections);
             
-                CDKUser* currentUser = [[CDKUser alloc]init];
-                [[currentUser managedObjectContext] performBlock:^{
+            
+            CDKUser* currentUser = [CDKUser existingObjectWithRemoteID:user.user_id];
+            
+            if(!currentUser){
+                currentUser = [[CDKUser alloc]init];
+            }
+                [[currentUser managedObjectContext] performBlockAndWait:^{
                     currentUser.username = user.user_username;
                     currentUser.email = user.user_email;
                     currentUser.accessToken = user.user_sessiontoken;
@@ -193,10 +198,13 @@
                     [currentUser save];
                     
                     [CDIAppDelegate sharedAppDelegate].currentUserID = user.user_id;
+                   
+                    [[currentUser managedObjectContext] performBlock:^{
+                        CDIListsViewController *viewController = [[CDIListsViewController alloc] init];
+                        
+                        [self.navigationController pushViewController:viewController animated:YES];
+                    }];
                     
-                    CDIListsViewController *viewController = [[CDIListsViewController alloc] init];
-                    
-                    [self.navigationController pushViewController:viewController animated:YES];
                 }];
         }
     }];
